@@ -80,7 +80,7 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">5. 情報の保存期間</h2>
               <p className="leading-relaxed">
-                当社は、個人情報を利用目的の達成に必要な期間、または法令で定められた期間、保存します。イベント情報は、ユーザーが削除するまで保存されます。
+                当社は、個人情報を利用目的の達成に必要な期間、または法令で定められた期間、保存します。イベント情報は、一定期間の経過後に当社が定期的に削除する場合があります（ユーザーが明示的に削除できる機能は提供していません）。
               </p>
             </section>
 
