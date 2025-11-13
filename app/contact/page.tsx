@@ -81,7 +81,7 @@ export default function ContactPage() {
             <p className="text-sm text-gray-600 leading-relaxed">
               ご質問、ご意見、ご要望などがございましたら、お気軽にお問い合わせください。
               <br />
-              お問い合わせ内容を確認後、3営業日以内にご返信いたします。
+              お問い合わせ内容を確認させていただきます。
             </p>
           </div>
 
@@ -92,9 +92,7 @@ export default function ContactPage() {
                 <h2 className="text-lg font-semibold text-green-800">お問い合わせを受け付けました</h2>
               </div>
               <p className="text-sm text-green-700 leading-relaxed">
-                お問い合わせありがとうございます。内容を確認後、ご入力いただいたメールアドレスにご返信いたします。
-                <br />
-                3営業日以内にご返信いたしますので、しばらくお待ちください。
+                お問い合わせありがとうございます。内容を確認させていただきます。
               </p>
               <button
                 onClick={() => setSubmitted(false)}
@@ -181,7 +179,7 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg hover:from-orange-700 hover:to-orange-800 font-semibold shadow-md hover:shadow-lg min-h-[48px] touch-manipulation transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-semibold shadow-md hover:shadow-lg min-h-[48px] touch-manipulation transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <>
