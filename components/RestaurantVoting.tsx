@@ -281,7 +281,7 @@ export default function RestaurantVoting({
                     <p className="text-xs text-gray-500">
                       投票者: {userVotes
                         .filter((v) => v.restaurant_id === restaurant.id)
-                        .map((v) => v.name || v.email?.split('@')[0] || '匿名')
+                        .map((v) => v.name || '匿名')
                         .join(', ')}
                     </p>
                   </div>

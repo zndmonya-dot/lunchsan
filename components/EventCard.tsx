@@ -123,7 +123,7 @@ export default function EventCard({ event }: EventCardProps) {
                   key={participant.id}
                   className={`px-2.5 py-1 rounded-lg text-xs font-medium ${statusColors[participant.status]}`}
                 >
-                  {participant.profiles?.name || participant.name || participant.profiles?.email?.split('@')[0] || participant.email?.split('@')[0] || '匿名'}
+                  {participant.profiles?.name || participant.name || '匿名'}
                 </span>
               ))}
               {event.event_participants.length > 4 && (

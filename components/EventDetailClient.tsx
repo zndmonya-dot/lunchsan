@@ -1473,7 +1473,7 @@ export default function EventDetailClient({
                     key={p.id}
                     className="px-3 py-1.5 bg-orange-50 text-orange-700 border border-orange-200 rounded-full text-sm font-medium"
                   >
-                    {p.profiles?.name || p.name || p.profiles?.email?.split('@')[0] || p.email?.split('@')[0] || '匿名'}
+                    {p.profiles?.name || p.name || '匿名'}
               </span>
                 ))}
             </div>
