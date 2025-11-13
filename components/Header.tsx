@@ -16,6 +16,13 @@ export default function Header() {
   const [weather, setWeather] = useState<WeatherData | null>(null)
   const [loading, setLoading] = useState(false) // 初期状態をfalseに変更（取得開始時にtrueにする）
   const [error, setError] = useState<string | null>(null)
+  const [showLocationModal, setShowLocationModal] = useState(false)
+  const [manualLat, setManualLat] = useState('')
+  const [manualLng, setManualLng] = useState('')
+  const [manualLocationName, setManualLocationName] = useState('')
+  const [addressSearch, setAddressSearch] = useState('')
+  const [searchingAddress, setSearchingAddress] = useState(false)
+  const [savingLocation, setSavingLocation] = useState(false)
 
   // トップに戻る関数
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -104,35 +111,47 @@ export default function Header() {
 
         // 天気コードからアイコンと説明を取得
         const weatherCode = data.current.weather_code
-        const weatherIcons: { [key: number]: string } = {
-          0: '☀️', // Clear sky
-          1: '🌤️', // Mainly clear
-          2: '⛅', // Partly cloudy
-          3: '☁️', // Overcast
-          45: '🌫️', // Fog
-          48: '🌫️', // Depositing rime fog
-          51: '🌦️', // Light drizzle
-          53: '🌦️', // Moderate drizzle
-          55: '🌧️', // Dense drizzle
-          56: '🌨️', // Light freezing drizzle
-          57: '🌨️', // Dense freezing drizzle
-          61: '🌧️', // Slight rain
-          63: '🌧️', // Moderate rain
-          65: '🌧️', // Heavy rain
-          66: '🌨️', // Light freezing rain
-          67: '🌨️', // Heavy freezing rain
-          71: '🌨️', // Slight snow fall
-          73: '🌨️', // Moderate snow fall
-          75: '🌨️', // Heavy snow fall
-          77: '🌨️', // Snow grains
-          80: '🌧️', // Slight rain showers
-          81: '🌧️', // Moderate rain showers
-          82: '🌧️', // Violent rain showers
-          85: '🌨️', // Slight snow showers
-          86: '🌨️', // Heavy snow showers
-          95: '⛈️', // Thunderstorm
-          96: '⛈️', // Thunderstorm with slight hail
-          99: '⛈️', // Thunderstorm with heavy hail
+        // 現在時刻を取得（日本時間）
+        const now = new Date()
+        const japanTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }))
+        const hour = japanTime.getHours()
+        const isNight = hour >= 18 || hour < 6 // 18時〜6時を夜間とする
+
+        const weatherIcons: { [key: number]: { day: string; night: string } } = {
+          0: { day: '☀️', night: '🌙' }, // Clear sky
+          1: { day: '🌤️', night: '☁️' }, // Mainly clear
+          2: { day: '⛅', night: '☁️' }, // Partly cloudy
+          3: { day: '☁️', night: '☁️' }, // Overcast
+          45: { day: '🌫️', night: '🌫️' }, // Fog
+          48: { day: '🌫️', night: '🌫️' }, // Depositing rime fog
+          51: { day: '🌦️', night: '🌧️' }, // Light drizzle
+          53: { day: '🌦️', night: '🌧️' }, // Moderate drizzle
+          55: { day: '🌧️', night: '🌧️' }, // Dense drizzle
+          56: { day: '🌨️', night: '🌨️' }, // Light freezing drizzle
+          57: { day: '🌨️', night: '🌨️' }, // Dense freezing drizzle
+          61: { day: '🌧️', night: '🌧️' }, // Slight rain
+          63: { day: '🌧️', night: '🌧️' }, // Moderate rain
+          65: { day: '🌧️', night: '🌧️' }, // Heavy rain
+          66: { day: '🌨️', night: '🌨️' }, // Light freezing rain
+          67: { day: '🌨️', night: '🌨️' }, // Heavy freezing rain
+          71: { day: '🌨️', night: '🌨️' }, // Slight snow fall
+          73: { day: '🌨️', night: '🌨️' }, // Moderate snow fall
+          75: { day: '🌨️', night: '🌨️' }, // Heavy snow fall
+          77: { day: '🌨️', night: '🌨️' }, // Snow grains
+          80: { day: '🌧️', night: '🌧️' }, // Slight rain showers
+          81: { day: '🌧️', night: '🌧️' }, // Moderate rain showers
+          82: { day: '🌧️', night: '🌧️' }, // Violent rain showers
+          85: { day: '🌨️', night: '🌨️' }, // Slight snow showers
+          86: { day: '🌨️', night: '🌨️' }, // Heavy snow showers
+          95: { day: '⛈️', night: '⛈️' }, // Thunderstorm
+          96: { day: '⛈️', night: '⛈️' }, // Thunderstorm with slight hail
+          99: { day: '⛈️', night: '⛈️' }, // Thunderstorm with heavy hail
+        }
+
+        const getWeatherIcon = (code: number): string => {
+          const iconSet = weatherIcons[code]
+          if (!iconSet) return '☀️'
+          return isNight ? iconSet.night : iconSet.day
         }
 
         const weatherDescriptions: { [key: number]: string } = {
@@ -182,7 +201,7 @@ export default function Header() {
         const openMeteoWeatherData: WeatherData = {
           temperature: Math.round(data.current.temperature_2m),
           condition: weatherDescriptions[weatherCode] || '不明',
-          icon: weatherIcons[weatherCode] || '☀️',
+          icon: getWeatherIcon(weatherCode),
           location: locationName,
         }
 
@@ -300,6 +319,8 @@ export default function Header() {
       }
     }
 
+
+    // fetchWeather関数を定義（useEffect内で使用）
     const fetchWeather = async (lat: number, lng: number) => {
       try {
         // まずキャッシュを確認（10分間有効）
@@ -359,9 +380,37 @@ export default function Header() {
       }
     }
 
+    // 保存された位置情報を確認
+    const getSavedLocation = (): { lat: number; lng: number } | null => {
+      if (typeof window === 'undefined') return null
+      const saved = localStorage.getItem('manual_location')
+      if (saved) {
+        try {
+          const { lat, lng } = JSON.parse(saved)
+          if (typeof lat === 'number' && typeof lng === 'number') {
+            return { lat, lng }
+          }
+        } catch (error) {
+          console.warn('Failed to parse saved location:', error)
+        }
+      }
+      return null
+    }
+
     // 位置情報を取得（タイムアウトを短くして、確実にローディングを解除）
     let timeoutId: NodeJS.Timeout | null = null
     let geolocationTimeoutId: NodeJS.Timeout | null = null
+
+    // まず保存された位置情報を確認
+    const savedLocation = getSavedLocation()
+    if (savedLocation) {
+      setLoading(true)
+      fetchWeather(savedLocation.lat, savedLocation.lng).catch((error) => {
+        console.error('Error in fetchWeather:', error)
+        setLoading(false)
+      })
+      return
+    }
 
     if (typeof window !== 'undefined' && navigator.geolocation) {
       // ローディング開始
@@ -425,6 +474,395 @@ export default function Header() {
     }
   }, [])
 
+  // 位置設定のハンドラー
+  const handleWeatherClick = () => {
+    // 保存された位置情報を読み込む
+    const saved = localStorage.getItem('manual_location')
+    if (saved) {
+      try {
+        const { lat, lng, locationName } = JSON.parse(saved)
+        setManualLat(lat.toString())
+        setManualLng(lng.toString())
+        setManualLocationName(locationName || '')
+      } catch (error) {
+        console.warn('Failed to parse saved location:', error)
+      }
+    }
+    setShowLocationModal(true)
+  }
+
+  const handleSearchAddress = async () => {
+    if (!addressSearch.trim()) {
+      setError('キーワードを入力してください')
+      return
+    }
+
+    setSearchingAddress(true)
+    setError(null)
+
+    try {
+      // 複数キーワードをスペース区切りで処理
+      // スペースで区切られたキーワードをそのまま検索クエリとして使用
+      const searchQuery = addressSearch.trim()
+      
+      // Next.jsのAPIルート経由でOpenStreetMapのNominatim APIを使用（CORS回避）
+      const response = await fetch(
+        `/api/geocode?q=${encodeURIComponent(searchQuery)}`,
+        {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+          },
+        }
+      )
+
+      if (!response.ok) {
+        // レスポンスの詳細を確認
+        const errorText = await response.text()
+        console.error('API Error:', response.status, errorText)
+        setError(`検索に失敗しました（${response.status}）。しばらく時間をおいてから再度お試しください。`)
+        setSearchingAddress(false)
+        return
+      }
+
+      const data = await response.json()
+      console.log('Search result:', data)
+      
+      // Nominatim APIは配列を返す
+      if (!Array.isArray(data) || data.length === 0) {
+        setError('見つかりませんでした。別のキーワードで検索してください。')
+        setSearchingAddress(false)
+        return
+      }
+
+      const locationData = data[0]
+      
+      if (!locationData || !locationData.lat || !locationData.lon) {
+        setError('見つかりませんでした。別のキーワードで検索してください。')
+        setSearchingAddress(false)
+        return
+      }
+
+      // 緯度経度を設定
+      setManualLat(locationData.lat.toString())
+      setManualLng(locationData.lon.toString())
+      
+      // 地名を設定（Nominatimのaddressオブジェクトから取得）
+      let locationName = ''
+      if (locationData.address) {
+        const addr = locationData.address
+        // 日本の住所構造に合わせて地名を構築
+        if (addr.name && addr.name !== addressSearch) {
+          locationName = addr.name
+        } else if (addr.road) {
+          locationName = addr.road
+          if (addr.city || addr.town || addr.village) {
+            locationName = `${locationName}（${addr.city || addr.town || addr.village}）`
+          }
+        } else if (addr.city || addr.town || addr.village) {
+          locationName = addr.city || addr.town || addr.village
+          if (addr.state) {
+            locationName = `${locationName}（${addr.state}）`
+          }
+        } else if (addr.state) {
+          locationName = addr.state
+        } else {
+          locationName = locationData.display_name?.split(',')[0] || addressSearch
+        }
+      } else {
+        locationName = locationData.display_name?.split(',')[0] || addressSearch
+      }
+      
+      setManualLocationName(locationName)
+      setAddressSearch('')
+    } catch (error: any) {
+      console.error('Error searching address:', error)
+      // より詳細なエラーメッセージを表示
+      if (error.message) {
+        setError(`検索に失敗しました: ${error.message}`)
+      } else {
+        setError('検索に失敗しました。ネットワーク接続を確認してください。')
+      }
+    } finally {
+      setSearchingAddress(false)
+    }
+  }
+
+  const handleSaveLocation = async () => {
+    const lat = parseFloat(manualLat)
+    const lng = parseFloat(manualLng)
+
+    if (isNaN(lat) || isNaN(lng)) {
+      setError('位置情報が設定されていません。キーワードで検索するか、現在位置を取得してください。')
+      return
+    }
+
+    if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+      setError('緯度は-90〜90、経度は-180〜180の範囲で入力してください')
+      return
+    }
+
+    setSavingLocation(true)
+    setError(null)
+
+    try {
+      // 位置情報を保存
+      const locationData = {
+        lat,
+        lng,
+        locationName: manualLocationName || ''
+      }
+      localStorage.setItem('manual_location', JSON.stringify(locationData))
+
+      // 天気情報を再取得
+      setLoading(true)
+      await fetchWeather(lat, lng)
+      
+      // カスタムイベントを発火して、他のコンポーネントに位置情報の更新を通知
+      // localStorageへの書き込みを確実に反映させるため、少し遅延させてからイベントを発火
+      if (typeof window !== 'undefined') {
+        // まず確実にlocalStorageに保存
+        await new Promise(resolve => setTimeout(resolve, 50))
+        // イベントを発火
+        window.dispatchEvent(new CustomEvent('locationUpdated', { 
+          detail: { lat, lng, locationName: manualLocationName || '' }
+        }))
+        console.log('Location updated event fired:', { lat, lng, locationName: manualLocationName || '' })
+      }
+      
+      setShowLocationModal(false)
+      setManualLat('')
+      setManualLng('')
+      setManualLocationName('')
+      setAddressSearch('')
+    } catch (error) {
+      console.error('Error saving location:', error)
+      setError('位置情報の保存に失敗しました')
+    } finally {
+      setSavingLocation(false)
+    }
+  }
+
+  const handleGetCurrentLocation = () => {
+    if (typeof window !== 'undefined' && navigator.geolocation) {
+      setSavingLocation(true)
+      setError(null)
+      
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude
+          const lng = position.coords.longitude
+          setManualLat(lat.toString())
+          setManualLng(lng.toString())
+          
+          // 地名を取得
+          try {
+            const geocodeResponse = await fetch(
+              `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=ja`
+            )
+            if (geocodeResponse.ok) {
+              const geocodeData = await geocodeResponse.json()
+              if (geocodeData) {
+                if (geocodeData.countryCode === 'JP') {
+                  setManualLocationName(geocodeData.city || geocodeData.locality || geocodeData.principalSubdivision || '')
+                } else {
+                  setManualLocationName(geocodeData.city || geocodeData.locality || geocodeData.countryName || '')
+                }
+              }
+            }
+          } catch (error) {
+            console.error('Error fetching location name:', error)
+          }
+          
+          setSavingLocation(false)
+        },
+        (error) => {
+          console.error('Error getting location:', error)
+          setError('位置情報の取得に失敗しました')
+          setSavingLocation(false)
+        }
+      )
+    } else {
+      setError('位置情報APIが利用できません')
+    }
+  }
+
+  const handleClearLocation = () => {
+    localStorage.removeItem('manual_location')
+    setManualLat('')
+    setManualLng('')
+    setManualLocationName('')
+    setAddressSearch('')
+    setShowLocationModal(false)
+    // ページをリロードしてデフォルト位置で天気情報を取得
+    window.location.reload()
+  }
+
+  // fetchWeather関数をuseEffectの外に移動（モーダルからも呼び出せるように）
+  const fetchWeather = async (lat: number, lng: number) => {
+    try {
+      // キャッシュを確認
+      const cacheKey = `weather_${lat.toFixed(2)}_${lng.toFixed(2)}`
+      const cached = localStorage.getItem(cacheKey)
+      if (cached) {
+        try {
+          const { data, timestamp } = JSON.parse(cached)
+          if (Date.now() - timestamp < 10 * 60 * 1000) {
+            setWeather(data)
+            setError(null)
+            setLoading(false)
+            return
+          }
+        } catch (error) {
+          console.warn('Failed to parse cached weather data:', error)
+        }
+      }
+
+      // APIから取得
+      const fetchWithTimeout = async (promise: Promise<WeatherData | null>, timeout: number): Promise<WeatherData | null> => {
+        return Promise.race([
+          promise,
+          new Promise<WeatherData | null>((resolve) => {
+            setTimeout(() => resolve(null), timeout)
+          })
+        ])
+      }
+
+      // Open-Meteo APIを試す
+      const fetchWeatherWithOpenMeteo = async (): Promise<WeatherData | null> => {
+        try {
+          const response = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,weather_code&timezone=Asia/Tokyo&forecast_days=1`
+          )
+          if (!response.ok) return null
+          const data = await response.json()
+          if (!data || !data.current) return null
+
+          const weatherCode = data.current.weather_code
+          // 現在時刻を取得（日本時間）
+          const now = new Date()
+          const japanTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }))
+          const hour = japanTime.getHours()
+          const isNight = hour >= 18 || hour < 6 // 18時〜6時を夜間とする
+
+          const weatherIcons: { [key: number]: { day: string; night: string } } = {
+            0: { day: '☀️', night: '🌙' },
+            1: { day: '🌤️', night: '☁️' },
+            2: { day: '⛅', night: '☁️' },
+            3: { day: '☁️', night: '☁️' },
+            45: { day: '🌫️', night: '🌫️' },
+            48: { day: '🌫️', night: '🌫️' },
+            51: { day: '🌦️', night: '🌧️' },
+            53: { day: '🌦️', night: '🌧️' },
+            55: { day: '🌧️', night: '🌧️' },
+            56: { day: '🌨️', night: '🌨️' },
+            57: { day: '🌨️', night: '🌨️' },
+            61: { day: '🌧️', night: '🌧️' },
+            63: { day: '🌧️', night: '🌧️' },
+            65: { day: '🌧️', night: '🌧️' },
+            66: { day: '🌨️', night: '🌨️' },
+            67: { day: '🌨️', night: '🌨️' },
+            71: { day: '🌨️', night: '🌨️' },
+            73: { day: '🌨️', night: '🌨️' },
+            75: { day: '🌨️', night: '🌨️' },
+            77: { day: '🌨️', night: '🌨️' },
+            80: { day: '🌧️', night: '🌧️' },
+            81: { day: '🌧️', night: '🌧️' },
+            82: { day: '🌧️', night: '🌧️' },
+            85: { day: '🌨️', night: '🌨️' },
+            86: { day: '🌨️', night: '🌨️' },
+            95: { day: '⛈️', night: '⛈️' },
+            96: { day: '⛈️', night: '⛈️' },
+            99: { day: '⛈️', night: '⛈️' },
+          }
+
+          const getWeatherIcon = (code: number): string => {
+            const iconSet = weatherIcons[code]
+            if (!iconSet) return '☀️'
+            return isNight ? iconSet.night : iconSet.day
+          }
+
+          const weatherDescriptions: { [key: number]: string } = {
+            0: '快晴', 1: '晴れ', 2: '一部曇り', 3: '曇り', 45: '霧', 48: '霧',
+            51: '小雨', 53: '小雨', 55: '強い小雨', 56: '軽い凍雨', 57: '強い凍雨',
+            61: '小雨', 63: '雨', 65: '大雨', 66: '軽い凍雨', 67: '強い凍雨',
+            71: '小雪', 73: '雪', 75: '大雪', 77: '雪', 80: 'にわか雨',
+            81: 'にわか雨', 82: '強いにわか雨', 85: 'にわか雪', 86: '強いにわか雪',
+            95: '雷雨', 96: '雷雨', 99: '強い雷雨',
+          }
+
+          let locationName = '位置情報取得中'
+          try {
+            const geocodeResponse = await fetch(
+              `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=ja`
+            )
+            if (geocodeResponse.ok) {
+              const geocodeData = await geocodeResponse.json()
+              if (geocodeData) {
+                if (geocodeData.countryCode === 'JP') {
+                  locationName = geocodeData.city || geocodeData.locality || geocodeData.principalSubdivision || '日本'
+                } else {
+                  locationName = geocodeData.city || geocodeData.locality || geocodeData.countryName || '位置情報取得中'
+                }
+              }
+            }
+          } catch (error) {
+            console.error('Error fetching location name:', error)
+            if (lat >= 24 && lat <= 46 && lng >= 123 && lng <= 146) {
+              locationName = '日本'
+            } else {
+              locationName = `${lat.toFixed(2)}, ${lng.toFixed(2)}`
+            }
+          }
+
+          const weatherData: WeatherData = {
+            temperature: Math.round(data.current.temperature_2m),
+            condition: weatherDescriptions[weatherCode] || '不明',
+            icon: getWeatherIcon(weatherCode),
+            location: locationName,
+          }
+
+          // キャッシュに保存
+          localStorage.setItem(cacheKey, JSON.stringify({
+            data: weatherData,
+            timestamp: Date.now()
+          }))
+
+          return weatherData
+        } catch (error) {
+          console.error('Error fetching weather from Open-Meteo:', error)
+          return null
+        }
+      }
+
+      let weatherData = await fetchWithTimeout(fetchWeatherWithOpenMeteo(), 8000)
+
+      if (weatherData) {
+        setWeather(weatherData)
+        setError(null)
+      } else {
+        setWeather({
+          temperature: 0,
+          condition: '情報なし',
+          icon: '☀️',
+          location: '日本'
+        })
+        setError(null)
+      }
+    } catch (error) {
+      console.error('Error fetching weather:', error)
+      setWeather({
+        temperature: 0,
+        condition: '情報なし',
+        icon: '☀️',
+        location: '日本'
+      })
+      setError(null)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -450,7 +888,11 @@ export default function Header() {
                 <span className="text-xs sm:text-sm hidden sm:inline">取得中...</span>
               </div>
             ) : weather ? (
-              <div className="flex items-center gap-2 bg-gray-50 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg border border-gray-200">
+              <button
+                onClick={handleWeatherClick}
+                className="flex items-center gap-2 bg-gray-50 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg border border-gray-200 hover:bg-gray-100 hover:border-gray-300 transition-all cursor-pointer touch-manipulation"
+                title="位置を設定"
+              >
                 <span className="text-xl sm:text-2xl leading-none">{weather.icon}</span>
                 <div className="flex flex-col items-start min-w-0">
                   <div className="flex items-baseline gap-1">
@@ -459,11 +901,120 @@ export default function Header() {
                   </div>
                   <span className="text-[10px] sm:text-xs text-gray-600 leading-tight truncate max-w-[100px] sm:max-w-none">{weather.location}</span>
                 </div>
-              </div>
+              </button>
             ) : null}
           </div>
         </div>
       </div>
+
+      {/* 位置設定モーダル */}
+      {showLocationModal && (
+        <div 
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" 
+          onClick={() => setShowLocationModal(false)}
+        >
+          <div 
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8" 
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">位置を設定</h3>
+              <p className="text-sm text-gray-600">天気情報を表示する位置を設定できます</p>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  キーワードで検索 <span className="text-red-500">*</span>
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={addressSearch}
+                    onChange={(e) => setAddressSearch(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault()
+                        handleSearchAddress()
+                      }
+                    }}
+                    placeholder="例: 東京タワー、渋谷 駅、大阪 城、新宿駅など（スペース区切りで複数キーワード検索可）"
+                    className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-gray-900 text-sm bg-white font-medium"
+                  />
+                  <button
+                    onClick={handleSearchAddress}
+                    disabled={searchingAddress || !addressSearch.trim()}
+                    className="px-4 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center justify-center gap-2 min-w-[80px]"
+                  >
+                    {searchingAddress ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        <span>検索中</span>
+                      </>
+                    ) : (
+                      <>
+                        <i className="ri-search-line"></i>
+                        <span>検索</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+                <p className="mt-1 text-xs text-gray-500">地名、駅名、施設名など、キーワードで検索できます。複数のキーワードをスペース区切りで入力すると、より詳細に検索できます。</p>
+              </div>
+
+              {(manualLat || manualLng) && (
+                <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                  <p className="text-sm text-green-800 font-medium mb-2">✓ 位置が設定されました</p>
+                  {manualLocationName && (
+                    <p className="text-xs text-green-700 font-medium">{manualLocationName}</p>
+                  )}
+                  <p className="text-xs text-green-600 mt-1">
+                    緯度: {manualLat}, 経度: {manualLng}
+                  </p>
+                </div>
+              )}
+
+              {error && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-red-700 text-sm">{error}</p>
+                </div>
+              )}
+
+              <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                <button
+                  onClick={handleGetCurrentLocation}
+                  disabled={savingLocation}
+                  className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center justify-center gap-2"
+                >
+                  <i className="ri-map-pin-line"></i>
+                  <span>現在位置を取得</span>
+                </button>
+                <button
+                  onClick={handleSaveLocation}
+                  disabled={savingLocation || !manualLat || !manualLng}
+                  className="flex-1 px-4 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                >
+                  {savingLocation ? '保存中...' : '保存'}
+                </button>
+              </div>
+
+              <button
+                onClick={handleClearLocation}
+                className="w-full px-4 py-2 text-sm text-gray-600 hover:text-gray-800 font-medium"
+              >
+                設定をクリア（自動取得に戻す）
+              </button>
+
+              <button
+                onClick={() => setShowLocationModal(false)}
+                className="w-full px-4 py-2 text-sm text-gray-600 hover:text-gray-800 font-medium"
+              >
+                キャンセル
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   )
 }

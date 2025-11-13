@@ -766,9 +766,10 @@ export default function EventDetailClient({
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <main className="max-w-4xl mx-auto px-4 py-6 md:py-8">
-        {/* 予定情報 */}
-        <div className="bg-white rounded-2xl shadow-lg border-2 border-orange-200 p-6 sm:p-8 md:p-10 mb-5">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-8">
+        <div className="max-w-4xl mx-auto">
+          {/* 予定情報 */}
+          <div className="bg-white rounded-2xl shadow-lg border-2 border-orange-200 p-6 sm:p-8 md:p-10 mb-5">
           {!isEditingEvent ? (
             <>
               {/* タイトルと操作ボタン */}
@@ -1592,6 +1593,7 @@ export default function EventDetailClient({
             votes={Array.isArray(event.restaurant_votes) ? event.restaurant_votes : []}
           />
         )}
+        </div>
       </main>
 
       {/* 成功モーダル */}

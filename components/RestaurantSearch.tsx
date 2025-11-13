@@ -2,6 +2,11 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import {
+  getManualLocation,
+  subscribeManualLocation,
+  ManualLocation,
+} from '@/lib/manualLocation'
 
 interface Review {
   author_name: string
@@ -55,7 +60,35 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
   const [loadingDetails, setLoadingDetails] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const previousLocationRef = useRef<{ lat: number; lng: number } | null>(null)
   const supabase = createClient()
+
+  const showResultsRef = useRef(showResults)
+  useEffect(() => {
+    showResultsRef.current = showResults
+  }, [showResults])
+
+  const queryRef = useRef(query)
+  useEffect(() => {
+    queryRef.current = query
+  }, [query])
+
+  const restaurantsRef = useRef(restaurants)
+  useEffect(() => {
+    restaurantsRef.current = restaurants
+  }, [restaurants])
+
+  const sanitizeQuery = (value: string): string | null => {
+    const trimmed = value.trim()
+    if (!trimmed) return null
+    const normalized = trimmed
+      .replace(/[^\p{L}\p{N}\s\-ー]/gu, ' ')
+      .split(/\s+/)
+      .filter(Boolean)
+    if (normalized.length === 0) return null
+    const joined = normalized.join(' ')
+    return joined.length > 120 ? joined.slice(0, 120) : joined
+  }
 
   // モーダルが開いているときに背景のスクロールを無効化
   useEffect(() => {
@@ -152,34 +185,138 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
   }
 
   useEffect(() => {
-    // propsから位置情報が渡されている場合はそれを使用
-    if (propUserLocation) {
-      setUserLocation(propUserLocation)
-      return
+    const updateLocation = (shouldResearch: boolean = false) => {
+      // 優先順位: 1. propsから渡された位置情報 2. localStorageに保存された位置情報 3. 現在位置 4. デフォルト位置
+      let newLocation: { lat: number; lng: number } | null = null
+
+      if (propUserLocation) {
+        newLocation = propUserLocation
+      } else if (typeof window !== 'undefined') {
+        // localStorageから保存された位置情報を確認
+        const saved = localStorage.getItem('manual_location')
+        if (saved) {
+          try {
+            const { lat, lng } = JSON.parse(saved)
+            if (typeof lat === 'number' && typeof lng === 'number') {
+              console.log('Using saved location from localStorage:', lat, lng)
+              newLocation = { lat, lng }
+            }
+          } catch (error) {
+            console.warn('Failed to parse saved location:', error)
+          }
+        }
+      }
+
+      if (!newLocation) {
+        // ユーザーの位置情報を取得
+        if (typeof window !== 'undefined' && navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const loc = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              }
+              const locationChanged = previousLocationRef.current && 
+                (previousLocationRef.current.lat !== loc.lat || previousLocationRef.current.lng !== loc.lng)
+              previousLocationRef.current = loc
+              setUserLocation(loc)
+              // 位置情報が更新された場合、既に検索結果が表示されている場合は再検索
+              if (shouldResearch && locationChanged && (showResults || restaurants.length > 0)) {
+                const normalized = sanitizeQuery(query)
+                searchRestaurants(normalized ?? undefined, loc)
+              }
+            },
+            (error) => {
+              console.error('Error getting location:', error)
+              // デフォルトの位置（東京駅）を使用
+              const loc = { lat: 35.6812, lng: 139.7671 }
+              const locationChanged = previousLocationRef.current && 
+                (previousLocationRef.current.lat !== loc.lat || previousLocationRef.current.lng !== loc.lng)
+              previousLocationRef.current = loc
+              setUserLocation(loc)
+              if (shouldResearch && locationChanged && (showResults || restaurants.length > 0)) {
+                const normalized = sanitizeQuery(query)
+                searchRestaurants(normalized ?? undefined, loc)
+              }
+            }
+          )
+          return
+        } else {
+          // デフォルトの位置（東京駅）を使用
+          newLocation = { lat: 35.6812, lng: 139.7671 }
+        }
+      }
+
+      // 位置情報が変更されたかチェック
+      const locationChanged = previousLocationRef.current && newLocation && 
+        (previousLocationRef.current.lat !== newLocation.lat || previousLocationRef.current.lng !== newLocation.lng)
+
+      previousLocationRef.current = newLocation
+      setUserLocation(newLocation)
+
+      // 位置情報が更新された場合、自動的に検索を実行
+      if (shouldResearch && newLocation) {
+        if (locationChanged) {
+          console.log('Location changed, updating search results...', newLocation)
+          setRestaurants([])
+          setShowResults(false)
+        }
+
+        // 最新の位置情報を取得してから検索
+        const triggerSearch = () => {
+          let locationToUse = newLocation
+          if (typeof window !== 'undefined' && !propUserLocation) {
+            const saved = localStorage.getItem('manual_location')
+            if (saved) {
+              try {
+                const { lat, lng } = JSON.parse(saved)
+                if (typeof lat === 'number' && typeof lng === 'number') {
+                  locationToUse = { lat, lng }
+                  console.log('Auto-searching with latest location from localStorage:', locationToUse)
+                }
+              } catch (error) {
+                console.warn('Failed to parse saved location:', error)
+              }
+            }
+          }
+
+          console.log('Auto-searching with location:', locationToUse)
+          setShowResults(true)
+          searchRestaurants(query || undefined, locationToUse)
+        }
+
+        // 状態更新を確実に反映させるため、やや遅延させる
+        setTimeout(triggerSearch, locationChanged ? 500 : 250)
+      }
     }
 
-    // ユーザーの位置情報を取得
-    if (typeof window !== 'undefined' && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          })
-        },
-        (error) => {
-          console.error('Error getting location:', error)
-          // デフォルトの位置（東京駅）を使用
-          setUserLocation({ lat: 35.6812, lng: 139.7671 })
+    updateLocation(false)
+
+    if (!propUserLocation) {
+      const unsubscribe = subscribeManualLocation((location: ManualLocation | null) => {
+        if (location) {
+          const next = { lat: location.lat, lng: location.lng }
+          const prev = previousLocationRef.current
+          const changed =
+            !prev ||
+            prev.lat !== next.lat ||
+            prev.lng !== next.lng
+          previousLocationRef.current = next
+          setUserLocation(next)
+          if ((showResultsRef.current || restaurantsRef.current.length > 0) && next) {
+            const normalized = sanitizeQuery(queryRef.current)
+            searchRestaurants(normalized ?? undefined, next)
+          }
         }
-      )
-    } else {
-      // デフォルトの位置（東京駅）を使用
-      setUserLocation({ lat: 35.6812, lng: 139.7671 })
+      })
+      return () => {
+        unsubscribe?.()
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [propUserLocation])
 
-  const searchRestaurants = async (searchQuery?: string) => {
+  const searchRestaurants = async (searchQuery?: string, forceLocation?: { lat: number; lng: number }) => {
     setLoading(true)
     try {
       // Google Places APIが利用可能かチェック
@@ -213,17 +350,58 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
         return
       }
 
-      if (!userLocation) {
+      // 検索実行時に必ず最新の位置情報を取得（localStorageから再読み込み）
+      // これは重要：位置情報が更新された直後でも、最新の位置情報を確実に使用する
+      // 状態の更新を待たずに、直接localStorageから取得した位置情報を使用する
+      let currentLocation: { lat: number; lng: number } | null = null
+      
+      // 優先順位: 1. 強制指定された位置情報 2. propsから渡された位置情報 3. localStorageに保存された位置情報 4. 現在のuserLocation
+      if (forceLocation) {
+        currentLocation = forceLocation
+        console.log('Using forced location:', currentLocation)
+      } else if (propUserLocation) {
+        currentLocation = propUserLocation
+        console.log('Using propUserLocation:', currentLocation)
+      } else if (typeof window !== 'undefined') {
+        // 常にlocalStorageから最新の位置情報を取得（状態に依存しない）
+        const saved = localStorage.getItem('manual_location')
+        if (saved) {
+          try {
+            const { lat, lng } = JSON.parse(saved)
+            if (typeof lat === 'number' && typeof lng === 'number') {
+              currentLocation = { lat, lng }
+              console.log('Using latest location from localStorage:', currentLocation)
+              // 位置情報が変更された場合は状態も更新（次回の検索のために）
+              if (!userLocation || userLocation.lat !== lat || userLocation.lng !== lng) {
+                console.log('Location changed, updating state:', lat, lng)
+                setUserLocation(currentLocation)
+              }
+            }
+          } catch (error) {
+            console.warn('Failed to parse saved location:', error)
+          }
+        }
+      }
+      
+      // localStorageに位置情報がない場合は、現在のuserLocationを使用
+      if (!currentLocation) {
+        currentLocation = userLocation
+        console.log('Using fallback userLocation:', currentLocation)
+      }
+
+      if (!currentLocation) {
         console.error('RestaurantSearch: userLocation is not available')
         setLoading(false)
         return
       }
+      
+      console.log('Searching restaurants with location:', currentLocation, 'at', new Date().toISOString())
 
       // Places API (New)を使用
       // JavaScript APIでは、PlacesServiceは従来通り使用できますが、
       // 新しいAPIのフィールド（currentOpeningHoursなど）をサポートしています
       const service = new google.maps.places.PlacesService(document.createElement('div'))
-      const location = new google.maps.LatLng(userLocation.lat, userLocation.lng)
+      const location = new google.maps.LatLng(currentLocation.lat, currentLocation.lng)
 
       let results: any[] = []
 
@@ -386,6 +564,28 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
       clearTimeout(debounceTimerRef.current)
     }
 
+    // 位置情報を取得（最新の状態を確認）
+    let hasLocation = false
+    if (propUserLocation) {
+      hasLocation = true
+    } else if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('manual_location')
+      if (saved) {
+        try {
+          const { lat, lng } = JSON.parse(saved)
+          if (typeof lat === 'number' && typeof lng === 'number') {
+            hasLocation = true
+          }
+        } catch (error) {
+          // 無視
+        }
+      }
+    }
+    
+    if (!hasLocation && !userLocation) {
+      return
+    }
+
     // クエリが空で、かつ結果が表示されていない場合は何もしない
     if (!query.trim() && !showResults) {
       return
@@ -404,25 +604,52 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
         clearTimeout(debounceTimerRef.current)
       }
     }
-  }, [query]) // queryが変更されたときに実行
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, userLocation, propUserLocation]) // query、userLocation、またはpropUserLocationが変更されたときに実行
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
     // デバウンスをキャンセルして即座に検索
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current)
     }
+    
+    // 検索前に必ず最新の位置情報を取得
+    let latestLocation: { lat: number; lng: number } | null = null
+    if (!propUserLocation) {
+      const saved = getManualLocation()
+      if (saved) {
+        latestLocation = { lat: saved.lat, lng: saved.lng }
+        setUserLocation(latestLocation)
+        console.log('Location updated before search:', latestLocation)
+      }
+    }
+
     setShowResults(true)
-    searchRestaurants(query)
+    const normalizedQuery = sanitizeQuery(query)
+    searchRestaurants(normalizedQuery ?? undefined, latestLocation || undefined)
   }
 
-  const handleSearchClick = () => {
+  const handleSearchClick = async () => {
     // デバウンスをキャンセルして即座に検索
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current)
     }
+    
+    // 検索前に必ず最新の位置情報を取得
+    let latestLocation: { lat: number; lng: number } | null = null
+    if (!propUserLocation) {
+      const saved = getManualLocation()
+      if (saved) {
+        latestLocation = { lat: saved.lat, lng: saved.lng }
+        setUserLocation(latestLocation)
+        console.log('Location updated before search click:', latestLocation)
+      }
+    }
+
     setShowResults(true)
-    searchRestaurants(query)
+    const normalizedQuery = sanitizeQuery(query)
+    searchRestaurants(normalizedQuery ?? undefined, latestLocation || undefined)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

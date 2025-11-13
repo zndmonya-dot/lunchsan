@@ -109,6 +109,7 @@ export default function FAQ() {
   const [showAll, setShowAll] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [passwordReadOnly, setPasswordReadOnly] = useState(true)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [events, setEvents] = useState<Event[]>([])
@@ -123,6 +124,7 @@ export default function FAQ() {
       setSearchPerformed(false)
       setEmail('')
       setPassword('')
+      setPasswordReadOnly(true)
     }
     setOpenIndex(openIndex === index ? null : index)
   }
@@ -292,7 +294,7 @@ export default function FAQ() {
                       // URLを忘れた場合の検索フォーム - 左上から右下への視線の流れに最適化
                       <div className="space-y-4">
                         <p className="text-gray-700 leading-relaxed font-medium text-sm mb-4">{item.answer}</p>
-                        <form onSubmit={handleSearch} noValidate className="space-y-3">
+                        <form onSubmit={handleSearch} noValidate autoComplete="off" className="space-y-3">
                           {/* 左上: メールアドレス入力 */}
                           <div>
                             <label htmlFor="search-email" className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -300,10 +302,11 @@ export default function FAQ() {
                             </label>
                             <input
                               id="search-email"
+                              name="email-search-faq"
                               type="email"
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
-                              autoComplete="off"
+                              autoComplete="email"
                               placeholder="作成時に使用したメールアドレス"
                               className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
                               disabled={loading}
@@ -317,14 +320,20 @@ export default function FAQ() {
                             </label>
                             <input
                               id="search-password"
+                              name="password-search-faq"
                               type="password"
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
                               autoComplete="new-password"
+                              readOnly={passwordReadOnly}
+                              onFocus={() => setPasswordReadOnly(false)}
                               placeholder="作成時に設定したパスワード"
                               className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
                               disabled={loading}
-                              onClick={(e) => e.stopPropagation()}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                setPasswordReadOnly(false)
+                              }}
                             />
                           </div>
                           {/* 右下: 検索ボタン */}
