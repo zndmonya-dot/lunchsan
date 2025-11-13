@@ -36,13 +36,30 @@ export default function ContactPage() {
     }
 
     try {
-      // 実際の実装では、ここでSupabaseやメール送信サービスに送信
-      // 今回は、フォーム送信のシミュレーション
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          subject: formData.subject.trim() || null,
+          message: formData.message.trim(),
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setError(data.error || '送信に失敗しました。しばらく時間をおいて再度お試しください。')
+        return
+      }
+
       setSubmitted(true)
       setFormData({ name: '', email: '', subject: '', message: '' })
     } catch (err) {
+      console.error('Contact form submission error:', err)
       setError('送信に失敗しました。しばらく時間をおいて再度お試しください。')
     } finally {
       setLoading(false)
