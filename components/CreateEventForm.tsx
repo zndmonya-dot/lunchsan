@@ -630,7 +630,7 @@ export default function CreateEventForm() {
                       onChange={(e) => setDate(e.target.value)}
                       required
                       min={format(new Date(), 'yyyy-MM-dd')}
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-gray-900 text-sm bg-white font-medium min-h-[48px]"
+                      className="w-full px-4 py-3 pr-10 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-gray-900 text-sm bg-white font-medium min-h-[48px] box-border"
                     />
                   </div>
                 </div>
@@ -716,7 +716,6 @@ export default function CreateEventForm() {
                 <div className="mb-4">
                   <div className="flex gap-2">
                     <div className="flex-1 relative">
-                      <i className="ri-edit-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
                       <input
                         type="text"
                         value={newCandidateText}
@@ -729,7 +728,7 @@ export default function CreateEventForm() {
                           }
                         }}
                         placeholder="例: 社員食堂、会議室Aなど"
-                        className="w-full pl-11 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-gray-900 placeholder:text-gray-400 text-sm min-h-[48px] bg-white font-medium"
+                        className="w-full px-5 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-gray-900 placeholder:text-gray-400 text-sm min-h-[48px] bg-white font-medium"
                       />
                     </div>
                     <button

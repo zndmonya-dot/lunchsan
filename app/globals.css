@@ -191,11 +191,40 @@ input[type="time"]::-webkit-calendar-picker-indicator,
 input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   filter: invert(0.5) sepia(1) saturate(5) hue-rotate(0deg) brightness(0.9);
   cursor: pointer;
+  padding-right: 0;
+  margin-left: 0;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator:hover,
 input[type="time"]::-webkit-calendar-picker-indicator:hover {
   filter: invert(0.4) sepia(1) saturate(5) hue-rotate(0deg) brightness(1);
+}
+
+/* スマホ版の日付入力フィールドのレイアウト修正 */
+input[type="date"] {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
+
+/* iOS Safari用の日付入力フィールドのスタイル修正 */
+@supports (-webkit-touch-callout: none) {
+  input[type="date"] {
+    -webkit-appearance: none;
+    appearance: none;
+    padding-right: 0.75rem !important;
+  }
+  
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: 0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    margin: 0;
+  }
 }
 
 /* ラジオボタンとチェックボックスのフォーカススタイル */

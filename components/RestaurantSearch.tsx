@@ -544,14 +544,13 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
     <div className="space-y-5">
       <div className="flex gap-2">
         <div className="flex-1 relative">
-          <i className="ri-search-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg z-10"></i>
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={userLocation ? "お店の名前で絞り込み（空白で近くのお店を表示）" : "お店の名前やエリアで検索"}
-            className="w-full pl-11 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-gray-900 placeholder:text-gray-400 text-sm min-h-[48px] bg-white font-medium"
+            className="w-full px-5 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-gray-900 placeholder:text-gray-400 text-sm min-h-[48px] bg-white font-medium"
           />
         </div>
         <button

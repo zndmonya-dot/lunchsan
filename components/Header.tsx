@@ -427,37 +427,37 @@ export default function Header() {
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 md:py-3">
-        <div className="flex justify-between items-center gap-2">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-14 sm:h-16">
           {/* ロゴとサイトタイトル（左寄せ） */}
           <a 
             href="/" 
             onClick={handleLogoClick}
-            className="flex items-center gap-2 md:gap-3 hover:opacity-90 transition-opacity cursor-pointer min-h-[44px] touch-manipulation"
+            className="flex items-center gap-2 sm:gap-2.5 hover:opacity-90 transition-opacity cursor-pointer touch-manipulation"
           >
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center shadow-md flex-shrink-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center shadow-md flex-shrink-0">
               {/* RemixIcon - お椀アイコン（ランチ用） */}
-              <i className="ri-bowl-fill text-white text-lg md:text-xl"></i>
+              <i className="ri-bowl-fill text-white text-lg sm:text-xl"></i>
             </div>
-            <h1 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 whitespace-nowrap">昼食さん</h1>
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 whitespace-nowrap">昼食さん</h1>
           </a>
 
           {/* 天気情報（右寄せ） */}
-          <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
+          <div className="flex items-center flex-shrink-0">
             {loading && !weather ? (
-              <div className="flex items-center gap-1.5 md:gap-2 text-gray-600">
-                <div className="w-4 h-4 md:w-5 md:h-5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-                <span className="text-xs md:text-sm hidden sm:inline">取得中...</span>
+              <div className="flex items-center gap-2 text-gray-600">
+                <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+                <span className="text-xs sm:text-sm hidden sm:inline">取得中...</span>
               </div>
             ) : weather ? (
-              <div className="flex items-center gap-1.5 md:gap-2 bg-gray-50 px-2 md:px-3 py-1.5 md:py-2 rounded-lg border border-gray-200">
-                <span className="text-lg md:text-xl">{weather.icon}</span>
-                <div className="flex flex-col">
-                  <div className="flex items-center gap-1 md:gap-2">
-                    <span className="text-sm md:text-base font-medium text-gray-900">{weather.temperature}°C</span>
+              <div className="flex items-center gap-2 bg-gray-50 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg border border-gray-200">
+                <span className="text-xl sm:text-2xl leading-none">{weather.icon}</span>
+                <div className="flex flex-col items-start min-w-0">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-sm sm:text-base font-semibold text-gray-900 leading-none">{weather.temperature}</span>
+                    <span className="text-xs text-gray-600 leading-none">°C</span>
                   </div>
-                  <span className="text-xs text-gray-600 leading-tight hidden md:inline">{weather.location}</span>
-                  <span className="text-xs text-gray-600 leading-tight md:hidden truncate max-w-[80px]">{weather.location}</span>
+                  <span className="text-[10px] sm:text-xs text-gray-600 leading-tight truncate max-w-[100px] sm:max-w-none">{weather.location}</span>
                 </div>
               </div>
             ) : null}
