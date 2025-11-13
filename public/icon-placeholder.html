@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PWA Icon Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .icon-preview {
+      display: inline-block;
+      margin: 10px;
+      text-align: center;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      display: block;
+      margin: 10px auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>PWAアイコン生成ツール</h1>
+  <p>以下のボタンをクリックして、192x192と512x512のアイコンを生成してください。</p>
+  
+  <div class="icon-preview">
+    <h3>192x192</h3>
+    <canvas id="icon192" width="192" height="192"></canvas>
+    <button onclick="downloadIcon(192)">ダウンロード (192x192)</button>
+  </div>
+  
+  <div class="icon-preview">
+    <h3>512x512</h3>
+    <canvas id="icon512" width="512" height="512"></canvas>
+    <button onclick="downloadIcon(512)">ダウンロード (512x512)</button>
+  </div>
+  
+  <script>
+    function drawIcon(canvas, size) {
+      const ctx = canvas.getContext('2d');
+      
+      // 背景（オレンジ）
+      ctx.fillStyle = '#f97316';
+      ctx.fillRect(0, 0, size, size);
+      
+      // テキスト「お昼」
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `bold ${size * 0.3}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('お昼', size / 2, size / 2);
+    }
+    
+    function downloadIcon(size) {
+      const canvas = document.getElementById(`icon${size}`);
+      const link = document.createElement('a');
+      link.download = `icon-${size}.png`;
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+    
+    // アイコンを描画
+    drawIcon(document.getElementById('icon192'), 192);
+    drawIcon(document.getElementById('icon512'), 512);
+  </script>
+</body>
+</html>
+

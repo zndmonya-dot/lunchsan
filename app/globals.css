@@ -19,8 +19,457 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  /* モバイル最適化 */
+  -webkit-font-smoothing: antialiased;
+  /* タッチ操作の改善 */
+  -webkit-tap-highlight-color: rgba(249, 115, 22, 0.2);
+  touch-action: manipulation;
+}
+
+/* テキストの自動調整を防ぐ（WebKit系ブラウザのみ） */
+/* 注意: -webkit-text-size-adjustは非標準プロパティですが、WebKit系ブラウザでは有効です */
+@supports (-webkit-text-size-adjust: 100%) {
+body {
+  /* iOS Safariでテキストサイズの自動調整を防ぐ */
+  -webkit-text-size-adjust: 100%;
+  }
+}
+
+/* Firefox on macOS用のフォントスムージング（Firefox専用、警告は無視可能） */
+/* 注意: -moz-osx-font-smoothingは非標準プロパティですが、Firefoxでは有効です */
+
+/* ========================================
+   フォーム要素のフォーカススタイルを暖色系に統一
+   ブラウザのデフォルトスタイルを完全に無効化
+   ======================================== */
+
+/* 通常状態（フォーカスされていない状態）ではグレーボーダーを維持 */
+input:not([type="radio"]):not([type="checkbox"]):not(:focus):not(:focus-visible):not(:focus-within):not(:active),
+textarea:not(:focus):not(:focus-visible):not(:focus-within):not(:active),
+select:not(:focus):not(:focus-visible):not(:focus-within):not(:active) {
+  border-color: #d1d5db !important; /* gray-300 */
+}
+
+/* すべての入力フィールドのブラウザデフォルトフォーカススタイルを完全に無効化 */
+/* フォーカス時のみオレンジ色を適用 */
+input:not([type="radio"]):not([type="checkbox"]):focus,
+input:not([type="radio"]):not([type="checkbox"]):focus-visible,
+input:not([type="radio"]):not([type="checkbox"]):focus-within,
+textarea:focus,
+textarea:focus-visible,
+textarea:focus-within,
+select:focus,
+select:focus-visible,
+select:focus-within {
+  /* アウトラインを完全に無効化 */
+  outline: none !important;
+  outline-width: 0 !important;
+  outline-style: none !important;
+  outline-color: transparent !important;
+  outline-offset: 0 !important;
+  
+  /* ブラウザのデフォルトスタイルを無効化 */
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  
+  /* フォーカス時のみ暖色系のボーダーとシャドウを適用 */
+  border-color: #f97316 !important; /* orange-500 */
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2) !important;
+  -webkit-box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2) !important;
+  -moz-box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2) !important;
+}
+
+/* Firefox用の追加スタイル（Firefox専用の擬似要素） */
+/* 注意: 以下のスタイルはFirefox専用です。他のブラウザでは警告が表示されますが、機能には影響しません。 */
+@-moz-document url-prefix() {
+input:not([type="radio"]):not([type="checkbox"])::-moz-focus-inner,
+textarea::-moz-focus-inner,
+select::-moz-focus-inner {
+  border: 0 !important;
+  outline: none !important;
+  padding: 0 !important;
+  }
+}
+
+/* WebKit系ブラウザ（Chrome, Safari, Edge）用の追加スタイル */
+input:not([type="radio"]):not([type="checkbox"])::-webkit-outer-spin-button,
+input:not([type="radio"]):not([type="checkbox"])::-webkit-inner-spin-button,
+input:not([type="radio"]):not([type="checkbox"])::-webkit-search-cancel-button,
+input:not([type="radio"]):not([type="checkbox"])::-webkit-search-decoration {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+/* WebKit系ブラウザのデフォルトスタイルを無効化 */
+input:not([type="radio"]):not([type="checkbox"]):-webkit-autofill:focus,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 30px #ffffff inset, 0 0 0 2px rgba(249, 115, 22, 0.2) !important;
+  border-color: #f97316 !important;
+  outline: none !important;
+}
+
+/* ブラウザのネイティブバリデーションを完全に無効化 */
+/* noValidate属性を追加したので、これらのスタイルは主にカスタムバリデーション用 */
+/* ブラウザのバリデーションアイコンとポップアップを完全に非表示 */
+input:not([type="radio"]):not([type="checkbox"])::-webkit-validation-bubble,
+input:not([type="radio"]):not([type="checkbox"])::-webkit-validation-bubble-icon,
+input:not([type="radio"]):not([type="checkbox"])::-webkit-validation-bubble-text,
+input:not([type="radio"]):not([type="checkbox"])::-webkit-validation-bubble-arrow,
+input:not([type="radio"]):not([type="checkbox"])::-webkit-validation-bubble-arrow-clipper {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ブラウザのネイティブバリデーションスタイルを完全に無効化 */
+input:not([type="radio"]):not([type="checkbox"]):invalid:not(:focus):not(:focus-visible),
+textarea:invalid:not(:focus):not(:focus-visible) {
+  /* フォーカスされていない状態では通常のグレーボーダーを維持 */
+  border-color: #d1d5db !important; /* gray-300 */
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  background-color: #ffffff !important;
+}
+
+input:not([type="radio"]):not([type="checkbox"]):invalid:focus,
+input:not([type="radio"]):not([type="checkbox"]):invalid:focus-visible,
+input:not([type="radio"]):not([type="checkbox"]):invalid:focus-within,
+textarea:invalid:focus,
+textarea:invalid:focus-visible,
+textarea:invalid:focus-within {
+  /* アウトラインを完全に無効化 */
+  outline: none !important;
+  outline-width: 0 !important;
+  outline-style: none !important;
+  outline-color: transparent !important;
+  outline-offset: 0 !important;
+  
+  /* フォーカス時のみ暖色系のスタイルを適用 */
+  border-color: #f97316 !important;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2) !important;
+  -webkit-box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2) !important;
+  -moz-box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2) !important;
+  background-color: #ffffff !important;
+}
+
+/* カスタムバリデーション用のスタイル（必要に応じて使用） */
+/* これらはJavaScriptでクラスを追加することで制御できます */
+input:not([type="radio"]):not([type="checkbox"]).error,
+textarea.error {
+  border-color: #f97316 !important; /* orange-500 */
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.15) !important;
+  background-color: #fff7ed !important; /* orange-50 */
+}
+
+/* すべての入力フィールドからブラウザのデフォルトスタイルを削除（日付・時刻・カラー以外） */
+input:not([type="radio"]):not([type="checkbox"]):not([type="date"]):not([type="time"]):not([type="datetime-local"]):not([type="month"]):not([type="week"]):not([type="color"]):not([type="range"]):focus,
+textarea:focus,
+select:focus {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+}
+
+/* 日付・時刻入力フィールドのアイコンをカスタマイズ */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5) sepia(1) saturate(5) hue-rotate(0deg) brightness(0.9);
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover,
+input[type="time"]::-webkit-calendar-picker-indicator:hover {
+  filter: invert(0.4) sepia(1) saturate(5) hue-rotate(0deg) brightness(1);
+}
+
+/* ラジオボタンとチェックボックスのフォーカススタイル */
+input[type="radio"]:focus-visible,
+input[type="checkbox"]:focus-visible {
+  outline: 2px solid #f97316 !important; /* orange-500 */
+  outline-offset: 2px;
+}
+
+/* ボタンのフォーカススタイルも暖色系に統一 */
+button:focus-visible {
+  outline: 2px solid #f97316 !important; /* orange-500 */
+  outline-offset: 2px;
+}
+
+/* メール入力フィールドの自動補完スタイル */
+input:-webkit-autofill:not(:focus):not(:focus-visible),
+input:-webkit-autofill:hover:not(:focus):not(:focus-visible) {
+  -webkit-box-shadow: 0 0 0 30px #ffffff inset !important;
+  -webkit-text-fill-color: #171717 !important;
+  border-color: #d1d5db !important; /* gray-300 */
+  outline: none !important;
+}
+
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #fff7ed inset, 0 0 0 2px rgba(249, 115, 22, 0.2) !important; /* orange-50 */
+  -webkit-text-fill-color: #171717 !important;
+  border-color: #f97316 !important; /* orange-500 */
+  outline: none !important;
+}
+
+/* Firefox用の自動補完スタイル（Firefox専用の擬似クラス） */
+/* 注意: 以下のスタイルはFirefox専用です。他のブラウザでは警告が表示されますが、機能には影響しません。 */
+@-moz-document url-prefix() {
+  input:-moz-autofill:not(:focus):not(:focus-visible) {
+    background-color: #ffffff !important;
+    color: #171717 !important;
+    border-color: #d1d5db !important; /* gray-300 */
+  }
+
+  input:-moz-autofill:focus,
+  input:-moz-autofill:focus-visible {
+  background-color: #fff7ed !important; /* orange-50 */
+  color: #171717 !important;
+  border-color: #f97316 !important; /* orange-500 */
+  }
+}
+
+/* モバイルでのタップ領域を最適化 */
+@media (max-width: 768px) {
+  button, 
+  a[role="button"],
+  input[type="button"],
+  input[type="submit"],
+  a.button {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 12px 16px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    font-size: 16px;
+  }
+  
+  /* フォーム入力の最適化 */
+  input[type="text"],
+  input[type="email"],
+  input[type="date"],
+  input[type="time"],
+  textarea,
+  select {
+    font-size: 16px; /* iOSでズームを防ぐ */
+    padding: 12px 16px;
+    min-height: 48px;
+  }
+  
+  /* リンクのタップ領域を拡大 */
+  a:not(.button) {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  /* スマホでのスクロールをスムーズに */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* モバイルでのフォントサイズ調整 */
+  h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+    line-height: 1.3;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+    line-height: 1.4;
+  }
+  
+  /* パディングとマージンの最適化 */
+  section {
+    padding: 3rem 1rem;
+  }
+  
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+.animate-fade-out {
+  animation: fade-out 0.2s ease-in;
+}
+
+/* ========================================
+   統一されたモダンなホバーアニメーション
+   ======================================== */
+
+/* カード要素の統一されたホバー効果 */
+.hover-card {
+  transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-card:hover {
+  box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.15), 0 8px 10px -6px rgba(249, 115, 22, 0.1);
+}
+
+/* ボタンの統一されたホバー効果 */
+.hover-button {
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-button:hover {
+  box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.3), 0 8px 10px -6px rgba(249, 115, 22, 0.2);
+}
+
+/* リンクの統一されたホバー効果 */
+.hover-link {
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+}
+
+.hover-link:hover {
+  color: #f97316;
+}
+
+/* アイコンの統一されたホバー効果 */
+.hover-icon {
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-icon:hover {
+  opacity: 0.8;
+}
+
+/* 入力フィールドの統一されたホバー効果 */
+.hover-input:hover {
+  border-color: #fb923c;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+/* スムーズなトランジション用のユーティリティクラス */
+.transition-modern {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-modern-fast {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-modern-slow {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   最終的なフォーカススタイル強制適用
+   ブラウザのデフォルトスタイルを完全に上書き
+   このセクションは最後に配置され、最高の優先度で適用
+   ======================================== */
+
+/* すべての入力タイプに対して、フォーカス時の青いアウトラインを完全に無効化 */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+input[type="datetime-local"]:focus,
+input[type="month"]:focus,
+input[type="week"]:focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+  outline-width: 0 !important;
+  outline-style: none !important;
+  outline-color: transparent !important;
+  outline-offset: 0 !important;
+  border-color: #f97316 !important;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2) !important;
+  -webkit-box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2) !important;
+  -moz-box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2) !important;
+}
+
+/* focus-visibleも含めて完全に無効化 */
+input[type="text"]:focus-visible,
+input[type="email"]:focus-visible,
+input[type="password"]:focus-visible,
+input[type="search"]:focus-visible,
+input[type="tel"]:focus-visible,
+input[type="url"]:focus-visible,
+input[type="number"]:focus-visible,
+input[type="date"]:focus-visible,
+input[type="time"]:focus-visible,
+input[type="datetime-local"]:focus-visible,
+input[type="month"]:focus-visible,
+input[type="week"]:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none !important;
+  outline-width: 0 !important;
+  outline-style: none !important;
+  outline-color: transparent !important;
+  outline-offset: 0 !important;
+  border-color: #f97316 !important;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2) !important;
+  -webkit-box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2) !important;
+  -moz-box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2) !important;
 }
