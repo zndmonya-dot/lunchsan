@@ -2,6 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
+import {
+  getManualLocation,
+  setManualLocation as saveManualLocation,
+  clearManualLocation,
+} from '@/lib/manualLocation'
+import { normalizeSearchQuery } from '@/lib/utils/search'
 
 interface WeatherData {
   temperature: number
@@ -382,17 +388,9 @@ export default function Header() {
 
     // 保存された位置情報を確認
     const getSavedLocation = (): { lat: number; lng: number } | null => {
-      if (typeof window === 'undefined') return null
-      const saved = localStorage.getItem('manual_location')
+      const saved = getManualLocation()
       if (saved) {
-        try {
-          const { lat, lng } = JSON.parse(saved)
-          if (typeof lat === 'number' && typeof lng === 'number') {
-            return { lat, lng }
-          }
-        } catch (error) {
-          console.warn('Failed to parse saved location:', error)
-        }
+        return { lat: saved.lat, lng: saved.lng }
       }
       return null
     }
@@ -477,22 +475,18 @@ export default function Header() {
   // 位置設定のハンドラー
   const handleWeatherClick = () => {
     // 保存された位置情報を読み込む
-    const saved = localStorage.getItem('manual_location')
+    const saved = getManualLocation()
     if (saved) {
-      try {
-        const { lat, lng, locationName } = JSON.parse(saved)
-        setManualLat(lat.toString())
-        setManualLng(lng.toString())
-        setManualLocationName(locationName || '')
-      } catch (error) {
-        console.warn('Failed to parse saved location:', error)
-      }
+      setManualLat(saved.lat.toString())
+      setManualLng(saved.lng.toString())
+      setManualLocationName(saved.locationName || '')
     }
     setShowLocationModal(true)
   }
 
   const handleSearchAddress = async () => {
-    if (!addressSearch.trim()) {
+    const normalizedQuery = normalizeSearchQuery(addressSearch)
+    if (!normalizedQuery) {
       setError('キーワードを入力してください')
       return
     }
@@ -501,13 +495,9 @@ export default function Header() {
     setError(null)
 
     try {
-      // 複数キーワードをスペース区切りで処理
-      // スペースで区切られたキーワードをそのまま検索クエリとして使用
-      const searchQuery = addressSearch.trim()
-      
       // Next.jsのAPIルート経由でOpenStreetMapのNominatim APIを使用（CORS回避）
       const response = await fetch(
-        `/api/geocode?q=${encodeURIComponent(searchQuery)}`,
+        `/api/geocode?q=${encodeURIComponent(normalizedQuery)}`,
         {
           method: 'GET',
           headers: {
@@ -607,29 +597,16 @@ export default function Header() {
 
     try {
       // 位置情報を保存
-      const locationData = {
+      saveManualLocation({
         lat,
         lng,
-        locationName: manualLocationName || ''
-      }
-      localStorage.setItem('manual_location', JSON.stringify(locationData))
+        locationName: manualLocationName || '',
+      })
 
       // 天気情報を再取得
       setLoading(true)
       await fetchWeather(lat, lng)
-      
-      // カスタムイベントを発火して、他のコンポーネントに位置情報の更新を通知
-      // localStorageへの書き込みを確実に反映させるため、少し遅延させてからイベントを発火
-      if (typeof window !== 'undefined') {
-        // まず確実にlocalStorageに保存
-        await new Promise(resolve => setTimeout(resolve, 50))
-        // イベントを発火
-        window.dispatchEvent(new CustomEvent('locationUpdated', { 
-          detail: { lat, lng, locationName: manualLocationName || '' }
-        }))
-        console.log('Location updated event fired:', { lat, lng, locationName: manualLocationName || '' })
-      }
-      
+
       setShowLocationModal(false)
       setManualLat('')
       setManualLng('')
@@ -688,7 +665,7 @@ export default function Header() {
   }
 
   const handleClearLocation = () => {
-    localStorage.removeItem('manual_location')
+    clearManualLocation()
     setManualLat('')
     setManualLng('')
     setManualLocationName('')

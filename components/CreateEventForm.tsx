@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { format } from 'date-fns'
 import RestaurantSearch from '@/components/RestaurantSearch'
 import { hashPassword } from '@/lib/password'
+import { getManualLocation, subscribeManualLocation } from '@/lib/manualLocation'
 import {
   validateEmail,
   validatePassword,
@@ -104,27 +105,13 @@ export default function CreateEventForm() {
 
   // ユーザーの位置情報を取得
   useEffect(() => {
-    // 優先順位: 1. localStorageに保存された位置情報 2. 現在位置 3. デフォルト位置
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('manual_location')
-      if (saved) {
-        try {
-          const { lat, lng } = JSON.parse(saved)
-          if (typeof lat === 'number' && typeof lng === 'number') {
-            setUserLocation({ lat, lng })
-            return
-          }
-        } catch (error) {
-          console.warn('Failed to parse saved location:', error)
-        }
-      }
-    }
-
-    if (typeof window !== 'undefined' && navigator.geolocation) {
+    const saved = getManualLocation()
+    if (saved) {
+      setUserLocation({ lat: saved.lat, lng: saved.lng })
+    } else if (typeof window !== 'undefined' && navigator.geolocation) {
       const timeoutId = setTimeout(() => {
-        // タイムアウト時はデフォルト位置を使用
         setUserLocation({ lat: 35.6812, lng: 139.7671 })
-      }, 10000) // 10秒でタイムアウト
+      }, 10000)
 
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -136,8 +123,6 @@ export default function CreateEventForm() {
         },
         () => {
           clearTimeout(timeoutId)
-          // 位置情報が取得できない場合はデフォルト（東京駅）を使用
-          // エラーログは出力しない（正常な動作のため）
           setUserLocation({ lat: 35.6812, lng: 139.7671 })
         },
         {
@@ -147,45 +132,17 @@ export default function CreateEventForm() {
         }
       )
     } else {
-      // 位置情報が取得できない場合はデフォルト（東京駅）を使用
       setUserLocation({ lat: 35.6812, lng: 139.7671 })
     }
 
-    // localStorageの変更を監視
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'manual_location') {
-        try {
-          const { lat, lng } = JSON.parse(e.newValue || '{}')
-          if (typeof lat === 'number' && typeof lng === 'number') {
-            setUserLocation({ lat, lng })
-          }
-        } catch (error) {
-          console.warn('Failed to parse saved location:', error)
-        }
+    const unsubscribe = subscribeManualLocation((location) => {
+      if (location) {
+        setUserLocation({ lat: location.lat, lng: location.lng })
       }
-    }
-
-    // カスタムイベントを監視（同じウィンドウ内での変更）
-    const handleCustomStorageChange = () => {
-      const saved = localStorage.getItem('manual_location')
-      if (saved) {
-        try {
-          const { lat, lng } = JSON.parse(saved)
-          if (typeof lat === 'number' && typeof lng === 'number') {
-            setUserLocation({ lat, lng })
-          }
-        } catch (error) {
-          console.warn('Failed to parse saved location:', error)
-        }
-      }
-    }
-
-    window.addEventListener('storage', handleStorageChange)
-    window.addEventListener('locationUpdated', handleCustomStorageChange)
+    })
 
     return () => {
-      window.removeEventListener('storage', handleStorageChange)
-      window.removeEventListener('locationUpdated', handleCustomStorageChange)
+      unsubscribe?.()
     }
   }, [])
 

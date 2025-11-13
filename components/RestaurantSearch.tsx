@@ -7,6 +7,7 @@ import {
   subscribeManualLocation,
   ManualLocation,
 } from '@/lib/manualLocation'
+import { normalizeSearchQuery } from '@/lib/utils/search'
 
 interface Review {
   author_name: string
@@ -77,18 +78,6 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
   useEffect(() => {
     restaurantsRef.current = restaurants
   }, [restaurants])
-
-  const sanitizeQuery = (value: string): string | null => {
-    const trimmed = value.trim()
-    if (!trimmed) return null
-    const normalized = trimmed
-      .replace(/[^\p{L}\p{N}\s\-ー]/gu, ' ')
-      .split(/\s+/)
-      .filter(Boolean)
-    if (normalized.length === 0) return null
-    const joined = normalized.join(' ')
-    return joined.length > 120 ? joined.slice(0, 120) : joined
-  }
 
   // モーダルが開いているときに背景のスクロールを無効化
   useEffect(() => {
@@ -193,17 +182,10 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
         newLocation = propUserLocation
       } else if (typeof window !== 'undefined') {
         // localStorageから保存された位置情報を確認
-        const saved = localStorage.getItem('manual_location')
+        const saved = getManualLocation()
         if (saved) {
-          try {
-            const { lat, lng } = JSON.parse(saved)
-            if (typeof lat === 'number' && typeof lng === 'number') {
-              console.log('Using saved location from localStorage:', lat, lng)
-              newLocation = { lat, lng }
-            }
-          } catch (error) {
-            console.warn('Failed to parse saved location:', error)
-          }
+          console.log('Using saved location from localStorage:', saved.lat, saved.lng)
+          newLocation = { lat: saved.lat, lng: saved.lng }
         }
       }
 
@@ -222,7 +204,7 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
               setUserLocation(loc)
               // 位置情報が更新された場合、既に検索結果が表示されている場合は再検索
               if (shouldResearch && locationChanged && (showResults || restaurants.length > 0)) {
-                const normalized = sanitizeQuery(query)
+                const normalized = normalizeSearchQuery(query)
                 searchRestaurants(normalized ?? undefined, loc)
               }
             },
@@ -235,7 +217,7 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
               previousLocationRef.current = loc
               setUserLocation(loc)
               if (shouldResearch && locationChanged && (showResults || restaurants.length > 0)) {
-                const normalized = sanitizeQuery(query)
+                const normalized = normalizeSearchQuery(query)
                 searchRestaurants(normalized ?? undefined, loc)
               }
             }
@@ -266,23 +248,17 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
         const triggerSearch = () => {
           let locationToUse = newLocation
           if (typeof window !== 'undefined' && !propUserLocation) {
-            const saved = localStorage.getItem('manual_location')
+            const saved = getManualLocation()
             if (saved) {
-              try {
-                const { lat, lng } = JSON.parse(saved)
-                if (typeof lat === 'number' && typeof lng === 'number') {
-                  locationToUse = { lat, lng }
-                  console.log('Auto-searching with latest location from localStorage:', locationToUse)
-                }
-              } catch (error) {
-                console.warn('Failed to parse saved location:', error)
-              }
+              locationToUse = { lat: saved.lat, lng: saved.lng }
+              console.log('Auto-searching with latest location from localStorage:', locationToUse)
             }
           }
 
           console.log('Auto-searching with location:', locationToUse)
           setShowResults(true)
-          searchRestaurants(query || undefined, locationToUse)
+          const normalized = normalizeSearchQuery(queryRef.current)
+          searchRestaurants(normalized ?? undefined, locationToUse)
         }
 
         // 状態更新を確実に反映させるため、やや遅延させる
@@ -304,7 +280,7 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
           previousLocationRef.current = next
           setUserLocation(next)
           if ((showResultsRef.current || restaurantsRef.current.length > 0) && next) {
-            const normalized = sanitizeQuery(queryRef.current)
+            const normalized = normalizeSearchQuery(queryRef.current)
             searchRestaurants(normalized ?? undefined, next)
           }
         }
@@ -364,21 +340,14 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
         console.log('Using propUserLocation:', currentLocation)
       } else if (typeof window !== 'undefined') {
         // 常にlocalStorageから最新の位置情報を取得（状態に依存しない）
-        const saved = localStorage.getItem('manual_location')
+        const saved = getManualLocation()
         if (saved) {
-          try {
-            const { lat, lng } = JSON.parse(saved)
-            if (typeof lat === 'number' && typeof lng === 'number') {
-              currentLocation = { lat, lng }
-              console.log('Using latest location from localStorage:', currentLocation)
-              // 位置情報が変更された場合は状態も更新（次回の検索のために）
-              if (!userLocation || userLocation.lat !== lat || userLocation.lng !== lng) {
-                console.log('Location changed, updating state:', lat, lng)
-                setUserLocation(currentLocation)
-              }
-            }
-          } catch (error) {
-            console.warn('Failed to parse saved location:', error)
+          currentLocation = { lat: saved.lat, lng: saved.lng }
+          console.log('Using latest location from localStorage:', currentLocation)
+          // 位置情報が変更された場合は状態も更新（次回の検索のために）
+          if (!userLocation || userLocation.lat !== saved.lat || userLocation.lng !== saved.lng) {
+            console.log('Location changed, updating state:', saved.lat, saved.lng)
+            setUserLocation(currentLocation)
           }
         }
       }
@@ -569,16 +538,9 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
     if (propUserLocation) {
       hasLocation = true
     } else if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('manual_location')
+      const saved = getManualLocation()
       if (saved) {
-        try {
-          const { lat, lng } = JSON.parse(saved)
-          if (typeof lat === 'number' && typeof lng === 'number') {
-            hasLocation = true
-          }
-        } catch (error) {
-          // 無視
-        }
+        hasLocation = true
       }
     }
     
@@ -626,7 +588,7 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
     }
 
     setShowResults(true)
-    const normalizedQuery = sanitizeQuery(query)
+    const normalizedQuery = normalizeSearchQuery(query)
     searchRestaurants(normalizedQuery ?? undefined, latestLocation || undefined)
   }
 
@@ -648,7 +610,7 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
     }
 
     setShowResults(true)
-    const normalizedQuery = sanitizeQuery(query)
+    const normalizedQuery = normalizeSearchQuery(query)
     searchRestaurants(normalizedQuery ?? undefined, latestLocation || undefined)
   }
 
