@@ -878,14 +878,7 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
                         </span>
                       )}
                     </div>
-                    <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 pt-3">
-                      <button
-                        type="button"
-                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-orange-700 hover:text-orange-900 transition-colors"
-                      >
-                        詳細を見る
-                        <i className="ri-arrow-right-s-line text-base"></i>
-                      </button>
+                    <div className="flex flex-wrap items-center justify-end gap-2 border-t border-gray-100 pt-3">
                       <div className="flex gap-2">
                         <button
                           type="button"
