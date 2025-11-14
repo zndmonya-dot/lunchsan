@@ -1,63 +1,104 @@
 'use client'
 
-import Link from 'next/link'
+const checklist = [
+  {
+    title: 'URLを送るだけ',
+    description: '参加リンクを共有するだけで、みんなが同じ画面にアクセス'
+  },
+  {
+    title: 'ログイン不要',
+    description: '参加者は名前とメールアドレスだけで回答できます'
+  },
+  {
+    title: '位置情報でお店候補',
+    description: '手動入力 or 現在地から近くのお店を自動提案'
+  }
+]
 
 export default function HeroSection() {
   return (
-    <section className="relative bg-gradient-to-b from-orange-50 to-white py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden">
-      
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
-        <div className="mb-10">
-          {/* 左上から始まるZパターン */}
-          <div className="text-left mb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
-              <span className="text-gray-900">
-                お昼ごはんの予定
-              </span>
-              <br className="hidden sm:block" />
-              <span className="text-orange-600 block mt-2 sm:mt-0">みんなで決めよう</span>
+    <section className="relative overflow-hidden bg-gradient-to-b from-orange-50 via-white to-white py-16 md:py-24 lg:py-28">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-32 right-0 w-64 h-64 bg-orange-200/40 blur-3xl rounded-full"></div>
+        <div className="absolute -bottom-16 left-10 w-72 h-72 bg-orange-100/50 blur-3xl rounded-full"></div>
+      </div>
+
+      <div className="relative z-10 max-w-6xl mx-auto px-4">
+        <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] items-center">
+          <div>
+            <p className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-orange-200 text-xs font-semibold text-orange-700 shadow-sm mb-6">
+              <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+              お昼の予定調整をもっとシンプルに
+            </p>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6">
+              お昼ごはんの予定、<br className="hidden sm:block" />
+              みんなで迷わず決めよう
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-8 max-w-3xl leading-relaxed font-medium">
-              誰が行ける？どこに行く？
-              <br className="hidden sm:block" />
-              お昼ごはんの予定をカンタンに調整できます
+            <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-2xl mb-8">
+              昼食さんは「調整さん」方式のまま、お昼ごはんの出欠・候補地・投票をまとめて管理できるプロダクトです。
+              URLを一つ送るだけで、今日のお昼がすぐ決まります。
+            </p>
+
+            <div className="space-y-4 mb-10">
+              {checklist.map((item) => (
+                <div key={item.title} className="flex gap-3">
+                  <div className="flex-shrink-0 mt-1 w-6 h-6 rounded-full bg-green-500/90 text-white flex items-center justify-center text-xs font-bold shadow-sm">
+                    ✓
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900 text-sm sm:text-base">{item.title}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <a
+                href="#create-form"
+                className="group px-8 md:px-10 py-4 bg-orange-600 text-white rounded-xl font-semibold text-base hover:bg-orange-700 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 h-[52px] touch-manipulation transition-all"
+              >
+                今すぐ始める
+                <i className="ri-arrow-right-line text-xl"></i>
+              </a>
+              <a
+                href="#usage-guide"
+                className="px-8 md:px-10 py-4 bg-white text-gray-800 border-2 border-gray-200 rounded-xl font-semibold text-base hover:bg-orange-50 hover:border-orange-300 shadow-md flex items-center justify-center h-[52px] touch-manipulation transition-all"
+              >
+                使い方を見る
+              </a>
+            </div>
+            <p className="mt-4 text-xs text-gray-500">
+              * 毎日0時に参加者・投票結果を自動リセット。常連メンバーでもURLを貼り替える必要はありません。
             </p>
           </div>
-          <div className="flex flex-wrap items-start justify-start gap-3 md:gap-4 mb-8">
-            <div className="flex items-center gap-2 bg-white px-5 py-3 rounded-xl shadow-sm border border-orange-200 min-h-[48px] hover:shadow-md hover:border-orange-300 transition-all">
-              <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
-                <i className="ri-check-line text-white text-base"></i>
-              </div>
-              <span className="text-sm font-semibold text-gray-800 whitespace-nowrap">ログイン不要</span>
+
+          <div className="bg-white/90 backdrop-blur-sm rounded-3xl border border-orange-100 shadow-xl p-7 md:p-9">
+            <p className="text-sm font-semibold text-gray-600 mb-4">昼食さんの進め方</p>
+            <div className="space-y-4">
+              {[
+                { title: '予定を作る', desc: '日付・時間・候補のお店を入力。30秒でセット完了。' },
+                { title: 'URLを送る', desc: 'URLをSlack / LINE / Teamsに貼るだけ。ログイン不要。' },
+                { title: '回答＆投票', desc: '参加者が参加可否を入力し、近くのお店に投票。' }
+              ].map((step, index) => (
+                <div
+                  key={step.title}
+                  className="rounded-2xl border border-orange-100 bg-orange-50/60 p-4 flex gap-4 items-start"
+                >
+                  <span className="text-lg font-bold text-orange-600">{index + 1}</span>
+                  <div>
+                    <p className="font-semibold text-gray-900">{step.title}</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">{step.desc}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="flex items-center gap-2 bg-white px-5 py-3 rounded-xl shadow-sm border border-orange-200 min-h-[48px] hover:shadow-md hover:border-orange-300 transition-all">
-              <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
-                <i className="ri-flashlight-line text-white text-base"></i>
-              </div>
-              <span className="text-sm font-semibold text-gray-800 whitespace-nowrap">簡単操作</span>
+            <div className="mt-6 rounded-2xl bg-orange-600/5 border border-orange-200 p-5">
+              <p className="text-sm font-semibold text-orange-800 mb-1">毎日同じURLでOK</p>
+              <p className="text-xs text-orange-700 leading-relaxed">
+                「毎日自動初期化」で常連メンバーとの定例ランチにも使えます。参加者はブックマークさえしておけば即回答。
+              </p>
             </div>
-            <div className="flex items-center gap-2 bg-white px-5 py-3 rounded-xl shadow-sm border border-orange-200 min-h-[48px] hover:shadow-md hover:border-orange-300 transition-all">
-              <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
-                <i className="ri-time-line text-white text-base"></i>
-              </div>
-              <span className="text-sm font-semibold text-gray-800 whitespace-nowrap">30秒で開始</span>
-            </div>
-          </div>
-          {/* CTAボタン: 左下から右下への配置（Zパターンの最後） */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-3">
-            <a
-              href="#create-form"
-              className="group px-8 md:px-10 py-4 bg-orange-600 text-white rounded-xl font-semibold text-base hover:bg-orange-700 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 h-[48px] touch-manipulation transition-all"
-            >
-              今すぐ始める
-              <i className="ri-arrow-right-line text-xl"></i>
-            </a>
-            <a
-              href="#usage-guide"
-              className="px-8 md:px-10 py-4 bg-white text-gray-700 border-2 border-gray-300 rounded-xl font-semibold text-base hover:bg-orange-50 hover:border-orange-300 shadow-md hover:shadow-lg flex items-center justify-center h-[48px] touch-manipulation transition-all"
-            >
-              使い方を見る
-            </a>
           </div>
         </div>
       </div>

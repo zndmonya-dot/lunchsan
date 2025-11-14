@@ -1,6 +1,6 @@
 import Header from '@/components/Header'
 import HeroSection from '@/components/HeroSection'
-import FeatureCards from '@/components/FeatureCards'
+import HighlightsSection from '@/components/HighlightsSection'
 import CreateEventForm from '@/components/CreateEventForm'
 import UsageGuide from '@/components/UsageGuide'
 import FAQ from '@/components/FAQ'
@@ -19,8 +19,8 @@ export default async function HomePage() {
       {/* Hero Section */}
       <HeroSection />
 
-      {/* Feature Cards */}
-      <FeatureCards />
+      {/* Highlights */}
+      <HighlightsSection />
 
       {/* Create Event Form - トップ画面で直接作成 */}
       <CreateEventForm />
