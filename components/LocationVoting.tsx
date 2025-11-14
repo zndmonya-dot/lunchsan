@@ -95,7 +95,6 @@ export default function LocationVoting({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [restaurantWebsites, setRestaurantWebsites] = useState<Record<string, string>>({})
-  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null)
 
   // initialVotesが変更されたときにvotesを更新
   useEffect(() => {
@@ -217,7 +216,6 @@ export default function LocationVoting({
             throw deleteError
           }
         setSelectedCandidateId(null)
-        setFeedbackMessage('投票を解除しました')
         } else {
           // 別の候補に変更
           const { error: updateError } = await supabase
@@ -231,7 +229,6 @@ export default function LocationVoting({
             throw updateError
           }
           setSelectedCandidateId(candidateId)
-          setFeedbackMessage('投票を変更しました')
         }
       } else {
         // 既存の投票が存在しない場合、新規作成（名前とパスワードハッシュ）
@@ -253,7 +250,6 @@ export default function LocationVoting({
           throw new Error('投票の作成に失敗しました')
         }
         setSelectedCandidateId(candidateId)
-        setFeedbackMessage('投票完了しました')
       }
       
       // 投票後に最新の投票データを取得して状態を更新
@@ -279,12 +275,6 @@ export default function LocationVoting({
   }
 
   // トーストメッセージは数秒後に自動で閉じる
-  useEffect(() => {
-    if (!feedbackMessage) return
-    const timer = setTimeout(() => setFeedbackMessage(null), 2500)
-    return () => clearTimeout(timer)
-  }, [feedbackMessage])
-
   if (candidates.length === 0) {
     return null
   }
@@ -379,15 +369,6 @@ export default function LocationVoting({
           <div className="flex items-center gap-2">
             <i className="ri-error-warning-line text-lg"></i>
             {error}
-          </div>
-        </div>
-      )}
-
-      {feedbackMessage && (
-        <div className="mb-4 p-4 bg-green-50 border-2 border-green-200 rounded-lg text-green-800 text-sm font-semibold shadow-sm">
-          <div className="flex items-center gap-2">
-            <i className="ri-checkbox-circle-line text-lg"></i>
-            {feedbackMessage}
           </div>
         </div>
       )}

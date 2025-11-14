@@ -193,7 +193,6 @@ export default function EventDetailClient({
   const [showOwnerCheck, setShowOwnerCheck] = useState(false)
   const [ownerCheckError, setOwnerCheckError] = useState<string | null>(null)
   const [verifiedOwnerEmail, setVerifiedOwnerEmail] = useState<string>('') // 認証済みオーナーメールアドレス
-  const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [autoDailyUpdate, setAutoDailyUpdate] = useState<boolean>(event.auto_daily_update || false)
   
   // event.dateを文字列形式に変換（YYYY-MM-DD）
@@ -274,12 +273,6 @@ export default function EventDetailClient({
     }
   }, [event.location_candidates])
 
-  useEffect(() => {
-    if (!successMessage) return
-    const timer = setTimeout(() => setSuccessMessage(null), 2500)
-    return () => clearTimeout(timer)
-  }, [successMessage])
-  
   // event.dateが変更されたときにnewDateも更新
   useEffect(() => {
     setNewDate(getDateString(event.date))
@@ -587,7 +580,6 @@ export default function EventDetailClient({
       
       // パスワードフィールドをクリア（セキュリティのため）
       setParticipantPassword('')
-      setSuccessMessage('参加しました')
       router.refresh()
     } catch (error) {
       console.error('Error updating participant status:', error)
@@ -651,7 +643,6 @@ export default function EventDetailClient({
       localStorage.removeItem(storageKey)
       // 旧形式も削除（後方互換性）
       localStorage.removeItem('lunch_participant_name')
-      setSuccessMessage('参加を取り消しました')
       router.refresh()
     } catch (error) {
       console.error('Error deleting participant:', error)
@@ -765,14 +756,6 @@ export default function EventDetailClient({
       <Header />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-8">
         <div className="max-w-4xl mx-auto">
-          {successMessage && (
-            <div className="mb-5 p-4 bg-green-50 border-2 border-green-200 rounded-lg text-green-800 text-sm font-semibold shadow-sm">
-              <div className="flex items-center gap-2">
-                <i className="ri-checkbox-circle-line text-lg"></i>
-                {successMessage}
-              </div>
-            </div>
-          )}
           {/* 予定情報 */}
           <div className="bg-white rounded-2xl shadow-lg border-2 border-orange-200 p-6 sm:p-8 md:p-10 mb-5">
           {!isEditingEvent ? (
