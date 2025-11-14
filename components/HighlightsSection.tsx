@@ -2,31 +2,40 @@
 
 const coreBenefits = [
   {
-    title: '毎日0時に自動リセット',
-    description: '参加者・投票結果・コメントを自動で初期化。リンクの貼り替え不要で常連メンバーにも使いやすい。',
+    title: '毎日同じURLでOK',
+    description: '0時になると回答だけ自動でリセット。みんなが同じリンクをずっと使えます。',
     icon: 'ri-refresh-line'
   },
   {
-    title: 'リアルタイム参加状況',
-    description: '誰が参加できるかをステータスで表示。迷っている人も「未定」で把握できます。',
+    title: '参加状況がひと目でわかる',
+    description: '回答済みのメンバーがリストにまとまるので、誰が返事したかがすぐ分かります。',
     icon: 'ri-road-map-line'
   },
   {
-    title: '位置情報からお店候補',
-    description: '現在地・手動入力どちらでもOK。Googleマップと連携して近くのお店を即表示します。',
+    title: '近くのお店をその場で提案',
+    description: '現在地や手入力から周辺のお店を自動提案。候補を探す手間がほぼゼロになります。',
     icon: 'ri-restaurant-line'
   },
   {
-    title: '投票で決定まで一気通貫',
-    description: '候補を追加して投票→得票数順に表示。控えめなメンバーの声も拾えます。',
+    title: '投票でスムーズに決定',
+    description: '各自が投票すると得票順に並ぶので、好みの違いもサクッと整理できます。',
     icon: 'ri-vote-line'
   }
 ]
 
-const automationPoints = [
-  { title: 'イベントURLの生成', detail: '作成後すぐに共有できる固有URLを発行' },
-  { title: 'Supabaseで安全に保存', detail: '回答データはRLS付きDBに保存' },
-  { title: 'ステータス更新の通知', detail: '画面上ですぐに反映。リロード不要' }
+const userStories = [
+  {
+    title: '参加状況の把握がラクになった',
+    detail: '昼食さんにアクセスすれば最新の回答が並ぶので、誰に声をかければいいかすぐ分かるようになりました。'
+  },
+  {
+    title: 'お店決めが盛り上がる',
+    detail: '候補を並べて投票するだけで、意外な人気店が分かったりと会話が楽しくなりました。'
+  },
+  {
+    title: 'リンクを固定できて安心',
+    detail: '毎朝リンクを探す手間がなくなり、「今日もあのURLで入力してね」で済むようになりました。'
+  }
 ]
 
 export default function HighlightsSection() {
@@ -37,11 +46,11 @@ export default function HighlightsSection() {
           <div>
             <p className="text-sm font-semibold text-orange-600 mb-3">Lunchsan Highlights</p>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              お昼の予定調整に必要な機能を全部まとめました
+              「今日どこ行く？」のお悩みを全部まとめて解決
             </h2>
             <p className="text-base text-gray-600 leading-relaxed">
-              チャットで日程調整 → Googleフォーム → 別シート …… そんな面倒を減らすために、
-              昼食さんは出欠・場所・投票までを一つの画面で完結させることにこだわっています。
+              チャットで出欠を取り、別ツールでお店を決めて…と分かれている作業を一画面に集約。
+              日常の「お昼どうする？」を数タップで終わらせます。
             </p>
 
             <div className="grid sm:grid-cols-2 gap-4 mt-10">
@@ -61,32 +70,27 @@ export default function HighlightsSection() {
           </div>
 
           <div className="bg-gray-50 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-sm">
-            <p className="text-sm font-semibold text-gray-700 mb-4">自動化されること</p>
+            <p className="text-sm font-semibold text-gray-700 mb-4">使っている人の声</p>
             <div className="space-y-4 mb-6">
-              {automationPoints.map((point) => (
-                <div key={point.title} className="flex gap-3 items-start rounded-2xl bg-white border border-gray-200 p-4">
-                  <div className="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center flex-shrink-0">
-                    <i className="ri-sparkling-2-line text-lg"></i>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-sm text-gray-900">{point.title}</p>
-                    <p className="text-xs text-gray-600 leading-relaxed">{point.detail}</p>
-                  </div>
+              {userStories.map((item) => (
+                <div key={item.title} className="rounded-2xl bg-white border border-gray-200 p-4">
+                  <p className="text-sm font-semibold text-gray-900 mb-1">{item.title}</p>
+                  <p className="text-xs text-gray-600 leading-relaxed">{item.detail}</p>
                 </div>
               ))}
             </div>
             <div className="rounded-2xl bg-white border border-gray-200 p-5">
-              <p className="text-sm font-semibold text-gray-900 mb-2">おすすめの使い方</p>
-              <ul className="text-xs text-gray-600 space-y-1">
-                <li>・ 毎日同じメンバーでランチ当番を決めるチーム</li>
-                <li>・ 複数店舗を検討しながらスムーズに決定したいとき</li>
-                <li>・ 社内・友人などログインさせたくない場面</li>
+              <p className="text-sm font-semibold text-gray-900 mb-2">昼食さんでできること</p>
+              <ul className="text-xs text-gray-600 space-y-1 mb-4">
+                <li>・ URLを一度共有すれば、その後は貼り直し不要</li>
+                <li>・ 雨の日も徒歩圏のお店を自動で出してくれる</li>
+                <li>・ 投票結果が並ぶので、決め手がない時でもサッと決定</li>
               </ul>
               <a
                 href="#create-form"
-                className="mt-5 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-orange-600 text-white text-sm font-semibold hover:bg-orange-700 transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-orange-600 text-white text-sm font-semibold hover:bg-orange-700 transition-colors w-full text-center"
               >
-                予定を作成してみる
+                1分で予定を作成する
                 <i className="ri-arrow-right-up-line text-base"></i>
               </a>
             </div>

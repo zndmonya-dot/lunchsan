@@ -17,7 +17,7 @@ const steps = [
     number: 3,
     title: '回答する',
     icon: 'ri-checkbox-circle-line',
-    description: '参加・不参加・未定と、お店の投票を入力'
+    description: '参加可否とコメントを入力。気になるお店があれば投票も'
   }
 ]
 
