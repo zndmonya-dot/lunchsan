@@ -19,7 +19,7 @@ const coreBenefits = [
   {
     title: '投票でスムーズに決定',
     description: 'ワンクリック投票で得票順に並ぶので、みんなの好みが見えて決めやすくなります。',
-    icon: 'ri-ballot-line'
+    icon: 'ri-thumb-up-line'
   }
 ]
 
