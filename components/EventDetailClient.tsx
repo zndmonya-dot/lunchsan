@@ -1454,7 +1454,7 @@ export default function EventDetailClient({
               <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center shadow-sm">
                 <i className="ri-user-line text-white text-xl"></i>
               </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">出欠を回答</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">参加する</h2>
             </div>
             {goingParticipants.length > 0 && (
               <span className="px-4 py-2 bg-orange-600 text-white rounded-full font-semibold text-sm shadow-sm">

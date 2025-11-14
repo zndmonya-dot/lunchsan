@@ -342,13 +342,18 @@ export default function LocationVoting({
     }
   }
 
-  // お店名クリックでWebサイトを開く
-  const handleRestaurantNameClick = async (candidate: LocationCandidate) => {
-    if (candidate.restaurant_id) {
-      const website = await fetchRestaurantWebsite(candidate.restaurant_id)
-      if (website) {
-        window.open(website, '_blank', 'noopener,noreferrer')
-      }
+  // お店名クリックでGoogleマップを開く
+  const handleRestaurantNameClick = (candidate: LocationCandidate) => {
+    // Google PlaceのIDがある場合はGoogle Mapsで開く
+    const placeId = candidate.restaurant_id
+    if (placeId) {
+      // Google Maps URLを直接開く（WebサイトAPIの非同期処理を避ける）
+      const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(candidate.name)}&query_place_id=${placeId}`
+      window.open(mapsUrl, '_blank', 'noopener,noreferrer')
+    } else if (candidate.restaurant_address) {
+      // place_idがない場合は住所で検索
+      const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(candidate.name + ' ' + candidate.restaurant_address)}`
+      window.open(mapsUrl, '_blank', 'noopener,noreferrer')
     }
   }
 
