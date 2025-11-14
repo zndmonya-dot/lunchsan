@@ -3,21 +3,21 @@
 const checklist = [
   {
     title: 'URLを送るだけ',
-    description: 'URLをひとつ渡すだけで、全員が同じ画面に集まれます。'
+    description: 'URLひとつでみんなが同じ画面に集合。説明なしでも伝わります。'
   },
   {
     title: 'ログイン不要',
-    description: '名前とメールアドレスだけで回答OK。ゲスト招待でも手間がかかりません。'
+    description: '名前とメールだけで参加OK。ゲストもすぐに答えられます。'
   },
   {
     title: '位置情報でお店候補',
-    description: '現在地や手入力から周辺のお店を自動表示。候補探しで時間を取られません。'
+    description: '現在地や手入力から周辺のお店を提案。候補探しで迷いません。'
   }
 ]
 
 export default function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-orange-50 via-white to-white py-16 md:py-24 lg:py-28">
+    <section className="relative overflow-hidden bg-gradient-to-b from-orange-100 via-orange-50 to-white py-16 md:py-24 lg:py-28">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-32 right-0 w-64 h-64 bg-orange-200/40 blur-3xl rounded-full"></div>
         <div className="absolute -bottom-16 left-10 w-72 h-72 bg-orange-100/50 blur-3xl rounded-full"></div>
@@ -26,17 +26,17 @@ export default function HeroSection() {
       <div className="relative z-10 max-w-6xl mx-auto px-4">
         <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] items-center">
           <div>
-            <p className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-orange-200 text-xs font-semibold text-orange-700 shadow-sm mb-6">
+            <p className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 border border-orange-200 text-xs font-semibold text-orange-700 shadow-sm mb-6">
               <span className="w-2 h-2 rounded-full bg-orange-500"></span>
-              お昼の予定調整をもっとシンプルに
+              昼休みの「どこ行く？」をふわっと解決
             </p>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6">
               お昼ごはんの予定、<br className="hidden sm:block" />
-              みんなで迷わず決めよう
+              もっと楽しく決めよう
             </h1>
             <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-2xl mb-8">
-              昼食さんは調整さんと同じ“URL共有型”の気軽さで、出欠確認とお店探しをまとめて進められるランチ専用ツールです。
-              URLをひとつ送るだけで、その日のメンバーと候補、投票状況がすぐそろいます。
+              昼食さんは調整さん譲りの気軽さに「お店探し」と「投票のワクワク」を足したランチ専用ツール。
+              URLをひとつ送るだけで、今日行けるメンバーと候補のお店がふんわりそろいます。
             </p>
 
             <div className="space-y-4 mb-10">

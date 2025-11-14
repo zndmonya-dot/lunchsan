@@ -20,7 +20,7 @@ export default function QuickStartForm() {
   }
 
   return (
-    <section className="bg-white py-16 border-t-2 border-gray-200">
+    <section className="bg-gradient-to-r from-orange-50 via-white to-white py-16 border-t-2 border-orange-100">
       <div className="max-w-7xl mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-3 mb-6">

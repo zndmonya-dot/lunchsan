@@ -5,19 +5,19 @@ const steps = [
     number: 1,
     title: '予定を作る',
     icon: 'ri-edit-line',
-    description: '日付や時間、集まりたい内容と候補を入力してイベントを作成'
+    description: '日付や時間、ちょっとしたメモとお店候補を入力してイベントを作成'
   },
   {
     number: 2,
     title: 'URLを送る',
     icon: 'ri-share-line',
-    description: '発行されたURLをLINEやSlackに貼れば準備完了'
+    description: '発行されたURLをLINEやSlackにぺたっと貼れば準備完了'
   },
   {
     number: 3,
     title: '回答する',
     icon: 'ri-checkbox-circle-line',
-    description: '参加可否とコメントを入力し、気になるお店に投票'
+    description: '参加可否とひとことコメントを入力して、気になるお店に投票'
   }
 ]
 
@@ -25,17 +25,17 @@ const situations = [
   {
     icon: 'ri-time-line',
     title: '毎日の定例ランチ',
-    description: '毎朝0時にリセットされるので、常連メンバーはURLをブックマークするだけでOK'
+    description: '毎朝0時にリセット。常連メンバーはお気に入りのURLを開くだけで参加できます'
   },
   {
     icon: 'ri-restaurant-line',
     title: 'お店を決めるとき',
-    description: '近くのお店を自動提案してくれるから、「どこにする？」で止まりにくい'
+    description: '近くのお店を自動で提案してくれるから、「どこにする？」で止まりにくい'
   },
   {
     icon: 'ri-shield-check-line',
     title: '社内＆友人の集まり',
-    description: 'ログインもアカウント作成も不要。名前とメールだけで回答できます'
+    description: 'ログインやアカウント作成は不要。名前とメールだけで気軽に参加できます'
   },
   {
     icon: 'ri-map-pin-line',
@@ -54,7 +54,7 @@ export default function UsageGuide() {
         <p className="text-xs font-semibold text-orange-600 tracking-widest uppercase mb-3">HOW IT WORKS</p>
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">3ステップで予定調整完了</h2>
         <p className="text-base text-gray-600 font-medium">
-          招待から投票まで、昼食さんならひとつのURLでスムーズにつながります。
+          招待から投票まで、ひとつのURLであっという間。むずかしい説明は不要です。
         </p>
       </div>
 
