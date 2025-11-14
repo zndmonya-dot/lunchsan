@@ -193,7 +193,6 @@ export default function EventDetailClient({
   const [showOwnerCheck, setShowOwnerCheck] = useState(false)
   const [ownerCheckError, setOwnerCheckError] = useState<string | null>(null)
   const [verifiedOwnerEmail, setVerifiedOwnerEmail] = useState<string>('') // 認証済みオーナーメールアドレス
-  const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [autoDailyUpdate, setAutoDailyUpdate] = useState<boolean>(event.auto_daily_update || false)
   
@@ -274,6 +273,12 @@ export default function EventDetailClient({
       setAddedRestaurantIds(restaurantIds)
     }
   }, [event.location_candidates])
+
+  useEffect(() => {
+    if (!successMessage) return
+    const timer = setTimeout(() => setSuccessMessage(null), 2500)
+    return () => clearTimeout(timer)
+  }, [successMessage])
   
   // event.dateが変更されたときにnewDateも更新
   useEffect(() => {
@@ -768,6 +773,14 @@ export default function EventDetailClient({
       <Header />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-8">
         <div className="max-w-4xl mx-auto">
+          {successMessage && (
+            <div className="mb-5 p-4 bg-green-50 border-2 border-green-200 rounded-lg text-green-800 text-sm font-semibold shadow-sm">
+              <div className="flex items-center gap-2">
+                <i className="ri-checkbox-circle-line text-lg"></i>
+                {successMessage}
+              </div>
+            </div>
+          )}
           {/* 予定情報 */}
           <div className="bg-white rounded-2xl shadow-lg border-2 border-orange-200 p-6 sm:p-8 md:p-10 mb-5">
           {!isEditingEvent ? (
@@ -1594,37 +1607,6 @@ export default function EventDetailClient({
         </div>
       </main>
 
-      {/* 成功モーダル */}
-      {showSuccessModal && successMessage && (
-        <div 
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" 
-          onClick={() => {
-            setShowSuccessModal(false)
-            setSuccessMessage(null)
-          }}
-        >
-          <div 
-            className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8" 
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i className="ri-checkbox-circle-line text-green-600 text-3xl"></i>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{successMessage}</h3>
-              <button
-                onClick={() => {
-                  setShowSuccessModal(false)
-                  setSuccessMessage(null)
-                }}
-                className="mt-6 w-full px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-bold text-base"
-              >
-                OK
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

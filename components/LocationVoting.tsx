@@ -95,7 +95,7 @@ export default function LocationVoting({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [restaurantWebsites, setRestaurantWebsites] = useState<Record<string, string>>({})
-  const [toastMessage, setToastMessage] = useState<string | null>(null)
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null)
 
   // initialVotesが変更されたときにvotesを更新
   useEffect(() => {
@@ -217,7 +217,7 @@ export default function LocationVoting({
             throw deleteError
           }
         setSelectedCandidateId(null)
-        setToastMessage('投票を解除しました')
+        setFeedbackMessage('投票を解除しました')
         } else {
           // 別の候補に変更
           const { error: updateError } = await supabase
@@ -231,7 +231,7 @@ export default function LocationVoting({
             throw updateError
           }
           setSelectedCandidateId(candidateId)
-          setToastMessage('投票を変更しました')
+          setFeedbackMessage('投票を変更しました')
         }
       } else {
         // 既存の投票が存在しない場合、新規作成（名前とパスワードハッシュ）
@@ -253,7 +253,7 @@ export default function LocationVoting({
           throw new Error('投票の作成に失敗しました')
         }
         setSelectedCandidateId(candidateId)
-        setToastMessage('投票完了しました')
+        setFeedbackMessage('投票完了しました')
       }
       
       // 投票後に最新の投票データを取得して状態を更新
@@ -280,10 +280,10 @@ export default function LocationVoting({
 
   // トーストメッセージは数秒後に自動で閉じる
   useEffect(() => {
-    if (!toastMessage) return
-    const timer = setTimeout(() => setToastMessage(null), 2500)
+    if (!feedbackMessage) return
+    const timer = setTimeout(() => setFeedbackMessage(null), 2500)
     return () => clearTimeout(timer)
-  }, [toastMessage])
+  }, [feedbackMessage])
 
   if (candidates.length === 0) {
     return null
@@ -383,14 +383,15 @@ export default function LocationVoting({
         </div>
       )}
 
-      {/* トーストメッセージ */}
-      {toastMessage && (
-        <div className="fixed bottom-4 inset-x-0 flex justify-center z-50 px-4">
-          <div className="bg-orange-600 text-white text-sm font-semibold px-5 py-2 rounded-full shadow-lg">
-            {toastMessage}
+      {feedbackMessage && (
+        <div className="mb-4 p-4 bg-green-50 border-2 border-green-200 rounded-lg text-green-800 text-sm font-semibold shadow-sm">
+          <div className="flex items-center gap-2">
+            <i className="ri-checkbox-circle-line text-lg"></i>
+            {feedbackMessage}
           </div>
         </div>
       )}
+
 
       <div className="space-y-4">
           {sortedCandidates.map((candidate) => {
