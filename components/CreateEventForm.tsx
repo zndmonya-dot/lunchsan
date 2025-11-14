@@ -893,7 +893,7 @@ export default function CreateEventForm() {
                   </>
                 ) : (
                   <>
-                    <span>作成してURLを取得</span>
+                    <span>作成してURLをコピー</span>
                     <i className="ri-arrow-right-line text-xl"></i>
                   </>
                 )}

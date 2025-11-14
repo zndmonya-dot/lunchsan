@@ -5,19 +5,19 @@ const steps = [
     number: 1,
     title: '予定を作る',
     icon: 'ri-edit-line',
-    description: '日付と時間を決めて、集まりたい内容を入力'
+    description: '日付や時間、集まりたい内容と候補を入力してイベントを作成'
   },
   {
     number: 2,
     title: 'URLを送る',
     icon: 'ri-share-line',
-    description: '生成されたURLをLINEやSlackに貼って共有'
+    description: '発行されたURLをLINEやSlackに貼れば準備完了'
   },
   {
     number: 3,
     title: '回答する',
     icon: 'ri-checkbox-circle-line',
-    description: '参加可否とコメントを入力。気になるお店があれば投票も'
+    description: '参加可否とコメントを入力し、気になるお店に投票'
   }
 ]
 
@@ -25,22 +25,22 @@ const situations = [
   {
     icon: 'ri-time-line',
     title: '毎日の定例ランチ',
-    description: '自動リセットで常連メンバーも毎朝同じURLにアクセスするだけ'
+    description: '毎朝0時にリセットされるので、常連メンバーはURLをブックマークするだけでOK'
   },
   {
     icon: 'ri-restaurant-line',
     title: 'お店を決めるとき',
-    description: '位置情報から候補が出るので「どこ行く？」の沈黙を作らせません'
+    description: '近くのお店を自動提案してくれるから、「どこにする？」で止まりにくい'
   },
   {
     icon: 'ri-shield-check-line',
     title: '社内＆友人の集まり',
-    description: 'ログイン不要でゲストもサッと回答。メール登録だけでOK'
+    description: 'ログインもアカウント作成も不要。名前とメールだけで回答できます'
   },
   {
     icon: 'ri-map-pin-line',
     title: '場所を悩みたくない',
-    description: '現在地や手入力から候補をストック。気に入った店を残しておけます'
+    description: '現在地や手入力で候補をストックしておけば、気になる店をメモ代わりに残せます'
   }
 ]
 

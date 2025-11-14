@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import FooterTopLink from './FooterTopLink'
 
 export default function Footer() {
@@ -15,8 +16,8 @@ export default function Footer() {
               <h3 className="text-2xl font-bold text-gray-900">昼食さん</h3>
             </div>
             <p className="text-gray-700 text-sm leading-relaxed max-w-md font-medium">
-              「昼食さん」はURLを送るだけで、出欠確認、場所選びができるアプリです。
-              面倒なログイン一切不要で、すぐに使えます。
+              昼食さんはURLを送るだけで出欠確認とお店選びまで完結できる調整アプリです。
+              ログインなしで始められるので、思い立ったその場で使えます。
             </p>
           </div>
 
@@ -30,14 +31,14 @@ export default function Footer() {
                   <FooterTopLink />
                 </li>
                 <li>
-                  <a href="#create-form" className="hover-link text-gray-700 text-sm font-medium">
+                  <Link href="#create-form" className="hover-link text-gray-700 text-sm font-medium">
                     予定を作成
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#usage-guide" className="hover-link text-gray-700 text-sm font-medium">
+                  <Link href="#usage-guide" className="hover-link text-gray-700 text-sm font-medium">
                     使い方
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -47,14 +48,14 @@ export default function Footer() {
               <h4 className="font-bold text-gray-900 mb-3 text-sm">法的情報</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="/terms" className="hover-link text-gray-700 text-sm font-medium transition-colors hover:text-orange-600">
+                  <Link href="/terms" className="hover-link text-gray-700 text-sm font-medium transition-colors hover:text-orange-600">
                     利用規約
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/privacy" className="hover-link text-gray-700 text-sm font-medium transition-colors hover:text-orange-600">
+                  <Link href="/privacy" className="hover-link text-gray-700 text-sm font-medium transition-colors hover:text-orange-600">
                     プライバシーポリシー
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -64,14 +65,14 @@ export default function Footer() {
               <h4 className="font-bold text-gray-900 mb-3 text-sm">サポート</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="/#faq" className="hover-link text-gray-700 text-sm font-medium transition-colors hover:text-orange-600">
+                  <Link href="/#faq" className="hover-link text-gray-700 text-sm font-medium transition-colors hover:text-orange-600">
                     よくある質問
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/contact" className="hover-link text-gray-700 text-sm font-medium transition-colors hover:text-orange-600">
+                  <Link href="/contact" className="hover-link text-gray-700 text-sm font-medium transition-colors hover:text-orange-600">
                     お問い合わせ
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
