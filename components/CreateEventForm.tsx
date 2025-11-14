@@ -248,7 +248,7 @@ export default function CreateEventForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const addTextCandidate = () => {
+const addTextCandidate = () => {
     const sanitizedName = validateAndSanitizeName(newCandidateText, 100)
     if (sanitizedName) {
       const candidate: LocationCandidate = {
@@ -788,31 +788,50 @@ export default function CreateEventForm() {
                     {locationCandidates.map((candidate, index) => (
                       <div
                         key={candidate.id}
-                        className="flex items-center justify-between p-5 bg-gradient-to-br from-green-50 to-emerald-50/50 rounded-xl border-2 border-green-200 shadow-sm hover:shadow-md transition-all animate-fade-in"
-                        style={{ animationDelay: `${index * 50}ms` }}
+                        className="p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all animate-fade-in"
+                        style={{ animationDelay: `${index * 40}ms` }}
                       >
-                        <div className="flex items-start gap-4 flex-1 min-w-0">
-                          <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center shadow-md flex-shrink-0">
-                            <i className="ri-check-line text-white text-base"></i>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-base font-bold text-gray-900 mb-2">{candidate.name}</p>
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                          <div className="flex-1 min-w-0 space-y-1">
+                            <div className="flex items-center gap-2">
+                              <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700">
+                                {candidate.type === 'restaurant' ? 'お店' : 'メモ'}
+                              </span>
+                              <p className="text-base font-bold text-gray-900 truncate">{candidate.name}</p>
+                            </div>
                             {candidate.restaurantAddress && (
-                              <div className="flex items-start gap-2">
-                                <i className="ri-map-pin-line text-gray-400 text-sm mt-0.5 flex-shrink-0"></i>
-                                <p className="text-sm text-gray-600 leading-loose">{candidate.restaurantAddress}</p>
-                              </div>
+                              <p className="text-sm text-gray-600 flex items-start gap-2">
+                                <i className="ri-map-pin-line text-gray-400 mt-0.5"></i>
+                                <span className="leading-relaxed">{candidate.restaurantAddress}</span>
+                              </p>
                             )}
                           </div>
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const query = candidate.restaurantAddress
+                                  ? `${candidate.name} ${candidate.restaurantAddress}`
+                                  : candidate.name
+                                const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`
+                                window.open(url, '_blank', 'noopener,noreferrer')
+                              }}
+                              className="px-3 py-2 text-sm font-semibold border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                              title="Googleマップで開く"
+                            >
+                              <i className="ri-map-pin-2-line mr-1"></i>
+                              地図
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => removeCandidate(candidate.id)}
+                              className="px-3 py-2 text-sm font-semibold border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition-colors"
+                              title="削除"
+                            >
+                              <i className="ri-delete-bin-6-line"></i>
+                            </button>
+                          </div>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => removeCandidate(candidate.id)}
-                          className="ml-4 p-2.5 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
-                          title="削除"
-                        >
-                          <i className="ri-close-line text-xl"></i>
-                        </button>
                       </div>
                     ))}
                   </div>
