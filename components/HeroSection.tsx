@@ -3,15 +3,15 @@
 const checklist = [
   {
     title: 'URLを送るだけ',
-    description: '参加リンクを共有するだけで、みんなが同じ画面にアクセス'
+    description: 'リンクひとつで同じ画面を共有。全員が同じ情報を見ながら決められます。'
   },
   {
     title: 'ログイン不要',
-    description: '参加者は名前とメールアドレスだけで回答できます'
+    description: '名前とメールアドレスだけで参加OK。ゲスト招待でも手間がかかりません。'
   },
   {
     title: '位置情報でお店候補',
-    description: '手動入力 or 現在地から近くのお店を自動提案'
+    description: '現在地や手入力から周辺のお店を自動表示。候補探しに時間がかかりません。'
   }
 ]
 
@@ -35,8 +35,8 @@ export default function HeroSection() {
               みんなで迷わず決めよう
             </h1>
             <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-2xl mb-8">
-              昼食さんは「調整さん」方式のまま、お昼ごはんの出欠・候補地・投票をまとめて管理できるプロダクトです。
-              URLを一つ送るだけで、今日のお昼がすぐ決まります。
+              昼食さんは「調整さん」方式のまま、出欠確認とお店選びをまとめてできるランチ調整サービスです。
+              URLをひとつ送るだけで、今日のお昼がすぐ決まります。
             </p>
 
             <div className="space-y-4 mb-10">
@@ -69,7 +69,7 @@ export default function HeroSection() {
               </a>
             </div>
             <p className="mt-4 text-xs text-gray-500">
-              * 毎日0時に参加者・投票結果を自動リセット。常連メンバーでもURLを貼り替える必要はありません。
+              * 毎日0時に参加者・投票状況を自動リセット。常連メンバーも同じURLを使い続けられます。
             </p>
           </div>
 
@@ -77,9 +77,9 @@ export default function HeroSection() {
             <p className="text-sm font-semibold text-gray-600 mb-4">昼食さんの進め方</p>
             <div className="space-y-4">
               {[
-                { title: '予定を作る', desc: '日付・時間・候補のお店を入力。30秒でセット完了。' },
-                { title: 'URLを送る', desc: 'URLをSlack / LINE / Teamsに貼るだけ。ログイン不要。' },
-                { title: '回答＆投票', desc: '参加者が参加可否を入力し、近くのお店に投票。' }
+                { title: '予定を作る', desc: '日時とタイトル、候補のお店を登録。1分かからず準備完了。' },
+                { title: 'URLを送る', desc: 'Slack や LINE にURLを貼るだけ。全員同じ画面にアクセス。' },
+                { title: '回答＆投票', desc: '参加可否とコメントを入力して、気になるお店に投票。' }
               ].map((step, index) => (
                 <div
                   key={step.title}

@@ -719,7 +719,7 @@ export default function CreateEventForm() {
                   </label>
                 </div>
                 <p className="text-sm text-gray-700 mb-4 leading-relaxed font-medium">
-                  参加者に選んでもらう場所の候補を追加してください。テキストで追加するか、近くのお店から選ぶことができます。
+                  みんなに選んでもらいたい候補をここで登録します。手入力でも、近くのお店リストからでも追加できます。
                 </p>
 
                 {/* テキストで候補を追加 */}
@@ -763,7 +763,7 @@ export default function CreateEventForm() {
                     </div>
                     {startTime && endTime && (
                       <p className="text-xs text-gray-600 mb-3 leading-relaxed font-medium">
-                        {startTime}〜{endTime}の営業時間内のお店を表示
+                        {startTime}〜{endTime}の時間帯に営業しているお店だけを表示します。
                       </p>
                     )}
                     <RestaurantSearch
@@ -848,7 +848,7 @@ export default function CreateEventForm() {
                         毎日自動初期化
                       </label>
                       <p className="text-xs text-gray-600 mt-0.5">
-                        毎日0時に日付・参加者・投票結果が自動でリセットされます。毎日同じメンバー・同じ時間帯で使う場合、一度作成すれば毎日同じURLで参加するだけでOKです。
+                        毎日0時に日付・参加者・投票結果が自動リセット。常連メンバーならURLをブックマークしておくだけで、翌日もそのまま使えます。
                       </p>
                     </div>
                   </div>
@@ -934,7 +934,7 @@ export default function CreateEventForm() {
                 <i className="ri-checkbox-circle-line text-green-600 text-4xl"></i>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">予定のURLをコピーしました</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">このURLを大切に保管してください。<br />参加者に共有する際に使用します。</p>
+              <p className="text-sm text-gray-600 leading-relaxed">このURLは参加者と共有する大切なリンクです。コピーしてチャットに貼り付けてください。</p>
             </div>
             
             {/* 左下: URL表示とコピーボタン */}

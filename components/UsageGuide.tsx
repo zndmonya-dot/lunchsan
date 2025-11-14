@@ -25,22 +25,22 @@ const situations = [
   {
     icon: 'ri-time-line',
     title: '毎日の定例ランチ',
-    description: '常連メンバーでも自動リセットでラク'
+    description: '自動リセットで常連メンバーも毎朝同じURLにアクセスするだけ'
   },
   {
     icon: 'ri-restaurant-line',
     title: 'お店を決めるとき',
-    description: 'Googleマップ連携で候補出しが早い'
+    description: '位置情報から候補が出るので「どこ行く？」の沈黙を作らせません'
   },
   {
     icon: 'ri-shield-check-line',
     title: '社内＆友人の集まり',
-    description: 'ログイン不要／メール登録だけ'
+    description: 'ログイン不要でゲストもサッと回答。メール登録だけでOK'
   },
   {
     icon: 'ri-map-pin-line',
     title: '場所を悩みたくない',
-    description: '現在地や手動入力で候補を保存'
+    description: '現在地や手入力から候補をストック。気に入った店を残しておけます'
   }
 ]
 
@@ -51,10 +51,10 @@ export default function UsageGuide() {
         <div className="inline-flex items-center justify-center w-12 h-12 bg-orange-600 rounded-xl text-white shadow-sm mb-4">
           <i className="ri-book-open-line text-xl"></i>
         </div>
-        <p className="text-xs font-semibold text-orange-600 tracking-widest uppercase mb-3">How it works</p>
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">3ステップで予定調整が完了</h2>
+        <p className="text-xs font-semibold text-orange-600 tracking-widest uppercase mb-3">HOW IT WORKS</p>
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">3ステップで予定調整完了</h2>
         <p className="text-base text-gray-600 font-medium">
-          招待から投票まで、昼食さんなら一つのリンクだけでサクッと進みます。
+          招待から投票まで、昼食さんならひとつのURLでスムーズにつながります。
         </p>
       </div>
 

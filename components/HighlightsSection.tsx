@@ -49,8 +49,8 @@ export default function HighlightsSection() {
               「今日どこ行く？」のお悩みを全部まとめて解決
             </h2>
             <p className="text-base text-gray-600 leading-relaxed">
-              チャットで出欠を取り、別ツールでお店を決めて…と分かれている作業を一画面に集約。
-              日常の「お昼どうする？」を数タップで終わらせます。
+              チャットでみんなの予定を確認する手間をなくしたくて、昼食さんを作りました。
+              URLをひとつ共有すれば、その日の参加メンバーも行きたいお店も投票結果も、同じ画面で確認できます。
             </p>
 
             <div className="grid sm:grid-cols-2 gap-4 mt-10">
