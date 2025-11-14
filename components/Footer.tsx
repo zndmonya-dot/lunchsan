@@ -17,7 +17,7 @@ export default function Footer() {
             </div>
             <p className="text-gray-700 text-sm leading-relaxed max-w-md font-medium">
               昼食さんはURLを送るだけで出欠確認とお店選びまで完結できる調整アプリです。
-              ログインなしで始められるので、思い立ったその場で使えます。
+              ログインなしですぐ始められるので、思い立ったその場で使えます。
             </p>
           </div>
 

@@ -560,7 +560,7 @@ export default function CreateEventForm() {
             <p className="text-base sm:text-lg text-gray-700 font-medium">
               {isTemplateMode
                 ? '既存のイベント設定を元に、新しい日付で予定を作成できます（日付は変更してください）'
-                : '1分あれば予定調整をスタートできます'}
+                : '1分で出欠確認が始められます'}
             </p>
             {loadingTemplate && (
               <div className="mt-4 p-4 bg-blue-50 border-2 border-blue-200 rounded-xl text-blue-700 text-sm font-medium shadow-sm">
@@ -719,7 +719,7 @@ export default function CreateEventForm() {
                   </label>
                 </div>
                 <p className="text-sm text-gray-700 mb-4 leading-relaxed font-medium">
-                  みんなに選んでもらいたい候補をここで登録します。手入力でも、近くのお店リストからでも追加できます。
+                  みんなに選んでもらいたい候補をここで登録します。手入力でも、近くのお店から選んでも追加できます。
                 </p>
 
                 {/* テキストで候補を追加 */}
@@ -848,7 +848,7 @@ export default function CreateEventForm() {
                         毎日自動初期化
                       </label>
                       <p className="text-xs text-gray-600 mt-0.5">
-                        毎日0時に日付・参加者・投票結果が自動リセット。常連メンバーならURLをブックマークしておくだけで、翌日もそのまま使えます。
+                        毎日0時に日付・参加者・投票結果が自動リセット。常連メンバーならURLをブックマークしておくだけで、翌日もすぐ使えます。
                       </p>
                     </div>
                   </div>
@@ -934,7 +934,7 @@ export default function CreateEventForm() {
                 <i className="ri-checkbox-circle-line text-green-600 text-4xl"></i>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">予定のURLをコピーしました</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">このURLは参加者と共有する大切なものです。コピーしてチャットに貼り付けてください。</p>
+              <p className="text-sm text-gray-600 leading-relaxed">このURLを参加者と共有してください。コピーしてチャットに貼るだけで、みんなが見られます。</p>
             </div>
             
             {/* 左下: URL表示とコピーボタン */}

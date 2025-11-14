@@ -3,15 +3,15 @@
 const checklist = [
   {
     title: 'URLを送るだけ',
-    description: 'URLひとつでみんなが同じ画面に集合。説明なしでも伝わります。'
+    description: 'URLひとつでみんなが同じ画面を見られます。説明なしでも伝わります。'
   },
   {
     title: 'ログイン不要',
-    description: '名前とメールだけで参加OK。ゲストもすぐに答えられます。'
+    description: '名前とメールだけで参加OK。ゲストもすぐに回答できます。'
   },
   {
     title: '位置情報でお店候補',
-    description: '現在地や手入力から周辺のお店を提案。候補探しで迷いません。'
+    description: '現在地や手入力から近くのお店を提案。候補探しで迷いません。'
   }
 ]
 
@@ -24,15 +24,15 @@ export default function HeroSection() {
           <div>
             <p className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 border border-orange-200 text-xs font-semibold text-orange-700 shadow-sm mb-6">
               <span className="w-2 h-2 rounded-full bg-orange-500"></span>
-              昼休みの「どこ行く？」をふわっと解決
+              昼休みの「どこ行く？」をスッキリ解決
             </p>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6">
               お昼ごはんの予定、<br className="hidden sm:block" />
               もっと楽しく決めよう
             </h1>
             <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-2xl mb-8">
-              昼食さんは調整さん譲りの気軽さに「お店探し」と「投票のワクワク」を足したランチ専用ツール。
-              URLをひとつ送るだけで、今日行けるメンバーと候補のお店がふんわりそろいます。
+              昼食さんは調整さんのような気軽さで、お店探しから投票まで楽しめるランチ専用ツール。
+              URLをひとつ送るだけで、今日行けるメンバーと候補のお店がパッと揃います。
             </p>
 
             <div className="space-y-4 mb-10">
@@ -73,9 +73,9 @@ export default function HeroSection() {
             <p className="text-sm font-semibold text-gray-600 mb-4">昼食さんの進め方</p>
             <div className="space-y-4">
               {[
-                { title: '予定を作る', desc: '日付や時間、イベント名、お店の候補を入力。準備は1分ほどで完了します。' },
-                { title: 'URLを送る', desc: 'できあがったURLをSlackやLINEに貼るだけ。全員が同じページにアクセスできます。' },
-                { title: '回答＆投票', desc: 'ゲストは参加可否を選んで、気になるお店に投票するだけ。リアルタイムで結果が見られます。' }
+                { title: '予定を作る', desc: '日付や時間、イベント名、お店の候補を入力。1分で準備完了です。' },
+                { title: 'URLを送る', desc: 'できあがったURLをSlackやLINEに貼るだけ。みんなが同じページで見られます。' },
+                { title: '回答＆投票', desc: 'ゲストは参加するかを選んで、気になるお店に投票。リアルタイムで結果が見えます。' }
               ].map((step, index) => (
                 <div
                   key={step.title}
@@ -92,7 +92,7 @@ export default function HeroSection() {
             <div className="mt-6 rounded-2xl bg-orange-600/5 border border-orange-200 p-5">
               <p className="text-sm font-semibold text-orange-800 mb-1">毎日同じURLでOK</p>
               <p className="text-xs text-orange-700 leading-relaxed">
-                「毎日自動初期化」で常連メンバーとの定例ランチにも使えます。参加者はブックマークさえしておけば即回答。
+                毎日0時に自動でリセット。常連メンバーならURLをブックマークしておくだけで、翌朝もすぐに回答できます。
               </p>
             </div>
           </div>

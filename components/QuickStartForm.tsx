@@ -41,7 +41,7 @@ export default function QuickStartForm() {
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900">予定調整を始める</h2>
-              <p className="text-sm text-gray-600">1分あれば予定調整をスタートできます</p>
+              <p className="text-sm text-gray-600">1分で出欠確認が始められます</p>
             </div>
           </div>
 

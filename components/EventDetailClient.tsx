@@ -59,7 +59,7 @@ function getJapaneseErrorMessage(error: any): string {
     }
   }
   
-  return 'エラーが発生しました。しばらく時間をおいて再度お試しください'
+  return 'エラーが発生しました。少し時間をおいて、もう一度お試しください'
 }
 
 interface LocationCandidate {
@@ -920,7 +920,7 @@ export default function EventDetailClient({
                     </label>
                   </div>
                   <p className="text-sm text-gray-700 mb-4 leading-relaxed font-medium">
-                    参加者に選んでもらう場所の候補を追加してください。テキストで追加するか、近くのお店から選ぶことができます。
+                    みんなに選んでもらう場所の候補を追加できます。テキストで追加するか、近くのお店から選べます。
                   </p>
 
                   {/* テキストで候補を追加 */}
@@ -1050,7 +1050,7 @@ export default function EventDetailClient({
                             毎日自動初期化
                           </label>
                           <p className="text-xs text-gray-600 mt-0.5">
-                            毎日0時に日付・参加者・投票結果が自動でリセットされます。毎日同じメンバー・同じ時間帯で使う場合、一度作成すれば毎日同じURLで参加するだけでOKです。
+                            毎日0時に日付・参加者・投票結果が自動でリセットされます。毎日同じメンバーなら、一度作れば翌日も同じURLで参加できます。
                           </p>
                         </div>
                       </div>
@@ -1519,7 +1519,7 @@ export default function EventDetailClient({
                 }}
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white font-medium min-h-[48px]"
               />
-              <p className="mt-1 text-xs text-gray-500">同じ名前の人がいる場合に識別するために使用します</p>
+              <p className="mt-1 text-xs text-gray-500">同じ名前の人がいる場合に、あなたを識別するために使います</p>
             </div>
             <div className="pt-2">
               {participant?.status === 'going' ? (
