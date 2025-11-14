@@ -429,11 +429,11 @@ export default function LocationVoting({
                     <button
                       onClick={() => handleVote(candidate.id)}
                       disabled={loading || !currentParticipantName.trim() || !isParticipant}
-                      className={`px-6 py-3 rounded-xl font-bold text-base shadow-lg flex-1 sm:flex-none min-w-[120px] ${
+                      className={`px-6 py-3 rounded-xl font-bold text-base shadow-lg flex-1 sm:flex-none min-w-[120px] border-2 transition-colors ${
                         isSelected
-                          ? 'bg-orange-600 text-white hover:bg-orange-700'
-                          : 'bg-white text-orange-600 border-2 border-orange-600 hover:bg-orange-600 hover:text-white'
-                      } disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-orange-600`}
+                          ? 'bg-orange-600 text-white border-orange-600 hover:bg-orange-700'
+                          : 'bg-white text-orange-600 border-orange-600 hover:bg-orange-600 hover:text-white'
+                      } disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-orange-600 disabled:hover:border-orange-600`}
                       title={!isParticipant ? '投票するには、まず「参加する」ボタンで参加してください' : ''}
                     >
                       {isSelected ? (
