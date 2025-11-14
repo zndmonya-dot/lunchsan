@@ -3,7 +3,7 @@
 const checklist = [
   {
     title: 'URLを送るだけ',
-    description: 'リンクひとつで同じ画面を共有。全員が同じ情報を見ながら決められます。'
+    description: 'URLひとつで同じ画面を共有。全員が同じ情報を見ながら決められます。'
   },
   {
     title: 'ログイン不要',

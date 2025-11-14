@@ -934,7 +934,7 @@ export default function CreateEventForm() {
                 <i className="ri-checkbox-circle-line text-green-600 text-4xl"></i>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">予定のURLをコピーしました</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">このURLは参加者と共有する大切なリンクです。コピーしてチャットに貼り付けてください。</p>
+              <p className="text-sm text-gray-600 leading-relaxed">このURLは参加者と共有する大切なものです。コピーしてチャットに貼り付けてください。</p>
             </div>
             
             {/* 左下: URL表示とコピーボタン */}

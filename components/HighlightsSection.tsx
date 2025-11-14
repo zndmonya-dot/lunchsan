@@ -3,7 +3,7 @@
 const coreBenefits = [
   {
     title: '毎日同じURLでOK',
-    description: '0時になると回答だけ自動でリセット。みんなが同じリンクをずっと使えます。',
+    description: '0時になると回答だけ自動でリセット。みんなが同じURLをずっと使えます。',
     icon: 'ri-refresh-line'
   },
   {
@@ -33,8 +33,8 @@ const userStories = [
     detail: '候補を並べて投票するだけで、意外な人気店が分かったりと会話が楽しくなりました。'
   },
   {
-    title: 'リンクを固定できて安心',
-    detail: '毎朝リンクを探す手間がなくなり、「今日もあのURLで入力してね」で済むようになりました。'
+    title: 'URLを固定できて安心',
+    detail: '毎朝URLを探す手間がなくなり、「今日もあのURLで入力してね」で済むようになりました。'
   }
 ]
 
