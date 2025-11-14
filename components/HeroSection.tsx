@@ -79,7 +79,7 @@ export default function HeroSection() {
               {[
                 { title: '予定を作る', desc: '日付や時間、イベント名、お店の候補を入力。準備は1分ほどで完了します。' },
                 { title: 'URLを送る', desc: 'できあがったURLをSlackやLINEに貼るだけ。全員が同じページにアクセスできます。' },
-                { title: '回答＆投票', desc: '参加可否と一言コメントを入力して、気になるお店に投票。リアルタイムで結果が見られます。' }
+                { title: '回答＆投票', desc: 'ゲストは参加可否を選んで、気になるお店に投票するだけ。リアルタイムで結果が見られます。' }
               ].map((step, index) => (
                 <div
                   key={step.title}
