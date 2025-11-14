@@ -939,6 +939,37 @@ export default function Header() {
                 <p className="mt-1 text-xs text-gray-500">地名、駅名、施設名など、キーワードで検索できます。複数のキーワードをスペース区切りで入力すると、より詳細に検索できます。</p>
               </div>
 
+              <div className="border-t border-gray-200 pt-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  または緯度・経度を直接入力
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-xs text-gray-600 mb-1">緯度</label>
+                    <input
+                      type="number"
+                      step="any"
+                      value={manualLat}
+                      onChange={(e) => setManualLat(e.target.value)}
+                      placeholder="例: 35.6762"
+                      className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-gray-900 text-sm bg-white font-medium"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-600 mb-1">経度</label>
+                    <input
+                      type="number"
+                      step="any"
+                      value={manualLng}
+                      onChange={(e) => setManualLng(e.target.value)}
+                      placeholder="例: 139.6503"
+                      className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-gray-900 text-sm bg-white font-medium"
+                    />
+                  </div>
+                </div>
+                <p className="mt-1 text-xs text-gray-500">緯度は-90〜90、経度は-180〜180の範囲で入力してください。</p>
+              </div>
+
               {(manualLat || manualLng) && (
                 <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
                   <p className="text-sm text-green-800 font-medium mb-2">✓ 位置が設定されました</p>
