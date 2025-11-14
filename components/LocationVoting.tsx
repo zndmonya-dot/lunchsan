@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { hashPassword, verifyPassword } from '@/lib/password'
 import { validateAndSanitizeName, validatePassword } from '@/lib/security'
@@ -89,7 +88,6 @@ export default function LocationVoting({
   allParticipants = [],
   isParticipant = false,
 }: LocationVotingProps) {
-  const router = useRouter()
   const supabase = createClient()
   const [candidates, setCandidates] = useState<LocationCandidate[]>(Array.isArray(initialCandidates) ? initialCandidates : [])
   const [votes, setVotes] = useState<LocationVote[]>(Array.isArray(initialVotes) ? initialVotes : [])
@@ -97,8 +95,7 @@ export default function LocationVoting({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [restaurantWebsites, setRestaurantWebsites] = useState<Record<string, string>>({})
-  const [showSuccessModal, setShowSuccessModal] = useState(false)
-  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
 
   // initialVotesが変更されたときにvotesを更新
   useEffect(() => {
@@ -219,7 +216,8 @@ export default function LocationVoting({
           if (deleteError) {
             throw deleteError
           }
-          setSuccessMessage('投票を解除しました')
+        setSelectedCandidateId(null)
+        setToastMessage('投票を解除しました')
         } else {
           // 別の候補に変更
           const { error: updateError } = await supabase
@@ -232,7 +230,8 @@ export default function LocationVoting({
           if (updateError) {
             throw updateError
           }
-          setSuccessMessage('投票を変更しました')
+          setSelectedCandidateId(candidateId)
+          setToastMessage('投票を変更しました')
         }
       } else {
         // 既存の投票が存在しない場合、新規作成（名前とパスワードハッシュ）
@@ -253,7 +252,8 @@ export default function LocationVoting({
         if (!newVote) {
           throw new Error('投票の作成に失敗しました')
         }
-        setSuccessMessage('投票完了しました')
+        setSelectedCandidateId(candidateId)
+        setToastMessage('投票完了しました')
       }
       
       // 投票後に最新の投票データを取得して状態を更新
@@ -270,8 +270,6 @@ export default function LocationVoting({
         setVotes(updatedVotes as LocationVote[])
       }
       
-      // 成功モーダルを表示
-      setShowSuccessModal(true)
     } catch (error: any) {
       console.error('投票エラー:', error)
       setError(getJapaneseErrorMessage(error))
@@ -279,6 +277,13 @@ export default function LocationVoting({
       setLoading(false)
     }
   }
+
+  // トーストメッセージは数秒後に自動で閉じる
+  useEffect(() => {
+    if (!toastMessage) return
+    const timer = setTimeout(() => setToastMessage(null), 2500)
+    return () => clearTimeout(timer)
+  }, [toastMessage])
 
   if (candidates.length === 0) {
     return null
@@ -378,38 +383,11 @@ export default function LocationVoting({
         </div>
       )}
 
-      {/* 成功モーダル */}
-      {showSuccessModal && successMessage && (
-        <div 
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" 
-          onClick={() => {
-            setShowSuccessModal(false)
-            setSuccessMessage(null)
-            // 親コンポーネントのデータも更新するためにページをリフレッシュ
-            router.refresh()
-          }}
-        >
-          <div 
-            className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8" 
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i className="ri-checkbox-circle-line text-green-600 text-3xl"></i>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{successMessage}</h3>
-              <button
-                onClick={() => {
-                  setShowSuccessModal(false)
-                  setSuccessMessage(null)
-                  // 親コンポーネントのデータも更新するためにページをリフレッシュ
-                  router.refresh()
-                }}
-                className="mt-6 w-full px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-bold text-base"
-              >
-                OK
-              </button>
-            </div>
+      {/* トーストメッセージ */}
+      {toastMessage && (
+        <div className="fixed bottom-4 inset-x-0 flex justify-center z-50 px-4">
+          <div className="bg-orange-600 text-white text-sm font-semibold px-5 py-2 rounded-full shadow-lg">
+            {toastMessage}
           </div>
         </div>
       )}
