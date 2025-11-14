@@ -18,8 +18,8 @@ const coreBenefits = [
   },
   {
     title: '投票でスムーズに決定',
-    description: 'ワンクリック投票で得票順に並ぶので、「どこでもいい」が口癖のメンバーも意思表示できます。',
-    icon: 'ri-ballot-line'
+    description: 'ワンクリック投票で得票順に並ぶので、迷っても楽しく相談しながら決められます。',
+    icon: 'ri-thumb-up-line'
   }
 ]
 
@@ -40,7 +40,7 @@ const userStories = [
 
 export default function HighlightsSection() {
   return (
-    <section className="bg-white py-14 md:py-16" id="features">
+    <section className="bg-gradient-to-b from-white via-orange-50/20 to-white py-14 md:py-16" id="features">
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] items-start">
           <div>
@@ -50,7 +50,7 @@ export default function HighlightsSection() {
             </h2>
             <p className="text-base text-gray-600 leading-relaxed">
               チャットでみんなの予定を追いかけたり、スプレッドシートに人数をまとめたり——そんなバラバラの作業をぎゅっと一カ所に集めるために昼食さんを作りました。
-              URLをひとつ共有すれば、その日の参加メンバーも行きたいお店も投票結果もニコニコ見比べられます。
+              URLをひとつ共有すれば、その日の参加メンバーも行きたいお店も投票結果も、一画面で楽しく見渡せます。
             </p>
 
             <div className="grid sm:grid-cols-2 gap-4 mt-10">
