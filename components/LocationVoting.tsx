@@ -454,15 +454,6 @@ export default function LocationVoting({
             )
           })}
           
-          {/* 説明文（右下） */}
-          <div className="mt-5 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-sm text-blue-900 leading-relaxed flex items-start gap-2">
-              <i className="ri-information-line text-blue-600 text-base flex-shrink-0 mt-0.5"></i>
-              <span>
-                <strong>お店名</strong>をクリックするとWebサイトが開きます。<strong>「投票する」ボタン</strong>で投票できます。
-              </span>
-            </p>
-          </div>
         </div>
     </div>
   )
