@@ -482,6 +482,13 @@ export default function EventDetailClient({
       return
     }
 
+    if (!participant || participant.status !== 'going') {
+      const confirmed = confirm('参加しますか？')
+      if (!confirmed) {
+        return
+      }
+    }
+
     setLoading(true)
     try {
       const trimmedPassword = participantPassword.trim() || null
