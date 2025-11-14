@@ -48,6 +48,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Script
+          id="adsense-script"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4335284954366086"
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
         <HashScrollHandler />
         {process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY && (
           <Script
