@@ -800,55 +800,85 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
               const isAdded = addedRestaurantIds.has(restaurantId)
               
               return (
-                <div key={restaurant.id}>
-                  <button
-                    type="button"
-                    onClick={() => fetchRestaurantDetails(restaurant)}
-                    className={`group w-full text-left p-5 border-2 rounded-xl transition-all duration-200 ${
-                      isAdded
-                        ? 'border-green-400 bg-green-50 hover:bg-green-100 shadow-md'
-                        : selectedRestaurant?.id === restaurant.id
-                        ? 'border-orange-400 bg-orange-50 shadow-md'
-                        : 'border-orange-200 bg-white hover:bg-orange-50 hover:border-orange-300 hover:shadow-md'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 flex-wrap mb-3">
-                          <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0">
-                            <i className="ri-restaurant-line text-white text-base"></i>
-                          </div>
-                          <p className="font-bold text-gray-900 text-base">{restaurant.name}</p>
-                          {isAdded && (
-                            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-green-700 bg-green-100 px-3 py-1.5 rounded-lg border border-green-300 shadow-sm">
-                              <i className="ri-check-line text-sm"></i>
-                              追加済み
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-start gap-2.5 mb-3">
-                          <i className="ri-map-pin-line text-orange-600 text-base mt-0.5 flex-shrink-0"></i>
-                          <p className="text-sm text-gray-600 leading-loose">{restaurant.address}</p>
-                        </div>
-                        <div className="flex items-center gap-3 flex-wrap mt-4">
-                          {restaurant.rating && (
-                            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-800 bg-yellow-50 px-3 py-1.5 rounded-lg border border-yellow-200 shadow-sm">
-                              <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                              </svg>
-                              <span className="font-bold">{restaurant.rating.toFixed(1)}</span>
-                              {restaurant.user_ratings_total && (
-                                <span className="text-gray-600">({restaurant.user_ratings_total.toLocaleString()}件)</span>
-                              )}
-                            </span>
-                          )}
-                        </div>
+                <div
+                  key={restaurant.id}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      fetchRestaurantDetails(restaurant)
+                    }
+                  }}
+                  onClick={() => fetchRestaurantDetails(restaurant)}
+                  className={`group w-full p-5 border-2 rounded-xl transition-all duration-200 cursor-pointer ${
+                    isAdded
+                      ? 'border-green-400 bg-green-50 hover:bg-green-100 shadow-md'
+                      : selectedRestaurant?.id === restaurant.id
+                      ? 'border-orange-400 bg-orange-50 shadow-md'
+                      : 'border-orange-200 bg-white hover:bg-orange-50 hover:border-orange-300 hover:shadow-md'
+                  }`}
+                >
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-start gap-3 flex-wrap">
+                      <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0">
+                        <i className="ri-restaurant-line text-white text-base"></i>
                       </div>
-                      <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                        <i className="ri-arrow-right-s-line text-orange-600 text-xl"></i>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-gray-900 text-base">{restaurant.name}</p>
+                        <p className="text-sm text-gray-600 mt-1 leading-relaxed">{restaurant.address}</p>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        {isAdded && (
+                          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-green-700 bg-green-100 px-3 py-1.5 rounded-lg border border-green-300 shadow-sm">
+                            <i className="ri-check-line text-sm"></i>
+                            追加済み
+                          </span>
+                        )}
+                        <button
+                          type="button"
+                          className="px-3 py-1.5 text-xs font-semibold text-orange-700 border border-orange-200 rounded-lg hover:bg-orange-50 transition-colors flex items-center gap-1"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            const query = restaurant.address
+                              ? `${restaurant.name} ${restaurant.address}`
+                              : restaurant.name
+                            const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}${
+                              restaurant.place_id ? `&query_place_id=${restaurant.place_id}` : ''
+                            }`
+                            window.open(url, '_blank', 'noopener,noreferrer')
+                          }}
+                        >
+                          <i className="ri-map-pin-2-line text-sm"></i>
+                          地図
+                        </button>
                       </div>
                     </div>
-                  </button>
+                    <div className="flex items-center gap-3 flex-wrap">
+                      {restaurant.rating && (
+                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-800 bg-yellow-50 px-3 py-1.5 rounded-lg border border-yellow-200 shadow-sm">
+                          <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                          <span className="font-bold">{restaurant.rating.toFixed(1)}</span>
+                          {restaurant.user_ratings_total && (
+                            <span className="text-gray-600">({restaurant.user_ratings_total.toLocaleString()}件)</span>
+                          )}
+                        </span>
+                      )}
+                      {startTime && endTime && (
+                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200">
+                          <i className="ri-time-line text-sm"></i>
+                          {startTime}〜{endTime} 営業
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex justify-end">
+                      <span className="text-orange-600 text-sm font-semibold flex items-center gap-1">
+                        詳細を見る
+                        <i className="ri-arrow-right-s-line text-base"></i>
+                      </span>
+                    </div>
+                  </div>
                 </div>
               )
             })}
