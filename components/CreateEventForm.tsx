@@ -560,7 +560,7 @@ export default function CreateEventForm() {
             <p className="text-base sm:text-lg text-gray-700 font-medium">
               {isTemplateMode
                 ? '既存のイベント設定を元に、新しい日付で予定を作成できます（日付は変更してください）'
-                : '30秒でカンタンに予定調整を開始！'}
+                : '1分あれば予定調整をスタートできます'}
             </p>
             {loadingTemplate && (
               <div className="mt-4 p-4 bg-blue-50 border-2 border-blue-200 rounded-xl text-blue-700 text-sm font-medium shadow-sm">
@@ -758,7 +758,7 @@ export default function CreateEventForm() {
                     <div className="flex items-center gap-2 mb-3">
                       <i className="ri-store-line text-orange-600 text-lg"></i>
                       <label className="block text-sm font-bold text-gray-800">
-                        近くのお店から追加
+                        近くのお店から追加（任意）
                       </label>
                     </div>
                     {startTime && endTime && (

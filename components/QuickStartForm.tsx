@@ -41,7 +41,7 @@ export default function QuickStartForm() {
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900">予定調整を始める</h2>
-              <p className="text-sm text-gray-600">30秒でカンタンに予定調整を開始！</p>
+              <p className="text-sm text-gray-600">1分あれば予定調整をスタートできます</p>
             </div>
           </div>
 
@@ -122,7 +122,7 @@ export default function QuickStartForm() {
                 type="submit"
                 className="px-12 py-4 bg-orange-600 text-white rounded-lg font-bold text-lg hover:bg-orange-700 transition-all duration-300 ease-out shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2"
               >
-                作成してURLを取得
+                作成してURLをコピー
               </button>
             </div>
           </form>
