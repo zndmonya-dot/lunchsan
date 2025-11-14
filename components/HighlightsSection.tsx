@@ -40,7 +40,7 @@ const userStories = [
 
 export default function HighlightsSection() {
   return (
-    <section className="bg-gradient-to-b from-white via-orange-50/20 to-white py-14 md:py-16" id="features">
+    <section className="bg-white py-14 md:py-16" id="features">
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] items-start">
           <div>

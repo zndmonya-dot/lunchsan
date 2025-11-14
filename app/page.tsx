@@ -12,7 +12,7 @@ export default async function HomePage() {
   // これにより、プライバシーを保護し、調整さん方式の動作を実現します
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-orange-50 via-white to-white">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <Header />
 

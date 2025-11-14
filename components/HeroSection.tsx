@@ -17,11 +17,7 @@ const checklist = [
 
 export default function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-orange-100 via-orange-50 to-white py-16 md:py-24 lg:py-28">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-32 right-0 w-64 h-64 bg-orange-200/40 blur-3xl rounded-full"></div>
-        <div className="absolute -bottom-16 left-10 w-72 h-72 bg-orange-100/50 blur-3xl rounded-full"></div>
-      </div>
+    <section className="relative overflow-hidden bg-orange-50 py-16 md:py-24 lg:py-28">
 
       <div className="relative z-10 max-w-6xl mx-auto px-4">
         <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] items-center">
