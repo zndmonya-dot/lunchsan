@@ -51,6 +51,26 @@ interface RestaurantSearchProps {
   addedRestaurantIds?: Set<string> // 既に追加されたお店のIDリスト
 }
 
+interface SummaryItem {
+  label: string
+  value: string
+  icon: string
+  link?: string
+}
+
+const JP_DAYS = ['日', '月', '火', '水', '木', '金', '土']
+const EN_DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+const getTodayHoursText = (weekdayText?: string[] | null) => {
+  if (!weekdayText || weekdayText.length === 0) return null
+  const todayIdx = new Date().getDay()
+  const jpPrefix = `${JP_DAYS[todayIdx]}曜日`
+  const enPrefix = EN_DAYS[todayIdx]
+  const target = weekdayText.find((line) => line.startsWith(jpPrefix) || line.startsWith(enPrefix))
+  const raw = target || weekdayText[0]
+  return raw.replace(/^(?:[A-Za-z]+|[月火水木金土日]曜日)\s*[:：]?\s*/, '')
+}
+
 export default function RestaurantSearch({ onSelect, selectedRestaurant, userLocation: propUserLocation, startTime, endTime, eventDate, addedRestaurantIds = new Set() }: RestaurantSearchProps) {
   const [query, setQuery] = useState('')
   const [restaurants, setRestaurants] = useState<Restaurant[]>([])
@@ -810,33 +830,66 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
                     }
                   }}
                   onClick={() => fetchRestaurantDetails(restaurant)}
-                  className={`group w-full p-5 border-2 rounded-xl transition-all duration-200 cursor-pointer ${
+                  className={`group w-full p-5 border-2 rounded-2xl transition-all duration-200 cursor-pointer ${
                     isAdded
                       ? 'border-green-400 bg-green-50 hover:bg-green-100 shadow-md'
                       : selectedRestaurant?.id === restaurant.id
                       ? 'border-orange-400 bg-orange-50 shadow-md'
-                      : 'border-orange-200 bg-white hover:bg-orange-50 hover:border-orange-300 hover:shadow-md'
+                      : 'border-orange-100 bg-white hover:bg-orange-50 hover:border-orange-200 hover:shadow-md'
                   }`}
                 >
                   <div className="flex flex-col gap-4">
-                    <div className="flex items-start gap-3 flex-wrap">
-                      <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0">
-                        <i className="ri-restaurant-line text-white text-base"></i>
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 bg-orange-600 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                          <i className="ri-restaurant-line text-white text-base"></i>
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-bold text-gray-900 text-base leading-tight">{restaurant.name}</p>
+                          <p className="text-sm text-gray-600 mt-1 leading-relaxed flex items-start gap-2">
+                            <i className="ri-map-pin-line text-orange-500 mt-0.5"></i>
+                            <span>{restaurant.address}</span>
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-bold text-gray-900 text-base">{restaurant.name}</p>
-                        <p className="text-sm text-gray-600 mt-1 leading-relaxed">{restaurant.address}</p>
-                      </div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        {isAdded && (
-                          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-green-700 bg-green-100 px-3 py-1.5 rounded-lg border border-green-300 shadow-sm">
-                            <i className="ri-check-line text-sm"></i>
-                            追加済み
-                          </span>
-                        )}
+                      {isAdded && (
+                        <span className="inline-flex items-center gap-1.5 text-xs font-bold text-green-700 bg-green-100 px-3 py-1.5 rounded-lg border border-green-300 shadow-sm self-start">
+                          <i className="ri-check-line text-sm"></i>
+                          追加済み
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-gray-700">
+                      {restaurant.rating && (
+                        <span className="inline-flex items-center gap-1.5 bg-yellow-50 px-3 py-1.5 rounded-lg border border-yellow-200 shadow-sm text-gray-800">
+                          <i className="ri-star-fill text-yellow-500"></i>
+                          {restaurant.rating.toFixed(1)}
+                          {restaurant.user_ratings_total && (
+                            <span className="text-gray-500 font-normal">
+                              （{restaurant.user_ratings_total.toLocaleString()}件）
+                            </span>
+                          )}
+                        </span>
+                      )}
+                      {startTime && endTime && (
+                        <span className="inline-flex items-center gap-1.5 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200 text-emerald-800 shadow-sm">
+                          <i className="ri-time-line text-sm"></i>
+                          {startTime}〜{endTime}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 pt-3">
+                      <button
+                        type="button"
+                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-orange-700 hover:text-orange-900 transition-colors"
+                      >
+                        詳細を見る
+                        <i className="ri-arrow-right-s-line text-base"></i>
+                      </button>
+                      <div className="flex gap-2">
                         <button
                           type="button"
-                          className="px-3 py-1.5 text-xs font-semibold text-orange-700 border border-orange-200 rounded-lg hover:bg-orange-50 transition-colors flex items-center gap-1"
+                          className="px-3 py-1.5 text-xs font-semibold text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-1"
                           onClick={(e) => {
                             e.stopPropagation()
                             const query = restaurant.address
@@ -851,32 +904,18 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
                           <i className="ri-map-pin-2-line text-sm"></i>
                           地図
                         </button>
+                        <button
+                          type="button"
+                          className="px-3 py-1.5 text-xs font-semibold text-orange-700 border border-orange-200 rounded-lg hover:bg-orange-50 transition-colors flex items-center gap-1"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            fetchRestaurantDetails(restaurant)
+                          }}
+                        >
+                          <i className="ri-information-line text-sm"></i>
+                          詳細
+                        </button>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-3 flex-wrap">
-                      {restaurant.rating && (
-                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-800 bg-yellow-50 px-3 py-1.5 rounded-lg border border-yellow-200 shadow-sm">
-                          <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <span className="font-bold">{restaurant.rating.toFixed(1)}</span>
-                          {restaurant.user_ratings_total && (
-                            <span className="text-gray-600">({restaurant.user_ratings_total.toLocaleString()}件)</span>
-                          )}
-                        </span>
-                      )}
-                      {startTime && endTime && (
-                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200">
-                          <i className="ri-time-line text-sm"></i>
-                          {startTime}〜{endTime} 営業
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex justify-end">
-                      <span className="text-orange-600 text-sm font-semibold flex items-center gap-1">
-                        詳細を見る
-                        <i className="ri-arrow-right-s-line text-base"></i>
-                      </span>
                     </div>
                   </div>
                 </div>
@@ -954,24 +993,80 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
                 </div>
 
                 {/* 詳細情報 */}
-                <div className="space-y-4">
-                  {/* 評価と営業状況 */}
-                  <div className="flex items-center gap-3 flex-wrap">
-                    {selectedRestaurantForDetail.rating && (
-                      <div className="flex items-center gap-1.5">
-                        <i className="ri-star-fill text-yellow-500 text-base"></i>
-                        <span className="text-sm font-semibold text-gray-900">
-                          {selectedRestaurantForDetail.rating.toFixed(1)}
-                        </span>
-                        {selectedRestaurantForDetail.user_ratings_total && (
-                          <span className="text-xs text-gray-600">
-                            ({selectedRestaurantForDetail.user_ratings_total.toLocaleString()})
-                          </span>
-                        )}
+                <div className="space-y-5">
+                  {!loadingDetails && (() => {
+                    const summaryItems: SummaryItem[] = []
+                    if (selectedRestaurantForDetail.rating) {
+                      const reviews = selectedRestaurantForDetail.user_ratings_total
+                        ? `（${selectedRestaurantForDetail.user_ratings_total.toLocaleString()}件）`
+                        : ''
+                      summaryItems.push({
+                        label: '評価',
+                        value: `${selectedRestaurantForDetail.rating.toFixed(1)} ${reviews}`,
+                        icon: 'ri-star-smile-line'
+                      })
+                    }
+                    const todayHoursText = getTodayHoursText(selectedRestaurantForDetail.opening_hours?.weekday_text)
+                    if (todayHoursText) {
+                      summaryItems.push({
+                        label: '今日の営業時間',
+                        value: todayHoursText,
+                        icon: 'ri-time-line'
+                      })
+                    }
+                    if (selectedRestaurantForDetail.phone_number) {
+                      summaryItems.push({
+                        label: '電話',
+                        value: selectedRestaurantForDetail.phone_number,
+                        icon: 'ri-phone-line',
+                        link: `tel:${selectedRestaurantForDetail.phone_number}`
+                      })
+                    }
+                    if (selectedRestaurantForDetail.website) {
+                      let hostname = 'ウェブサイト'
+                      try {
+                        hostname = new URL(selectedRestaurantForDetail.website).hostname.replace(/^www\./, '')
+                      } catch (error) {
+                        hostname = selectedRestaurantForDetail.website
+                      }
+                      summaryItems.push({
+                        label: 'サイト',
+                        value: hostname,
+                        icon: 'ri-global-line',
+                        link: selectedRestaurantForDetail.website
+                      })
+                    }
+                    if (summaryItems.length === 0) return null
+                    return (
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        {summaryItems.map((item) => {
+                          const content = (
+                            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 h-full">
+                              <div className="w-9 h-9 rounded-lg bg-white flex items-center justify-center text-orange-600 border border-orange-100">
+                                <i className={`${item.icon} text-base`}></i>
+                              </div>
+                              <div className="min-w-0">
+                                <p className="text-[11px] uppercase tracking-wide text-gray-500">{item.label}</p>
+                                <p className="text-sm font-semibold text-gray-900 truncate">{item.value}</p>
+                              </div>
+                            </div>
+                          )
+                          return item.link ? (
+                            <a
+                              key={item.label}
+                              href={item.link}
+                              target={item.link.startsWith('tel:') ? '_self' : '_blank'}
+                              rel={item.link.startsWith('tel:') ? undefined : 'noopener noreferrer'}
+                            >
+                              {content}
+                            </a>
+                          ) : (
+                            <div key={item.label}>{content}</div>
+                          )
+                        })}
                       </div>
-                    )}
-                    
-                  </div>
+                    )
+                  })()}
 
                   {/* お店の概要 */}
                   {selectedRestaurantForDetail.editorialSummary && (
