@@ -587,11 +587,7 @@ export default function EventDetailClient({
       
       // パスワードフィールドをクリア（セキュリティのため）
       setParticipantPassword('')
-      
-      // 成功モーダルを表示
       setSuccessMessage('参加しました')
-      setShowSuccessModal(true)
-      
       router.refresh()
     } catch (error) {
       console.error('Error updating participant status:', error)
@@ -655,11 +651,7 @@ export default function EventDetailClient({
       localStorage.removeItem(storageKey)
       // 旧形式も削除（後方互換性）
       localStorage.removeItem('lunch_participant_name')
-      
-      // 成功モーダルを表示
       setSuccessMessage('参加を取り消しました')
-      setShowSuccessModal(true)
-      
       router.refresh()
     } catch (error) {
       console.error('Error deleting participant:', error)
