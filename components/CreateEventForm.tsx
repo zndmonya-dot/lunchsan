@@ -762,7 +762,7 @@ export default function CreateEventForm() {
                       </label>
                     </div>
                     {startTime && endTime && (
-                      <p className="text-xs text-gray-600 mb-3 leading-relaxed font-medium">
+                      <p className="text-sm text-gray-600 mb-3 leading-relaxed font-medium">
                         {startTime}〜{endTime}の時間帯に営業しているお店だけを表示します。
                       </p>
                     )}
