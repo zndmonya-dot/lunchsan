@@ -348,39 +348,40 @@ export default function LocationVoting({
               >
                 <div className="flex items-start justify-between gap-3">
                   {/* お店情報エリア（左側） */}
-                  <div className="flex items-start gap-3 flex-1 min-w-0">
-                    <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
-                      <i className="ri-check-line text-white text-lg"></i>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      {isRestaurant ? (
-                        <button
-                          onClick={() => handleRestaurantNameClick(candidate)}
-                          className="group text-left w-full"
-                          aria-label={`${candidate.name}をGoogleマップで開く`}
-                        >
-                          <h3 className="font-bold text-base text-gray-900 leading-tight mb-1 group-hover:text-orange-600">
+                  <div className="flex-1 min-w-0">
+                    {isRestaurant ? (
+                      <button
+                        onClick={() => handleRestaurantNameClick(candidate)}
+                        className="group text-left w-full"
+                        aria-label={`${candidate.name}をGoogleマップで開く`}
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="font-bold text-base text-gray-900 leading-tight group-hover:text-orange-600">
                             {candidate.name}
                           </h3>
-                          {candidate.restaurant_address && (
-                            <p className="text-sm text-gray-600 flex items-start gap-1.5">
-                              <i className="ri-map-pin-line text-orange-500 mt-0.5 text-base flex-shrink-0"></i>
-                              <span className="leading-relaxed break-words">{candidate.restaurant_address}</span>
-                            </p>
-                          )}
-                        </button>
-                      ) : (
-                        <div>
-                          <h3 className="font-bold text-base text-gray-900 leading-tight mb-1">{candidate.name}</h3>
-                          {candidate.restaurant_address && (
-                            <p className="text-sm text-gray-600 flex items-start gap-1.5">
-                              <i className="ri-map-pin-line text-orange-500 mt-0.5 text-base flex-shrink-0"></i>
-                              <span className="leading-relaxed break-words">{candidate.restaurant_address}</span>
-                            </p>
-                          )}
+                          <i className="ri-arrow-down-s-line text-orange-600 text-lg flex-shrink-0"></i>
                         </div>
-                      )}
-                    </div>
+                        {candidate.restaurant_address && (
+                          <p className="text-sm text-gray-600 flex items-start gap-1.5">
+                            <span className="text-orange-600">◎</span>
+                            <span className="leading-relaxed break-words">{candidate.restaurant_address}</span>
+                          </p>
+                        )}
+                      </button>
+                    ) : (
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="font-bold text-base text-gray-900 leading-tight">{candidate.name}</h3>
+                          <i className="ri-arrow-down-s-line text-orange-600 text-lg flex-shrink-0"></i>
+                        </div>
+                        {candidate.restaurant_address && (
+                          <p className="text-sm text-gray-600 flex items-start gap-1.5">
+                            <span className="text-orange-600">◎</span>
+                            <span className="leading-relaxed break-words">{candidate.restaurant_address}</span>
+                          </p>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   {/* 投票数と投票ボタンエリア（右側） */}
