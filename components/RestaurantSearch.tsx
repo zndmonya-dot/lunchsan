@@ -869,40 +869,42 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
                     </div>
 
                     {/* メイン情報: 評価、地図 */}
-                    <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-2">
                       {restaurant.rating && (
-                        <span className="inline-flex items-center gap-1.5 bg-yellow-50 px-2.5 py-1.5 rounded-lg border border-yellow-200 text-gray-800">
+                        <span className="inline-flex items-center justify-center gap-1.5 bg-yellow-50 px-3 py-2 rounded-lg border border-yellow-200 text-gray-800 w-fit min-h-[40px]">
                           <i className="ri-star-fill text-yellow-500 text-sm"></i>
                           <span className="font-semibold text-sm">{restaurant.rating.toFixed(1)}</span>
                           {restaurant.user_ratings_total && (
-                            <span className="text-xs text-gray-600">
+                            <span className="text-xs text-gray-600 hidden sm:inline">
                               ({restaurant.user_ratings_total.toLocaleString()})
                             </span>
                           )}
                         </span>
                       )}
-                      <button
-                        type="button"
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-orange-700 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors"
-                        onClick={() => {
-                          const query = restaurant.address ? `${restaurant.name} ${restaurant.address}` : restaurant.name
-                          const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}${
-                            restaurant.place_id ? `&query_place_id=${restaurant.place_id}` : ''
-                          }`
-                          window.open(url, '_blank', 'noopener,noreferrer')
-                        }}
-                      >
-                        <i className="ri-map-pin-2-line text-sm"></i>
-                        地図で開く
-                      </button>
-                      <button
-                        type="button"
-                        className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors min-w-[60px]"
-                        onClick={() => handleToggleDetails(restaurant)}
-                      >
-                        <i className={`ri-${isExpanded ? 'arrow-up' : 'arrow-down'}-s-line text-sm`}></i>
-                        <span className="whitespace-nowrap">{isExpanded ? '閉じる' : '詳細'}</span>
-                      </button>
+                      <div className="flex items-center gap-2 flex-1 sm:flex-initial sm:ml-auto">
+                        <button
+                          type="button"
+                          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-orange-700 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors flex-1 sm:flex-initial touch-manipulation min-h-[40px]"
+                          onClick={() => {
+                            const query = restaurant.address ? `${restaurant.name} ${restaurant.address}` : restaurant.name
+                            const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}${
+                              restaurant.place_id ? `&query_place_id=${restaurant.place_id}` : ''
+                            }`
+                            window.open(url, '_blank', 'noopener,noreferrer')
+                          }}
+                        >
+                          <i className="ri-map-pin-2-line text-sm"></i>
+                          <span className="whitespace-nowrap">地図</span>
+                        </button>
+                        <button
+                          type="button"
+                          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex-1 sm:flex-initial touch-manipulation min-h-[40px]"
+                          onClick={() => handleToggleDetails(restaurant)}
+                        >
+                          <i className={`ri-${isExpanded ? 'arrow-up' : 'arrow-down'}-s-line text-sm`}></i>
+                          <span className="whitespace-nowrap">{isExpanded ? '閉じる' : '詳細'}</span>
+                        </button>
+                      </div>
                     </div>
                     {isExpanded && (
                       <div className="mt-3 pt-3 border-t border-gray-200 space-y-3">
