@@ -394,9 +394,9 @@ export default function LocationVoting({
                     <button
                       onClick={() => handleVote(candidate.id)}
                       disabled={loading || !currentParticipantName.trim() || !isParticipant}
-                      className={`px-4 py-2 rounded-lg font-semibold text-base shadow-sm border-2 transition-all duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed ${
+                      className={`px-4 py-2 rounded-lg font-semibold text-base shadow-sm border-2 transition-all duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-gray-700 disabled:hover:border-gray-300 ${
                         isSelected
-                          ? 'bg-orange-600 text-white border-orange-600 hover:bg-orange-700 hover:shadow-md active:bg-orange-800 active:scale-95'
+                          ? 'bg-orange-600 text-white border-orange-600 hover:bg-orange-700 hover:shadow-md active:bg-orange-800 active:scale-95 disabled:hover:bg-orange-600 disabled:hover:text-white disabled:hover:border-orange-600'
                           : 'bg-white text-gray-700 border-gray-300 hover:bg-orange-600 hover:text-white hover:border-orange-600 hover:shadow-md active:bg-orange-700 active:scale-95'
                       }`}
                       aria-label={isSelected ? `${candidate.name}の投票を解除` : `${candidate.name}に投票`}
