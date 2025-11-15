@@ -395,12 +395,12 @@ export default function LocationVoting({
                     <button
                       onClick={() => handleVote(candidate.id)}
                       disabled={loading || !currentParticipantName.trim() || !isParticipant}
-                      className="px-4 py-1.5 rounded-lg font-semibold text-sm shadow-sm bg-orange-600 text-white border-2 border-orange-600 hover:bg-orange-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-4 py-2 rounded-lg font-semibold text-base shadow-sm bg-orange-600 text-white border-2 border-orange-600 hover:bg-orange-700 active:bg-orange-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       aria-label={isSelected ? `${candidate.name}の投票を解除` : `${candidate.name}に投票`}
                       title={!isParticipant ? '投票するには、まず「参加する」ボタンで参加してください' : ''}
                     >
                       <span className="flex items-center gap-1.5 justify-center whitespace-nowrap">
-                        <i className="ri-thumb-up-line text-sm"></i>
+                        <i className="ri-thumb-up-line text-base"></i>
                         <span>投票する</span>
                       </span>
                     </button>
