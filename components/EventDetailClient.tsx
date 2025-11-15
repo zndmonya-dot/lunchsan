@@ -758,11 +758,15 @@ export default function EventDetailClient({
 
                   {/* 時間 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="editStartTime" className="block text-sm font-medium text-gray-700 mb-2">
                       時間 <span className="text-red-500">*</span>
                     </label>
                     <div className="flex items-center gap-3">
+                      <label htmlFor="editStartTime" className="sr-only">
+                        開始時間
+                      </label>
                       <select
+                        id="editStartTime"
                         value={editStartTime}
                         onChange={(e) => setEditStartTime(e.target.value)}
                         className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-gray-900 text-sm bg-white font-medium min-h-[48px] cursor-pointer"
@@ -779,7 +783,11 @@ export default function EventDetailClient({
                         )}
                       </select>
                       <span className="text-gray-600 text-base font-bold">〜</span>
+                      <label htmlFor="editEndTime" className="sr-only">
+                        終了時間
+                      </label>
                       <select
+                        id="editEndTime"
                         value={editEndTime}
                         onChange={(e) => setEditEndTime(e.target.value)}
                         className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-gray-900 text-sm bg-white font-medium min-h-[48px] cursor-pointer"

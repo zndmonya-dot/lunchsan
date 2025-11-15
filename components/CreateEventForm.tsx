@@ -565,11 +565,15 @@ export default function CreateEventForm() {
 
                 {/* 時間 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="startTime" className="block text-sm font-medium text-gray-700 mb-2">
                     時間 <span className="text-red-500">*</span>
                   </label>
                   <div className="flex items-center gap-3">
+                    <label htmlFor="startTime" className="sr-only">
+                      開始時間
+                    </label>
                     <select
+                      id="startTime"
                       value={startTime}
                       onChange={(e) => setStartTime(e.target.value)}
                       required
@@ -587,7 +591,11 @@ export default function CreateEventForm() {
                       )}
                     </select>
                     <span className="text-gray-600 text-base font-bold">〜</span>
+                    <label htmlFor="endTime" className="sr-only">
+                      終了時間
+                    </label>
                     <select
+                      id="endTime"
                       value={endTime}
                       onChange={(e) => setEndTime(e.target.value)}
                       required
@@ -748,6 +756,8 @@ export default function CreateEventForm() {
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ${
                       autoDailyUpdate ? 'bg-orange-600' : 'bg-gray-300'
                     } ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                    aria-label={`毎日自動初期化を${autoDailyUpdate ? 'オフ' : 'オン'}にする`}
+                    aria-pressed={autoDailyUpdate}
                   >
                     <span
                       className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
