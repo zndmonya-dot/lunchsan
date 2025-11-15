@@ -23,18 +23,20 @@ export default async function HomePage() {
       <HighlightsSection />
 
       {/* Create Event Form - トップ画面で直接作成 */}
-      <CreateEventForm />
+      <div id="create-form" className="scroll-mt-24">
+        <CreateEventForm />
+      </div>
 
       {/* Usage Guide */}
-      <div id="usage-guide" className="bg-white py-16 scroll-mt-24">
-        <div className="max-w-7xl mx-auto px-4">
+      <div id="usage-guide" className="bg-gradient-to-b from-white to-gray-50 py-12 sm:py-16 md:py-20 scroll-mt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <UsageGuide />
         </div>
       </div>
 
       {/* FAQ Section */}
-      <div id="faq" className="bg-gray-50 py-16 scroll-mt-24">
-        <div className="max-w-7xl mx-auto px-4">
+      <div id="faq" className="bg-white py-12 sm:py-16 md:py-20 scroll-mt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <FAQ />
         </div>
       </div>

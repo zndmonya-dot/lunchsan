@@ -266,15 +266,14 @@ export default function FAQ() {
           <span className="font-medium">コピーしました</span>
         </div>
       )}
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="text-center mb-10">
-          <div className="mb-4">
-            <div className="w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center shadow-sm inline-flex mx-auto">
-              <i className="ri-question-line text-white text-xl"></i>
-            </div>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-10 sm:mb-12">
+          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-orange-600 to-orange-500 rounded-xl text-white shadow-lg mb-4 sm:mb-5">
+            <i className="ri-question-line text-xl sm:text-2xl"></i>
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">よくある質問</h2>
-          <p className="text-gray-700 text-sm font-medium">昼食さんについて、よくいただく質問をまとめました。</p>
+          <p className="text-xs font-semibold text-orange-600 tracking-widest uppercase mb-2 sm:mb-3">FAQ</p>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 px-2">よくある質問</h2>
+          <p className="text-sm sm:text-base text-gray-600 leading-relaxed max-w-2xl mx-auto px-2">昼食さんについて、よくいただく質問をまとめました。</p>
         </div>
 
         <div className="space-y-3 mb-8">
@@ -285,23 +284,23 @@ export default function FAQ() {
             >
               <button
                 onClick={() => toggleQuestion(index)}
-                className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-orange-50/30 transition-colors rounded-xl"
+                className="w-full px-4 sm:px-5 py-3.5 sm:py-4 flex items-center justify-between text-left hover:bg-orange-50/30 transition-colors rounded-xl min-h-[56px] touch-manipulation"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
-                    <span className="text-white font-bold text-sm">Q</span>
+                <div className="flex items-center gap-2.5 sm:gap-3 flex-1 min-w-0">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-orange-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <span className="text-white font-bold text-xs sm:text-sm">Q</span>
                   </div>
-                  <span className="text-gray-900 font-semibold text-sm md:text-base">
+                  <span className="text-gray-900 font-semibold text-sm sm:text-base leading-snug">
                     {item.question}
                   </span>
                 </div>
-                <i className={`ri-arrow-down-s-line text-orange-600 text-xl transition-transform duration-200 flex-shrink-0 ${
+                <i className={`ri-arrow-down-s-line text-orange-600 text-lg sm:text-xl transition-transform duration-200 flex-shrink-0 ml-2 ${
                   openIndices.has(index) ? 'transform rotate-180' : ''
                 }`}></i>
               </button>
               {openIndices.has(index) && (
-                <div className="px-4 pb-4 ml-11">
-                  <div className="pt-3 border-t border-gray-200">
+                <div className="px-4 sm:px-5 pb-4 sm:pb-5 ml-9 sm:ml-11">
+                  <div className="pt-3 sm:pt-4 border-t border-gray-200">
                     {index === urlForgotIndex ? (
                       // URLを忘れた場合の検索フォーム - 左上から右下への視線の流れに最適化
                       <div className="space-y-4">
@@ -320,7 +319,7 @@ export default function FAQ() {
                               onChange={(e) => setEmail(e.target.value)}
                               autoComplete="email"
                               placeholder="作成時に使用したメールアドレス"
-                              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
+                              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all min-h-[44px]"
                               disabled={loading}
                               onClick={(e) => e.stopPropagation()}
                             />
@@ -340,7 +339,7 @@ export default function FAQ() {
                               readOnly={passwordReadOnly}
                               onFocus={() => setPasswordReadOnly(false)}
                               placeholder="作成時に設定したパスワード"
-                              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
+                              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all min-h-[44px]"
                               disabled={loading}
                               onClick={(e) => {
                                 e.stopPropagation()
@@ -352,7 +351,7 @@ export default function FAQ() {
                           <button
                             type="submit"
                             disabled={loading}
-                            className="w-full px-4 py-2.5 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm min-h-[44px]"
+                            className="w-full px-4 sm:px-5 py-3 sm:py-2.5 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm min-h-[48px] touch-manipulation"
                             onClick={(e) => e.stopPropagation()}
                           >
                             {loading ? (

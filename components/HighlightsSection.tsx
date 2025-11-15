@@ -23,78 +23,35 @@ const coreBenefits = [
   }
 ]
 
-const userStories = [
-  {
-    title: '参加状況の把握がラクになった',
-    detail: 'アクセスするだけで最新の出欠がすぐ見えるから、今日は誰に声をかければいいか一目瞭然です。'
-  },
-  {
-    title: '知らないお店が候補に出てくる',
-    detail: '近くのまだ行ったことがないお店が出てくるので、次はどこにしようかなと選ぶのが楽しくなりました。'
-  },
-  {
-    title: 'URLを探す手間がなくなった',
-    detail: '一度ブックマークしておけば翌朝も同じURLで回答できるから、「今日のリンクどこ？」がなくなりました。'
-  }
-]
 
 export default function HighlightsSection() {
   return (
-    <section className="bg-white py-14 md:py-16" id="features">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] items-start">
-          <div>
-            <p className="text-sm font-semibold text-orange-600 mb-3">Lunchsan Highlights</p>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              「今日どこ行く？」のお悩みをまるっと解決
-            </h2>
-            <p className="text-base text-gray-600 leading-relaxed">
-              チャットでみんなの予定を追いかけたり、スプレッドシートに人数をまとめたり――そんなバラバラの作業をひとつにまとめたくて昼食さんを作りました。
-              URLをひとつ共有すれば、その日の参加メンバーも行きたいお店も投票結果も、一画面で楽しく見られます。
-            </p>
+    <section className="bg-gradient-to-b from-white to-orange-50/30 py-12 sm:py-16 md:py-20" id="features">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="mb-10 sm:mb-14 text-center">
+          <p className="text-xs sm:text-sm font-semibold text-orange-600 mb-2 sm:mb-3">Lunchsan Highlights</p>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-5 px-2">
+            「今日どこ行く？」のお悩みをまるっと解決
+          </h2>
+          <p className="text-sm sm:text-base text-gray-600 leading-relaxed max-w-3xl mx-auto px-2">
+            チャットでみんなの予定を追いかけたり、スプレッドシートに人数をまとめたり――そんなバラバラの作業をひとつにまとめたくて昼食さんを作りました。
+            URLをひとつ共有すれば、その日の参加メンバーも行きたいお店も投票結果も、一画面で楽しく見られます。
+          </p>
+        </div>
 
-            <div className="grid sm:grid-cols-2 gap-4 mt-10">
-              {coreBenefits.map((benefit) => (
-                <div
-                  key={benefit.title}
-                  className="rounded-2xl border border-orange-100 bg-orange-50/30 p-5 hover:border-orange-200 transition-colors"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center mb-4">
-                    <i className={`${benefit.icon} text-xl`}></i>
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{benefit.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
-                </div>
-              ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+          {coreBenefits.map((benefit) => (
+            <div
+              key={benefit.title}
+              className="group rounded-2xl border-2 border-orange-100 bg-white p-5 sm:p-6 hover:border-orange-300 hover:shadow-lg transition-all duration-300"
+            >
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-orange-100 to-orange-50 text-orange-600 flex items-center justify-center mb-3 sm:mb-4 group-hover:from-orange-200 group-hover:to-orange-100 transition-colors">
+                <i className={`${benefit.icon} text-xl sm:text-2xl`}></i>
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors">{benefit.title}</h3>
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
             </div>
-          </div>
-
-          <div className="bg-gray-50 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-sm">
-            <p className="text-sm font-semibold text-gray-700 mb-4">使っている人の声</p>
-            <div className="space-y-4 mb-6">
-              {userStories.map((item) => (
-                <div key={item.title} className="rounded-2xl bg-white border border-gray-200 p-4">
-                  <p className="text-sm font-semibold text-gray-900 mb-1">{item.title}</p>
-                  <p className="text-xs text-gray-600 leading-relaxed">{item.detail}</p>
-                </div>
-              ))}
-            </div>
-            <div className="rounded-2xl bg-white border border-gray-200 p-5">
-              <p className="text-sm font-semibold text-gray-900 mb-2">昼食さんでできること</p>
-              <ul className="text-xs text-gray-600 space-y-1 mb-4">
-                <li>・ URLを一度共有すれば、翌日からは貼り直し不要</li>
-                <li>・ 雨の日も歩いて行けるお店を自動で出してくれる</li>
-                <li>・ 投票結果が見えるから、迷った時でもサッと決められる</li>
-              </ul>
-              <a
-                href="#create-form"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-orange-600 text-white text-sm font-semibold hover:bg-orange-700 transition-colors w-full text-center"
-              >
-                1分で予定を作成する
-                <i className="ri-arrow-right-up-line text-base"></i>
-              </a>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

@@ -47,60 +47,60 @@ const situations = [
 export default function UsageGuide() {
   return (
     <div className="max-w-5xl mx-auto">
-      <div className="text-center mb-10">
-        <div className="inline-flex items-center justify-center w-12 h-12 bg-orange-600 rounded-xl text-white shadow-sm mb-4">
-          <i className="ri-book-open-line text-xl"></i>
+      <div className="text-center mb-10 sm:mb-12">
+        <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-orange-600 to-orange-500 rounded-xl text-white shadow-lg mb-4 sm:mb-5">
+          <i className="ri-book-open-line text-xl sm:text-2xl"></i>
         </div>
-        <p className="text-xs font-semibold text-orange-600 tracking-widest uppercase mb-3">HOW IT WORKS</p>
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">3ステップで予定調整完了</h2>
-        <p className="text-base text-gray-600 font-medium">
+        <p className="text-xs font-semibold text-orange-600 tracking-widest uppercase mb-2 sm:mb-3">HOW IT WORKS</p>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 px-2">3ステップで予定調整完了</h2>
+        <p className="text-sm sm:text-base text-gray-600 leading-relaxed max-w-2xl mx-auto px-2">
           招待から投票まで、ひとつのURLであっという間。難しい説明はいりません。
         </p>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-5 md:gap-7 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 mb-10 sm:mb-14">
         {steps.map((step) => (
           <div
             key={step.number}
-            className="bg-white rounded-2xl p-7 border border-orange-200 shadow-sm hover:shadow-lg hover:border-orange-300 transition-all"
+            className="group bg-white rounded-2xl p-6 sm:p-8 border-2 border-orange-100 shadow-md hover:shadow-xl hover:border-orange-300 transition-all duration-300"
           >
-            <div className="flex items-center justify-center w-14 h-14 bg-orange-600 text-white rounded-xl text-2xl font-bold mb-5 mx-auto shadow-sm">
+            <div className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-orange-600 to-orange-500 text-white rounded-xl text-xl sm:text-2xl font-bold mb-5 sm:mb-6 mx-auto shadow-lg">
               {step.number}
             </div>
-            <div className="flex justify-center mb-5">
-              <div className="w-20 h-20 bg-orange-50 rounded-2xl flex items-center justify-center shadow-sm">
-                <i className={`${step.icon} text-orange-600 text-3xl`}></i>
+            <div className="flex justify-center mb-5 sm:mb-6">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+                <i className={`${step.icon} text-orange-600 text-3xl sm:text-4xl`}></i>
               </div>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">{step.title}</h3>
-            <p className="text-sm text-gray-600 text-center leading-relaxed font-medium">{step.description}</p>
+            <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3 text-center group-hover:text-orange-600 transition-colors">{step.title}</h3>
+            <p className="text-xs sm:text-sm text-gray-600 text-center leading-relaxed">{step.description}</p>
           </div>
         ))}
       </div>
 
-      <div className="bg-gray-50 rounded-3xl p-6 md:p-8 border border-gray-200">
-        <h3 className="text-xl font-semibold text-gray-900 mb-5 text-center">こんなときに便利</h3>
-        <div className="grid md:grid-cols-2 gap-4">
+      <div className="bg-gradient-to-br from-orange-50 to-white rounded-3xl p-6 sm:p-8 md:p-10 border-2 border-orange-100 shadow-lg">
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 sm:mb-8 text-center">こんなときに便利</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 mb-6 sm:mb-8">
           {situations.map((item) => (
-            <div key={item.title} className="flex items-start gap-3 p-4 bg-white rounded-2xl border border-gray-200">
-              <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                <i className={`${item.icon} text-orange-600 text-lg`}></i>
+            <div key={item.title} className="flex items-start gap-3 sm:gap-4 p-4 sm:p-5 bg-white rounded-2xl border-2 border-orange-100 hover:border-orange-300 hover:shadow-md transition-all">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 bg-gradient-to-br from-orange-100 to-orange-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i className={`${item.icon} text-orange-600 text-lg sm:text-xl`}></i>
               </div>
               <div>
-                <p className="font-semibold text-gray-900 text-sm mb-1">{item.title}</p>
-                <p className="text-xs text-gray-600 leading-relaxed">{item.description}</p>
+                <p className="font-bold text-gray-900 text-sm sm:text-base mb-1.5 sm:mb-2">{item.title}</p>
+                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{item.description}</p>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="mt-8 text-center">
+        <div className="text-center">
           <a
             href="#create-form"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-orange-600 text-white text-sm font-semibold hover:bg-orange-700 transition-colors shadow-md"
+            className="inline-flex items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl bg-orange-600 text-white text-sm sm:text-base font-bold hover:bg-orange-700 transition-colors shadow-lg hover:shadow-xl min-h-[48px] touch-manipulation"
           >
             予定を作成する
-            <i className="ri-arrow-right-line text-base"></i>
+            <i className="ri-arrow-right-line text-base sm:text-lg"></i>
           </a>
         </div>
       </div>
