@@ -386,7 +386,7 @@ export default function LocationVoting({
 
                   {/* 投票数と投票ボタンエリア（右側） */}
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <div className="text-center bg-white rounded-lg px-3 py-1.5 border border-gray-200 min-w-[60px]">
+                    <div className="text-center bg-white rounded-lg px-3 py-1.5 border border-gray-200">
                       <div className="text-xs text-gray-500 mb-0.5 font-medium">投票数</div>
                       <div className="text-lg font-bold text-gray-900 tabular-nums">
                         {voteCount}
@@ -395,7 +395,7 @@ export default function LocationVoting({
                     <button
                       onClick={() => handleVote(candidate.id)}
                       disabled={loading || !currentParticipantName.trim() || !isParticipant}
-                      className={`px-4 py-1.5 rounded-lg font-semibold text-sm shadow-sm border-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap ${
+                      className={`px-4 py-1.5 rounded-lg font-semibold text-sm shadow-sm border-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                         isSelected
                           ? 'bg-orange-600 text-white border-orange-600 hover:bg-orange-700'
                           : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200'
@@ -403,7 +403,7 @@ export default function LocationVoting({
                       aria-label={isSelected ? `${candidate.name}の投票を解除` : `${candidate.name}に投票`}
                       title={!isParticipant ? '投票するには、まず「参加する」ボタンで参加してください' : ''}
                     >
-                      <span className="flex items-center gap-1.5 justify-center">
+                      <span className="flex items-center gap-1.5 justify-center whitespace-nowrap">
                         <i className="ri-thumb-up-line text-sm"></i>
                         <span>投票する</span>
                       </span>
