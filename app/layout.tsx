@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import HashScrollHandler from "./hash-scroll-handler";
 import "./globals.css";
-import "./remixicon.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
