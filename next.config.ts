@@ -63,7 +63,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com data:",
               "img-src 'self' data: https: blob:",
-              "connect-src 'self' https://*.supabase.co https://maps.googleapis.com https://maps.gstatic.com https://api.open-meteo.com https://api.bigdatacloud.net https://api.openweathermap.org https://*.google.com https://*.googlesyndication.com https://*.googleadservices.com",
+              "connect-src 'self' https://*.supabase.co https://maps.googleapis.com https://maps.gstatic.com https://api.open-meteo.com https://api.bigdatacloud.net https://api.openweathermap.org https://*.google.com https://*.googlesyndication.com https://*.googleadservices.com https://ep1.adtrafficquality.google",
               "frame-src 'self' https://maps.googleapis.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com",
               "object-src 'none'",
               "base-uri 'self'",
