@@ -385,7 +385,7 @@ export default function LocationVoting({
 
                   {/* 投票数と投票ボタンエリア（右側） */}
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <div className="text-center bg-white rounded-lg px-3 py-1.5 border border-orange-200 min-w-[60px]">
+                    <div className="text-center bg-white rounded-lg px-3 py-1.5 border border-gray-200 min-w-[60px]">
                       <div className="text-xs text-gray-500 mb-0.5 font-medium">投票数</div>
                       <div className="text-lg font-bold text-gray-900 tabular-nums">
                         {voteCount}
@@ -397,22 +397,15 @@ export default function LocationVoting({
                       className={`px-4 py-1.5 rounded-lg font-semibold text-sm shadow-sm min-w-[100px] border-2 transition-colors ${
                         isSelected
                           ? 'bg-orange-600 text-white border-orange-600 hover:bg-orange-700'
-                          : 'bg-white text-orange-600 border-orange-600 hover:bg-orange-600 hover:text-white'
-                      } disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-orange-600 disabled:hover:border-orange-600`}
+                          : 'bg-orange-600 text-white border-orange-600 hover:bg-orange-700'
+                      } disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-orange-600`}
                       aria-label={isSelected ? `${candidate.name}の投票を解除` : `${candidate.name}に投票`}
                       title={!isParticipant ? '投票するには、まず「参加する」ボタンで参加してください' : ''}
                     >
-                      {isSelected ? (
-                        <span className="flex items-center gap-1.5 justify-center">
-                          <i className="ri-check-line text-sm"></i>
-                          <span>投票済み</span>
-                        </span>
-                      ) : (
-                        <span className="flex items-center gap-1.5 justify-center">
-                          <i className="ri-hand-coin-line text-sm"></i>
-                          <span>投票する</span>
-                        </span>
-                      )}
+                      <span className="flex items-center gap-1.5 justify-center">
+                        <i className="ri-thumb-up-line text-sm"></i>
+                        <span>投票する</span>
+                      </span>
                     </button>
                   </div>
                 </div>
