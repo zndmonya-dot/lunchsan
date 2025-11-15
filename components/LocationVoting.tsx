@@ -344,12 +344,12 @@ export default function LocationVoting({
             return (
               <div
                 key={candidate.id}
-                className="p-4 bg-green-50 border-2 border-green-200 rounded-xl hover:bg-green-100 hover:border-green-300 transition-all"
+                className="p-4 bg-white border-2 border-gray-200 rounded-xl hover:bg-orange-50 hover:border-orange-300 transition-all"
               >
                 <div className="flex items-start justify-between gap-3">
                   {/* お店情報エリア（左側） */}
                   <div className="flex items-start gap-3 flex-1 min-w-0">
-                    <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
                       <i className="ri-check-line text-white text-lg"></i>
                     </div>
                     <div className="flex-1 min-w-0">
@@ -364,7 +364,7 @@ export default function LocationVoting({
                           </h3>
                           {candidate.restaurant_address && (
                             <p className="text-sm text-gray-600 flex items-start gap-1.5">
-                              <i className="ri-map-pin-line text-green-500 mt-0.5 text-base flex-shrink-0"></i>
+                              <i className="ri-map-pin-line text-orange-500 mt-0.5 text-base flex-shrink-0"></i>
                               <span className="leading-relaxed break-words">{candidate.restaurant_address}</span>
                             </p>
                           )}
@@ -374,7 +374,7 @@ export default function LocationVoting({
                           <h3 className="font-bold text-base text-gray-900 leading-tight mb-1">{candidate.name}</h3>
                           {candidate.restaurant_address && (
                             <p className="text-sm text-gray-600 flex items-start gap-1.5">
-                              <i className="ri-map-pin-line text-green-500 mt-0.5 text-base flex-shrink-0"></i>
+                              <i className="ri-map-pin-line text-orange-500 mt-0.5 text-base flex-shrink-0"></i>
                               <span className="leading-relaxed break-words">{candidate.restaurant_address}</span>
                             </p>
                           )}
@@ -385,7 +385,7 @@ export default function LocationVoting({
 
                   {/* 投票数と投票ボタンエリア（右側） */}
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <div className="text-center bg-white rounded-lg px-3 py-1.5 border border-green-200 min-w-[60px]">
+                    <div className="text-center bg-white rounded-lg px-3 py-1.5 border border-orange-200 min-w-[60px]">
                       <div className="text-xs text-gray-500 mb-0.5 font-medium">投票</div>
                       <div className="text-lg font-bold text-gray-900 tabular-nums">
                         {voteCount}
