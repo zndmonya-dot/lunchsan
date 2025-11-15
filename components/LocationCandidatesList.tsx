@@ -60,7 +60,7 @@ export default function LocationCandidatesList({
                     const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`
                     window.open(url, '_blank', 'noopener,noreferrer')
                   }}
-                  className="px-3 py-1.5 text-xs font-semibold text-orange-700 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors whitespace-nowrap"
+                  className="px-3 py-1.5 text-xs font-semibold text-orange-700 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors whitespace-nowrap flex items-center gap-1 h-[32px]"
                   aria-label={`${candidate.name}をGoogleマップで開く`}
                 >
                   <i className="ri-map-pin-2-line text-sm" aria-hidden="true"></i>
@@ -70,7 +70,7 @@ export default function LocationCandidatesList({
               <button
                 type="button"
                 onClick={() => onRemove(candidate.id)}
-                className="px-3 py-1.5 text-xs font-semibold text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors whitespace-nowrap flex items-center gap-1"
+                className="px-3 py-1.5 text-xs font-semibold text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors whitespace-nowrap flex items-center gap-1 h-[32px]"
                 aria-label={`${candidate.name}を候補から削除`}
               >
                 <i className="ri-close-line text-sm" aria-hidden="true"></i>
