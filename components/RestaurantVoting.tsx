@@ -272,6 +272,7 @@ export default function RestaurantVoting({
                         ? 'bg-orange-500 text-white border-orange-500'
                         : 'bg-white text-gray-700 border-gray-300 hover:bg-orange-50 hover:border-orange-300'
                     } disabled:opacity-50 disabled:cursor-not-allowed`}
+                    aria-label={voted ? `${restaurant.name}の投票を解除` : `${restaurant.name}に投票`}
                   >
                     {voted ? '✓' : '選ぶ'}
                   </button>

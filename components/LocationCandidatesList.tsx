@@ -61,9 +61,9 @@ export default function LocationCandidatesList({
                     window.open(url, '_blank', 'noopener,noreferrer')
                   }}
                   className="px-3 py-1.5 text-xs font-semibold text-orange-700 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors"
-                  title="Googleマップで開く"
+                  aria-label={`${candidate.name}をGoogleマップで開く`}
                 >
-                  <i className="ri-map-pin-2-line text-sm"></i>
+                  <i className="ri-map-pin-2-line text-sm" aria-hidden="true"></i>
                   地図
                 </button>
               )}
@@ -71,9 +71,9 @@ export default function LocationCandidatesList({
                 type="button"
                 onClick={() => onRemove(candidate.id)}
                 className="px-3 py-1.5 text-xs font-semibold text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
-                title="削除"
+                aria-label={`${candidate.name}を候補から削除`}
               >
-                <i className="ri-close-line text-sm"></i>
+                <i className="ri-close-line text-sm" aria-hidden="true"></i>
               </button>
             </div>
           </div>

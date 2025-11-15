@@ -80,10 +80,18 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
+        {/* DNS prefetch and preconnect for performance */}
+        <link rel="dns-prefetch" href="https://maps.googleapis.com" />
+        <link rel="dns-prefetch" href="https://maps.gstatic.com" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        <link rel="preconnect" href="https://maps.googleapis.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://maps.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* AdSense - さらに遅延読み込み */}
         <Script
           id="adsense-script"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4335284954366086"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           crossOrigin="anonymous"
           async
         />
@@ -92,10 +100,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <HashScrollHandler />
+        {/* Google Maps - 動的インポートでさらに遅延 */}
         {process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY && (
           <Script
             src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&loading=async`}
             strategy="lazyOnload"
+            defer
           />
         )}
         {children}

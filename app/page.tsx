@@ -14,35 +14,42 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <Header />
+      <header>
+        <Header />
+      </header>
 
-      {/* Hero Section */}
-      <HeroSection />
+      {/* Main Content */}
+      <main>
+        {/* Hero Section */}
+        <HeroSection />
 
-      {/* Highlights */}
-      <HighlightsSection />
+        {/* Highlights */}
+        <HighlightsSection />
 
-      {/* Create Event Form - トップ画面で直接作成 */}
-      <div id="create-form" className="scroll-mt-24">
-        <CreateEventForm />
-      </div>
+        {/* Create Event Form - トップ画面で直接作成 */}
+        <section id="create-form" className="scroll-mt-24" aria-labelledby="create-form-heading">
+          <CreateEventForm />
+        </section>
 
-      {/* Usage Guide */}
-      <div id="usage-guide" className="bg-gradient-to-b from-white to-gray-50 py-12 sm:py-16 md:py-20 scroll-mt-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <UsageGuide />
-        </div>
-      </div>
+        {/* Usage Guide */}
+        <section id="usage-guide" className="bg-gradient-to-b from-white to-gray-50 py-12 sm:py-16 md:py-20 scroll-mt-24" aria-labelledby="usage-guide-heading">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <UsageGuide />
+          </div>
+        </section>
 
-      {/* FAQ Section */}
-      <div id="faq" className="bg-white py-12 sm:py-16 md:py-20 scroll-mt-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <FAQ />
-        </div>
-      </div>
+        {/* FAQ Section */}
+        <section id="faq" className="bg-white py-12 sm:py-16 md:py-20 scroll-mt-24" aria-labelledby="faq-heading">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <FAQ />
+          </div>
+        </section>
+      </main>
 
       {/* Footer */}
-      <Footer />
+      <footer>
+        <Footer />
+      </footer>
     </div>
   )
 }

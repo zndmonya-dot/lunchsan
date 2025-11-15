@@ -25,12 +25,6 @@ const locationTypeLabels = {
   undecided: '未定',
 }
 
-const statusLabels = {
-  going: '参加',
-  not_going: '不参加',
-  maybe: '未回答',
-}
-
 const statusColors = {
   going: 'bg-green-100 text-green-800 border border-green-200',
   not_going: 'bg-gray-100 text-gray-800 border border-gray-200',

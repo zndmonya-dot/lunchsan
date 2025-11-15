@@ -1,6 +1,6 @@
-  'use client'
+'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import {
   getManualLocation,
@@ -49,26 +49,6 @@ interface RestaurantSearchProps {
   endTime?: string // HH:MM format
   eventDate?: string // YYYY-MM-DD format (for checking opening hours on that day)
   addedRestaurantIds?: Set<string> // 既に追加されたお店のIDリスト
-}
-
-interface SummaryItem {
-  label: string
-  value: string
-  icon: string
-  link?: string
-}
-
-const JP_DAYS = ['日', '月', '火', '水', '木', '金', '土']
-const EN_DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-
-const getTodayHoursText = (weekdayText?: string[] | null) => {
-  if (!weekdayText || weekdayText.length === 0) return null
-  const todayIdx = new Date().getDay()
-  const jpPrefix = `${JP_DAYS[todayIdx]}曜日`
-  const enPrefix = EN_DAYS[todayIdx]
-  const target = weekdayText.find((line) => line.startsWith(jpPrefix) || line.startsWith(enPrefix))
-  const raw = target || weekdayText[0]
-  return raw.replace(/^(?:[A-Za-z]+|[月火水木金土日]曜日)\s*[:：]?\s*/, '')
 }
 
 export default function RestaurantSearch({ onSelect, selectedRestaurant, userLocation: propUserLocation, startTime, endTime, eventDate, addedRestaurantIds = new Set() }: RestaurantSearchProps) {
@@ -189,7 +169,9 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
         // localStorageから保存された位置情報を確認
         const saved = getManualLocation()
         if (saved) {
-          console.log('Using saved location from localStorage:', saved.lat, saved.lng)
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Using saved location from localStorage:', saved.lat, saved.lng)
+          }
           newLocation = { lat: saved.lat, lng: saved.lng }
         }
       }
@@ -244,7 +226,9 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
       // 位置情報が更新された場合、自動的に検索を実行
       if (shouldResearch && newLocation) {
         if (locationChanged) {
-          console.log('Location changed, updating search results...', newLocation)
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Location changed, updating search results...', newLocation)
+          }
           setRestaurants([])
           setShowResults(false)
         }
@@ -256,11 +240,15 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
             const saved = getManualLocation()
             if (saved) {
               locationToUse = { lat: saved.lat, lng: saved.lng }
-              console.log('Auto-searching with latest location from localStorage:', locationToUse)
+              if (process.env.NODE_ENV === 'development') {
+                console.log('Auto-searching with latest location from localStorage:', locationToUse)
+              }
             }
           }
 
-          console.log('Auto-searching with location:', locationToUse)
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Auto-searching with location:', locationToUse)
+          }
           setShowResults(true)
           const normalized = normalizeSearchQuery(queryRef.current)
           searchRestaurants(normalized ?? undefined, locationToUse)
@@ -339,19 +327,27 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
       // 優先順位: 1. 強制指定された位置情報 2. propsから渡された位置情報 3. localStorageに保存された位置情報 4. 現在のuserLocation
       if (forceLocation) {
         currentLocation = forceLocation
-        console.log('Using forced location:', currentLocation)
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Using forced location:', currentLocation)
+        }
       } else if (propUserLocation) {
         currentLocation = propUserLocation
-        console.log('Using propUserLocation:', currentLocation)
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Using propUserLocation:', currentLocation)
+        }
       } else if (typeof window !== 'undefined') {
         // 常にlocalStorageから最新の位置情報を取得（状態に依存しない）
         const saved = getManualLocation()
         if (saved) {
           currentLocation = { lat: saved.lat, lng: saved.lng }
-          console.log('Using latest location from localStorage:', currentLocation)
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Using latest location from localStorage:', currentLocation)
+          }
           // 位置情報が変更された場合は状態も更新（次回の検索のために）
           if (!userLocation || userLocation.lat !== saved.lat || userLocation.lng !== saved.lng) {
-            console.log('Location changed, updating state:', saved.lat, saved.lng)
+            if (process.env.NODE_ENV === 'development') {
+              console.log('Location changed, updating state:', saved.lat, saved.lng)
+            }
             setUserLocation(currentLocation)
           }
         }
@@ -360,7 +356,9 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
       // localStorageに位置情報がない場合は、現在のuserLocationを使用
       if (!currentLocation) {
         currentLocation = userLocation
-        console.log('Using fallback userLocation:', currentLocation)
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Using fallback userLocation:', currentLocation)
+        }
       }
 
       if (!currentLocation) {
@@ -369,7 +367,9 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
         return
       }
       
-      console.log('Searching restaurants with location:', currentLocation, 'at', new Date().toISOString())
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Searching restaurants with location:', currentLocation, 'at', new Date().toISOString())
+      }
 
       // Places API (New)を使用
       // JavaScript APIでは、PlacesServiceは従来通り使用できますが、
@@ -451,8 +451,8 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
           'current_opening_hours',
         ]
 
-        // 最大10件まで詳細情報を取得（パフォーマンス向上）
-        const detailPromises = basicRestaurants.slice(0, 10).map((restaurant) => {
+        // 全件の詳細情報を取得（営業時間フィルタリングのため）
+        const detailPromises = basicRestaurants.map((restaurant) => {
           // place_idが存在し、有効な形式かチェック
           const placeId = restaurant.place_id
           if (!placeId || typeof placeId !== 'string' || placeId.trim() === '' || placeId.length < 10) {
@@ -503,7 +503,13 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
           // 既存のリストを更新
           setRestaurants((prevRestaurants) => {
             const updatedMap = new Map(updatedRestaurants.map(r => [r.place_id || r.id, r]))
-            return prevRestaurants.map(r => updatedMap.get(r.place_id || r.id) || r)
+            const merged = prevRestaurants.map(r => updatedMap.get(r.place_id || r.id) || r)
+            
+            // 営業時間でフィルタリング
+            if (startTime && endTime) {
+              return merged.filter(restaurant => isOpenDuringTime(restaurant, startTime, endTime, eventDate))
+            }
+            return merged
           })
         }).catch((error) => {
           // エラーは静かに処理（ユーザーには表示しない）
@@ -588,7 +594,9 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
       if (saved) {
         latestLocation = { lat: saved.lat, lng: saved.lng }
         setUserLocation(latestLocation)
-        console.log('Location updated before search:', latestLocation)
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Location updated before search:', latestLocation)
+        }
       }
     }
 
@@ -610,7 +618,9 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
       if (saved) {
         latestLocation = { lat: saved.lat, lng: saved.lng }
         setUserLocation(latestLocation)
-        console.log('Location updated before search click:', latestLocation)
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Location updated before search click:', latestLocation)
+        }
       }
     }
 
@@ -829,7 +839,15 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
             </p>
           </div>
           <div className="max-h-[600px] overflow-y-auto space-y-4">
-            {restaurants.map((restaurant) => {
+            {restaurants
+              .filter(restaurant => {
+                // 営業時間でフィルタリング（詳細情報が取得済みの場合のみ）
+                if (startTime && endTime) {
+                  return isOpenDuringTime(restaurant, startTime, endTime, eventDate)
+                }
+                return true
+              })
+              .map((restaurant) => {
               const restaurantId = restaurant.place_id || restaurant.id
               const isAdded = addedRestaurantIds.has(restaurantId)
               const isExpanded = expandedRestaurantIds.has(restaurantId)
@@ -861,8 +879,9 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
                           type="button"
                           className="px-3 py-1.5 text-xs font-semibold text-white bg-orange-600 rounded-lg hover:bg-orange-700 transition-colors flex items-center justify-center gap-1.5 shadow-sm min-w-[70px]"
                           onClick={() => onSelect(detailData)}
+                          aria-label={isAdded ? `${restaurant.name}を候補から解除` : `${restaurant.name}を候補に追加`}
                         >
-                          <i className={`ri-${isAdded ? 'close' : 'add'}-line text-sm`}></i>
+                          <i className={`ri-${isAdded ? 'close' : 'add'}-line text-sm`} aria-hidden="true"></i>
                           <span className="whitespace-nowrap">{isAdded ? '解除' : '追加'}</span>
                         </button>
                       </div>
@@ -892,16 +911,19 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
                             }`
                             window.open(url, '_blank', 'noopener,noreferrer')
                           }}
+                          aria-label={`${restaurant.name}をGoogleマップで開く`}
                         >
-                          <i className="ri-map-pin-2-line text-sm"></i>
+                          <i className="ri-map-pin-2-line text-sm" aria-hidden="true"></i>
                           <span className="whitespace-nowrap">地図</span>
                         </button>
                         <button
                           type="button"
                           className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex-1 sm:flex-initial touch-manipulation min-h-[40px]"
                           onClick={() => handleToggleDetails(restaurant)}
+                          aria-label={isExpanded ? `${restaurant.name}の詳細を閉じる` : `${restaurant.name}の詳細を開く`}
+                          aria-expanded={isExpanded}
                         >
-                          <i className={`ri-${isExpanded ? 'arrow-up' : 'arrow-down'}-s-line text-sm`}></i>
+                          <i className={`ri-${isExpanded ? 'arrow-up' : 'arrow-down'}-s-line text-sm`} aria-hidden="true"></i>
                           <span className="whitespace-nowrap">{isExpanded ? '閉じる' : '詳細'}</span>
                         </button>
                       </div>

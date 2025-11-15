@@ -1,6 +1,18 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // モダンブラウザのみをターゲット（ポリフィル削減）
+  transpilePackages: [],
+  compiler: {
+    // 不要なconsole.logを削除（本番環境）
+    removeConsole: process.env.NODE_ENV === 'production' ? {
+      exclude: ['error', 'warn'],
+    } : false,
+  },
+  // 実験的機能: 最適化
+  experimental: {
+    optimizePackageImports: ['remixicon'],
+  },
   async headers() {
     return [
       {
