@@ -386,7 +386,7 @@ export default function LocationVoting({
                   {/* 投票数と投票ボタンエリア（右側） */}
                   <div className="flex items-center gap-2 flex-shrink-0">
                     <div className="text-center bg-white rounded-lg px-3 py-1.5 border border-orange-200 min-w-[60px]">
-                      <div className="text-xs text-gray-500 mb-0.5 font-medium">投票</div>
+                      <div className="text-xs text-gray-500 mb-0.5 font-medium">投票数</div>
                       <div className="text-lg font-bold text-gray-900 tabular-nums">
                         {voteCount}
                       </div>
@@ -410,7 +410,7 @@ export default function LocationVoting({
                       ) : (
                         <span className="flex items-center gap-1.5 justify-center">
                           <i className="ri-hand-coin-line text-sm"></i>
-                          <span>投票</span>
+                          <span>投票する</span>
                         </span>
                       )}
                     </button>
