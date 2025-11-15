@@ -667,8 +667,9 @@ export default function CreateEventForm() {
                       type="button"
                       onClick={handleAddTextCandidate}
                       className="px-5 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-md hover:shadow-lg h-[48px] min-w-[90px] touch-manipulation transition-all flex items-center justify-center gap-2 text-sm"
+                      aria-label="場所の候補を追加"
                     >
-                      <i className="ri-add-line text-base"></i>
+                      <i className="ri-add-line text-base" aria-hidden="true"></i>
                       <span>追加</span>
                     </button>
                   </div>

@@ -692,9 +692,9 @@ export default function EventDetailClient({
                       type="button"
                       onClick={handleEditClick}
                       className="px-3 py-2 text-sm text-orange-600 hover:text-orange-700 hover:bg-orange-50 rounded-lg font-medium touch-manipulation border border-orange-300 flex items-center gap-1.5"
-                      title="予定作成者のメールアドレスとパスワードで確認後、編集できます。"
+                      aria-label="予定を編集（作成者のメールアドレスとパスワードで確認後、編集できます）"
                     >
-                      <i className="ri-edit-line text-base"></i>
+                      <i className="ri-edit-line text-base" aria-hidden="true"></i>
                       <span>編集</span>
                     </button>
                   </div>
@@ -854,8 +854,9 @@ export default function EventDetailClient({
                         type="button"
                         onClick={handleAddTextCandidate}
                         className="px-5 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-md hover:shadow-lg h-[48px] min-w-[90px] touch-manipulation transition-all flex items-center justify-center gap-2 text-sm"
+                        aria-label="場所の候補を追加"
                       >
-                        <i className="ri-add-line text-base"></i>
+                        <i className="ri-add-line text-base" aria-hidden="true"></i>
                         <span>追加</span>
                       </button>
                     </div>
@@ -937,6 +938,8 @@ export default function EventDetailClient({
                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ${
                           autoDailyUpdate ? 'bg-orange-600' : 'bg-gray-300'
                         } ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                        aria-label={`毎日自動初期化を${autoDailyUpdate ? 'オフ' : 'オン'}にする`}
+                        aria-pressed={autoDailyUpdate}
                       >
                         <span
                           className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
@@ -1188,6 +1191,7 @@ export default function EventDetailClient({
                 }}
                 disabled={updatingEvent}
                 className="flex-1 px-4 py-3 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base min-h-[44px] touch-manipulation shadow-sm"
+                aria-label="予定の変更を保存"
               >
                 {updatingEvent ? '更新中...' : '保存'}
               </button>
@@ -1220,6 +1224,7 @@ export default function EventDetailClient({
                 }}
                 disabled={updatingEvent}
                 className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base min-h-[44px] touch-manipulation"
+                aria-label="編集をキャンセル"
               >
                 キャンセル
               </button>
@@ -1290,6 +1295,7 @@ export default function EventDetailClient({
                       type="button"
                       onClick={handleOwnerCheck}
                       className="flex-1 px-4 sm:px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-semibold shadow-md min-h-[48px] touch-manipulation text-sm sm:text-base"
+                      aria-label="予定編集の認証を確認"
                     >
                       確認
                     </button>
@@ -1301,6 +1307,7 @@ export default function EventDetailClient({
                         setOwnerCheckError(null)
                       }}
                       className="flex-1 px-4 sm:px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-semibold border-2 border-gray-300 min-h-[48px] touch-manipulation text-sm sm:text-base"
+                      aria-label="認証をキャンセル"
                     >
                       キャンセル
                     </button>
@@ -1391,15 +1398,16 @@ export default function EventDetailClient({
                   onClick={handleDeleteParticipant}
                   disabled={loading}
                   className="w-full px-6 py-3 bg-red-600 text-white rounded-lg font-bold text-base hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
+                  aria-label="参加を取り消す"
                 >
                   {loading ? (
                     <>
-                      <i className="ri-loader-4-line animate-spin text-xl"></i>
+                      <i className="ri-loader-4-line animate-spin text-xl" aria-hidden="true"></i>
                       <span>処理中...</span>
                     </>
                   ) : (
                     <>
-                      <i className="ri-close-line text-xl"></i>
+                      <i className="ri-close-line text-xl" aria-hidden="true"></i>
                       <span>参加を取り消す</span>
                     </>
                   )}
@@ -1409,15 +1417,16 @@ export default function EventDetailClient({
                   onClick={handleStatusChange}
                   disabled={loading || !participantName.trim()}
                   className="w-full px-6 py-3 bg-orange-600 text-white rounded-lg font-bold text-base hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
+                  aria-label="この予定に参加する"
                 >
                   {loading ? (
                     <>
-                      <i className="ri-loader-4-line animate-spin text-xl"></i>
+                      <i className="ri-loader-4-line animate-spin text-xl" aria-hidden="true"></i>
                       <span>処理中...</span>
                     </>
                   ) : (
                     <>
-                      <i className="ri-user-add-line text-xl"></i>
+                      <i className="ri-user-add-line text-xl" aria-hidden="true"></i>
                       <span>参加する</span>
                     </>
                   )}

@@ -246,6 +246,8 @@ export default function FAQ() {
               <button
                 onClick={() => toggleQuestion(index)}
                 className="w-full px-4 sm:px-5 py-3.5 sm:py-4 flex items-center justify-between text-left hover:bg-orange-50/30 transition-colors rounded-xl min-h-[56px] touch-manipulation"
+                aria-label={openIndices.has(index) ? `${item.question}の回答を閉じる` : `${item.question}の回答を開く`}
+                aria-expanded={openIndices.has(index)}
               >
                 <div className="flex items-center gap-2.5 sm:gap-3 flex-1 min-w-0">
                   <div className="w-9 h-9 sm:w-10 sm:h-10 bg-orange-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
@@ -314,15 +316,16 @@ export default function FAQ() {
                             disabled={loading}
                             className="w-full px-4 sm:px-5 py-3 sm:py-2.5 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm min-h-[48px] touch-manipulation"
                             onClick={(e) => e.stopPropagation()}
+                            aria-label="作成した予定を検索"
                           >
                             {loading ? (
                               <>
-                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
                                 <span>検索中...</span>
                               </>
                             ) : (
                               <>
-                                <i className="ri-search-line"></i>
+                                <i className="ri-search-line" aria-hidden="true"></i>
                                 <span>検索</span>
                               </>
                             )}
@@ -361,16 +364,16 @@ export default function FAQ() {
                                       <button
                                         onClick={() => handleCopyUrl(event.token, event.id)}
                                         className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs hover:bg-gray-200 transition-colors"
-                                        title="URLをコピー"
+                                        aria-label={`${event.title || '予定'}のURLをコピー`}
                                       >
-                                        <i className="ri-file-copy-line"></i>
+                                        <i className="ri-file-copy-line" aria-hidden="true"></i>
                                       </button>
                                       <button
                                         onClick={() => handleOpenEvent(event.token, event.id)}
                                         className="px-2 py-1 bg-orange-600 text-white rounded text-xs hover:bg-orange-700 transition-colors shadow-sm"
-                                        title="開く"
+                                        aria-label={`${event.title || '予定'}を開く`}
                                       >
-                                        <i className="ri-external-link-line"></i>
+                                        <i className="ri-external-link-line" aria-hidden="true"></i>
                                       </button>
                                     </div>
                                   </div>
@@ -405,9 +408,10 @@ export default function FAQ() {
             <button
               onClick={() => setShowAll(true)}
               className="px-6 py-3 border-2 border-orange-300 text-gray-700 rounded-xl font-semibold hover:bg-orange-50 hover:border-orange-400 shadow-md hover:shadow-lg flex items-center gap-2 mx-auto transition-all"
+              aria-label="すべての質問を表示"
             >
               質問をもっと見る
-              <i className="ri-arrow-right-line text-lg"></i>
+              <i className="ri-arrow-right-line text-lg" aria-hidden="true"></i>
             </button>
           </div>
         )}

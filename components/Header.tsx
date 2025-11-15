@@ -868,7 +868,7 @@ export default function Header() {
               <button
                 onClick={handleWeatherClick}
                 className="flex items-center gap-2 bg-gray-50 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg border border-gray-200 hover:bg-gray-100 hover:border-gray-300 transition-all cursor-pointer touch-manipulation"
-                title="位置を設定"
+                aria-label={`${weather.location}の天気: ${weather.temperature}度、${weather.condition}。位置を設定する`}
               >
                 <span className="text-xl sm:text-2xl leading-none">{weather.icon}</span>
                 <div className="flex flex-col items-start min-w-0">
@@ -901,11 +901,12 @@ export default function Header() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="addressSearch" className="block text-sm font-medium text-gray-700 mb-2">
                   キーワードで検索 <span className="text-red-500">*</span>
                 </label>
                 <div className="flex gap-2">
                   <input
+                    id="addressSearch"
                     type="text"
                     value={addressSearch}
                     onChange={(e) => setAddressSearch(e.target.value)}
@@ -922,15 +923,16 @@ export default function Header() {
                     onClick={handleSearchAddress}
                     disabled={searchingAddress || !addressSearch.trim()}
                     className="px-4 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center justify-center gap-2 min-w-[80px]"
+                    aria-label="位置をキーワードで検索"
                   >
                     {searchingAddress ? (
                       <>
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
                         <span>検索中</span>
                       </>
                     ) : (
                       <>
-                        <i className="ri-search-line"></i>
+                        <i className="ri-search-line" aria-hidden="true"></i>
                         <span>検索</span>
                       </>
                     )}
@@ -945,8 +947,9 @@ export default function Header() {
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-xs text-gray-600 mb-1">緯度</label>
+                    <label htmlFor="manualLat" className="block text-xs text-gray-600 mb-1">緯度</label>
                     <input
+                      id="manualLat"
                       type="number"
                       step="any"
                       value={manualLat}
@@ -956,8 +959,9 @@ export default function Header() {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-600 mb-1">経度</label>
+                    <label htmlFor="manualLng" className="block text-xs text-gray-600 mb-1">経度</label>
                     <input
+                      id="manualLng"
                       type="number"
                       step="any"
                       value={manualLng}
@@ -993,14 +997,16 @@ export default function Header() {
                   onClick={handleGetCurrentLocation}
                   disabled={savingLocation}
                   className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center justify-center gap-2"
+                  aria-label="現在位置を取得"
                 >
-                  <i className="ri-map-pin-line"></i>
+                  <i className="ri-map-pin-line" aria-hidden="true"></i>
                   <span>現在位置を取得</span>
                 </button>
                 <button
                   onClick={handleSaveLocation}
                   disabled={savingLocation || !manualLat || !manualLng}
                   className="flex-1 px-4 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  aria-label="位置情報を保存"
                 >
                   {savingLocation ? '保存中...' : '保存'}
                 </button>
@@ -1009,6 +1015,7 @@ export default function Header() {
               <button
                 onClick={handleClearLocation}
                 className="w-full px-4 py-2 text-sm text-gray-600 hover:text-gray-800 font-medium"
+                aria-label="位置設定をクリアして自動取得に戻す"
               >
                 設定をクリア（自動取得に戻す）
               </button>
@@ -1016,6 +1023,7 @@ export default function Header() {
               <button
                 onClick={() => setShowLocationModal(false)}
                 className="w-full px-4 py-2 text-sm text-gray-600 hover:text-gray-800 font-medium"
+                aria-label="位置設定をキャンセル"
               >
                 キャンセル
               </button>

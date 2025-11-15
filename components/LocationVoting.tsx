@@ -357,6 +357,7 @@ export default function LocationVoting({
                         <button
                           onClick={() => handleRestaurantNameClick(candidate)}
                           className="group text-left w-full"
+                          aria-label={`${candidate.name}をGoogleマップで開く`}
                         >
                           <h3 className="font-bold text-base text-gray-900 leading-tight mb-1 group-hover:text-orange-600">
                             {candidate.name}
@@ -398,6 +399,7 @@ export default function LocationVoting({
                           ? 'bg-orange-600 text-white border-orange-600 hover:bg-orange-700'
                           : 'bg-white text-orange-600 border-orange-600 hover:bg-orange-600 hover:text-white'
                       } disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-orange-600 disabled:hover:border-orange-600`}
+                      aria-label={isSelected ? `${candidate.name}の投票を解除` : `${candidate.name}に投票`}
                       title={!isParticipant ? '投票するには、まず「参加する」ボタンで参加してください' : ''}
                     >
                       {isSelected ? (
