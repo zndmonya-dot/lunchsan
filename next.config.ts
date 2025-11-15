@@ -13,15 +13,6 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['remixicon'],
   },
-  // webpack設定: remixiconのフォントファイルを正しく処理
-  webpack: (config) => {
-    // remixiconのフォントファイルを正しく処理
-    config.module.rules.push({
-      test: /\.(woff|woff2|eot|ttf|svg)$/,
-      type: 'asset/resource',
-    });
-    return config;
-  },
   async headers() {
     return [
       {
