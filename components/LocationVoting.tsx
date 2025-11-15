@@ -362,9 +362,8 @@ export default function LocationVoting({
                           <i className="ri-external-link-line text-orange-600 text-base flex-shrink-0"></i>
                         </div>
                         {candidate.restaurant_address && (
-                          <p className="text-sm text-gray-600 flex items-start gap-1.5">
-                            <span className="text-orange-600">◎</span>
-                            <span className="leading-relaxed break-words">{candidate.restaurant_address}</span>
+                          <p className="text-sm text-gray-600 leading-relaxed break-words">
+                            {candidate.restaurant_address}
                           </p>
                         )}
                       </button>
@@ -374,9 +373,8 @@ export default function LocationVoting({
                           <h3 className="font-bold text-base text-gray-900 leading-tight">{candidate.name}</h3>
                         </div>
                         {candidate.restaurant_address && (
-                          <p className="text-sm text-gray-600 flex items-start gap-1.5">
-                            <span className="text-orange-600">◎</span>
-                            <span className="leading-relaxed break-words">{candidate.restaurant_address}</span>
+                          <p className="text-sm text-gray-600 leading-relaxed break-words">
+                            {candidate.restaurant_address}
                           </p>
                         )}
                       </div>
@@ -394,7 +392,11 @@ export default function LocationVoting({
                     <button
                       onClick={() => handleVote(candidate.id)}
                       disabled={loading || !currentParticipantName.trim() || !isParticipant}
-                      className="px-4 py-2 rounded-lg font-semibold text-base shadow-sm bg-orange-600 text-white border-2 border-orange-600 hover:bg-orange-700 active:bg-orange-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className={`px-4 py-2 rounded-lg font-semibold text-base shadow-sm border-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                        isSelected
+                          ? 'bg-orange-600 text-white border-orange-600 hover:bg-orange-700'
+                          : 'bg-white text-gray-700 border-gray-300 hover:bg-orange-600 hover:text-white hover:border-orange-600'
+                      }`}
                       aria-label={isSelected ? `${candidate.name}の投票を解除` : `${candidate.name}に投票`}
                       title={!isParticipant ? '投票するには、まず「参加する」ボタンで参加してください' : ''}
                     >
