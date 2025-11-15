@@ -881,7 +881,7 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
                       <div className="flex flex-col items-end gap-2 flex-shrink-0">
                         <button
                           type="button"
-                          className="px-3 py-1.5 text-xs font-semibold text-white bg-orange-600 rounded-lg hover:bg-orange-700 transition-colors flex items-center justify-center gap-1.5 shadow-sm min-w-[70px]"
+                          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-orange-600 rounded-lg hover:bg-orange-700 transition-colors shadow-sm min-w-[70px] min-h-[40px]"
                           onClick={() => onSelect(detailData)}
                           aria-label={isAdded ? `${restaurant.name}を候補から解除` : `${restaurant.name}を候補に追加`}
                         >
