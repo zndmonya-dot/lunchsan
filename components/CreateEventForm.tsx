@@ -642,9 +642,13 @@ export default function CreateEventForm() {
 
                 {/* テキストで候補を追加 */}
                 <div className="mb-4">
+                  <label htmlFor="newCandidateText" className="sr-only">
+                    場所の候補を入力
+                  </label>
                   <div className="flex gap-2">
                     <div className="flex-1 relative">
                       <input
+                        id="newCandidateText"
                         type="text"
                         value={newCandidateText}
                         onChange={(e) => setNewCandidateText(e.target.value)}

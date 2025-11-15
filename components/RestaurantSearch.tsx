@@ -776,8 +776,12 @@ export default function RestaurantSearch({ onSelect, selectedRestaurant, userLoc
   return (
     <div className="space-y-5">
       <div className="flex gap-2">
+        <label htmlFor="restaurantSearch" className="sr-only">
+          お店を検索
+        </label>
         <div className="flex-1 relative">
           <input
+            id="restaurantSearch"
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
