@@ -344,7 +344,7 @@ export default function LocationVoting({
             return (
               <div
                 key={candidate.id}
-                className="p-4 bg-white border-2 border-gray-200 rounded-xl hover:bg-orange-50 hover:border-orange-300 transition-all"
+                className="p-4 bg-white border-2 border-gray-200 rounded-xl hover:bg-orange-50 hover:border-orange-300 transition-all duration-200 ease-in-out"
               >
                 <div className="flex items-start justify-between gap-3">
                   {/* お店情報エリア（左側） */}
@@ -392,10 +392,10 @@ export default function LocationVoting({
                     <button
                       onClick={() => handleVote(candidate.id)}
                       disabled={loading || !currentParticipantName.trim() || !isParticipant}
-                      className={`px-4 py-2 rounded-lg font-semibold text-base shadow-sm border-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                      className={`px-4 py-2 rounded-lg font-semibold text-base shadow-sm border-2 transition-all duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed ${
                         isSelected
-                          ? 'bg-orange-600 text-white border-orange-600 hover:bg-orange-700'
-                          : 'bg-white text-gray-700 border-gray-300 hover:bg-orange-600 hover:text-white hover:border-orange-600'
+                          ? 'bg-orange-600 text-white border-orange-600 hover:bg-orange-700 hover:shadow-md active:bg-orange-800 active:scale-95'
+                          : 'bg-white text-gray-700 border-gray-300 hover:bg-orange-600 hover:text-white hover:border-orange-600 hover:shadow-md active:bg-orange-700 active:scale-95'
                       }`}
                       aria-label={isSelected ? `${candidate.name}の投票を解除` : `${candidate.name}に投票`}
                       title={!isParticipant ? '投票するには、まず「参加する」ボタンで参加してください' : ''}
