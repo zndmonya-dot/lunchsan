@@ -10,8 +10,9 @@ const nextConfig: NextConfig = {
     } : false,
   },
   // 実験的機能: 最適化
+  // remixiconは除外（アイコンフォントのため最適化の対象外）
   experimental: {
-    optimizePackageImports: ['remixicon'],
+    optimizePackageImports: [],
   },
   async headers() {
     return [
@@ -76,6 +77,15 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/media/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ],
+      },
+      {
+        source: '/fonts/:path*',
         headers: [
           {
             key: 'Cache-Control',
