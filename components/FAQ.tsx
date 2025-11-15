@@ -105,7 +105,7 @@ const faqItems: FAQItem[] = [
 export default function FAQ() {
   const router = useRouter()
   const supabase = createClient()
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const [openIndices, setOpenIndices] = useState<Set<number>>(new Set())
   const [showAll, setShowAll] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -116,9 +116,13 @@ export default function FAQ() {
   const [searchPerformed, setSearchPerformed] = useState(false)
   const [copiedUrl, setCopiedUrl] = useState<string | null>(null)
 
+  const urlForgotIndex = faqItems.findIndex(item => item.question === 'URLを忘れた場合は?')
+
   const toggleQuestion = (index: number) => {
-    // 別の質問を開く場合、または現在の質問を閉じる場合、検索フォームをリセット
-    if (openIndex !== index) {
+    const isCurrentlyOpen = openIndices.has(index)
+    
+    // URLを忘れた場合の質問を閉じる場合のみ、検索フォームをリセット
+    if (isCurrentlyOpen && index === urlForgotIndex) {
       setEvents([])
       setError(null)
       setSearchPerformed(false)
@@ -126,11 +130,19 @@ export default function FAQ() {
       setPassword('')
       setPasswordReadOnly(true)
     }
-    setOpenIndex(openIndex === index ? null : index)
+    
+    setOpenIndices((prev) => {
+      const newSet = new Set(prev)
+      if (isCurrentlyOpen) {
+        newSet.delete(index)
+      } else {
+        newSet.add(index)
+      }
+      return newSet
+    })
   }
 
   const displayedItems = showAll ? faqItems : faqItems.slice(0, 5)
-  const urlForgotIndex = faqItems.findIndex(item => item.question === 'URLを忘れた場合は?')
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -284,10 +296,10 @@ export default function FAQ() {
                   </span>
                 </div>
                 <i className={`ri-arrow-down-s-line text-orange-600 text-xl transition-transform duration-200 flex-shrink-0 ${
-                  openIndex === index ? 'transform rotate-180' : ''
+                  openIndices.has(index) ? 'transform rotate-180' : ''
                 }`}></i>
               </button>
-              {openIndex === index && (
+              {openIndices.has(index) && (
                 <div className="px-4 pb-4 ml-11">
                   <div className="pt-3 border-t border-gray-200">
                     {index === urlForgotIndex ? (

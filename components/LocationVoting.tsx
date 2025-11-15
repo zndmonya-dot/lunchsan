@@ -373,7 +373,7 @@ export default function LocationVoting({
         </div>
       )}
 
-      <div className="space-y-4">
+      <div className="space-y-3">
           {sortedCandidates.map((candidate) => {
             const voteCount = candidate.vote_count || 0
             const isSelected = selectedCandidateId === candidate.id
@@ -383,52 +383,56 @@ export default function LocationVoting({
             return (
               <div
                 key={candidate.id}
-                className={`border-2 rounded-xl p-5 ${
-                  isSelected
-                    ? 'border-orange-500 bg-orange-50 shadow-lg'
-                    : 'border-gray-200 bg-white hover:border-orange-300'
-                }`}
+                className="p-4 bg-green-50 border-2 border-green-200 rounded-xl hover:bg-green-100 hover:border-green-300 transition-all"
               >
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                  {/* お店情報エリア（左上） */}
-                  <div className="flex-1 min-w-0 w-full sm:w-auto">
-                    {isRestaurant ? (
-                      <button
-                        onClick={() => handleRestaurantNameClick(candidate)}
-                        className="group text-left w-full"
-                      >
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-bold text-lg text-gray-900 group-hover:text-orange-600">
+                <div className="flex items-start justify-between gap-3">
+                  {/* お店情報エリア（左側） */}
+                  <div className="flex items-start gap-3 flex-1 min-w-0">
+                    <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
+                      <i className="ri-check-line text-white text-lg"></i>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      {isRestaurant ? (
+                        <button
+                          onClick={() => handleRestaurantNameClick(candidate)}
+                          className="group text-left w-full"
+                        >
+                          <h3 className="font-bold text-base text-gray-900 leading-tight mb-1 group-hover:text-orange-600">
                             {candidate.name}
                           </h3>
-                          <i className="ri-external-link-line text-orange-600 text-base"></i>
+                          {candidate.restaurant_address && (
+                            <p className="text-sm text-gray-600 flex items-start gap-1.5">
+                              <i className="ri-map-pin-line text-green-500 mt-0.5 text-base flex-shrink-0"></i>
+                              <span className="leading-relaxed break-words">{candidate.restaurant_address}</span>
+                            </p>
+                          )}
+                        </button>
+                      ) : (
+                        <div>
+                          <h3 className="font-bold text-base text-gray-900 leading-tight mb-1">{candidate.name}</h3>
+                          {candidate.restaurant_address && (
+                            <p className="text-sm text-gray-600 flex items-start gap-1.5">
+                              <i className="ri-map-pin-line text-green-500 mt-0.5 text-base flex-shrink-0"></i>
+                              <span className="leading-relaxed break-words">{candidate.restaurant_address}</span>
+                            </p>
+                          )}
                         </div>
-                        {candidate.restaurant_address && (
-                          <p className="text-sm text-gray-600 mt-1">{candidate.restaurant_address}</p>
-                        )}
-                      </button>
-                    ) : (
-                      <div>
-                        <h3 className="font-bold text-lg text-gray-900 mb-1">{candidate.name}</h3>
-                        {candidate.restaurant_address && (
-                          <p className="text-sm text-gray-600 mt-1">{candidate.restaurant_address}</p>
-                        )}
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
 
-                  {/* 投票数と投票ボタンエリア（右下） */}
-                  <div className="flex items-center gap-4 flex-shrink-0 w-full sm:w-auto">
-                    <div className="text-center bg-gray-50 rounded-lg px-4 py-2 border border-gray-200 w-[70px] flex-shrink-0">
-                      <div className="text-xs text-gray-500 mb-1 font-medium w-full">投票数</div>
-                      <div className="text-xl font-bold text-gray-900 tabular-nums w-full h-[28px] flex items-center justify-center">
+                  {/* 投票数と投票ボタンエリア（右側） */}
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <div className="text-center bg-white rounded-lg px-3 py-1.5 border border-green-200 min-w-[60px]">
+                      <div className="text-xs text-gray-500 mb-0.5 font-medium">投票</div>
+                      <div className="text-lg font-bold text-gray-900 tabular-nums">
                         {voteCount}
                       </div>
                     </div>
                     <button
                       onClick={() => handleVote(candidate.id)}
                       disabled={loading || !currentParticipantName.trim() || !isParticipant}
-                      className={`px-6 py-3 rounded-xl font-bold text-base shadow-lg flex-1 sm:flex-none min-w-[120px] border-2 transition-colors ${
+                      className={`px-4 py-1.5 rounded-lg font-semibold text-sm shadow-sm min-w-[100px] border-2 transition-colors ${
                         isSelected
                           ? 'bg-orange-600 text-white border-orange-600 hover:bg-orange-700'
                           : 'bg-white text-orange-600 border-orange-600 hover:bg-orange-600 hover:text-white'
@@ -436,14 +440,14 @@ export default function LocationVoting({
                       title={!isParticipant ? '投票するには、まず「参加する」ボタンで参加してください' : ''}
                     >
                       {isSelected ? (
-                        <span className="flex items-center gap-2 justify-center">
-                          <i className="ri-check-line text-lg"></i>
+                        <span className="flex items-center gap-1.5 justify-center">
+                          <i className="ri-check-line text-sm"></i>
                           <span>投票済み</span>
                         </span>
                       ) : (
-                        <span className="flex items-center gap-2 justify-center">
-                          <i className="ri-hand-coin-line text-lg"></i>
-                          <span>投票する</span>
+                        <span className="flex items-center gap-1.5 justify-center">
+                          <i className="ri-hand-coin-line text-sm"></i>
+                          <span>投票</span>
                         </span>
                       )}
                     </button>

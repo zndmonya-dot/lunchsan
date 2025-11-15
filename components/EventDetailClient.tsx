@@ -21,55 +21,10 @@ import {
   validateTimeString,
   validateEventId
 } from '@/lib/security'
-
-// エラーメッセージを日本語に変換する関数
-function getJapaneseErrorMessage(error: any): string {
-  if (!error) return 'エラーが発生しました'
-  
-  // エラーコードに基づく日本語メッセージ
-  if (error.code === '23505') {
-    return '重複したデータが存在します'
-  }
-  if (error.code === '23503') {
-    return '参照先のデータが見つかりませんでした'
-  }
-  if (error.code === '23502') {
-    return '必須項目が入力されていません'
-  }
-  if (error.code === 'PGRST116') {
-    return '権限がありません'
-  }
-  if (error.message) {
-    // 英語のエラーメッセージを日本語に変換
-    const message = error.message.toLowerCase()
-    if (message.includes('duplicate key')) {
-      return '重複したデータが存在します'
-    }
-    if (message.includes('foreign key')) {
-      return '参照先のデータが見つかりませんでした'
-    }
-    if (message.includes('not null')) {
-      return '必須項目が入力されていません'
-    }
-    if (message.includes('permission') || message.includes('policy')) {
-      return '権限がありません'
-    }
-    if (message.includes('network') || message.includes('fetch')) {
-      return 'ネットワークエラーが発生しました。インターネット接続を確認してください'
-    }
-  }
-  
-  return 'エラーが発生しました。少し時間をおいて、もう一度お試しください'
-}
-
-interface LocationCandidate {
-  id: string
-  name: string
-  type: 'text' | 'restaurant'
-  restaurantId?: string | null
-  restaurantName?: string | null
-  restaurantAddress?: string | null
-}
+import { getJapaneseErrorMessage } from '@/lib/utils/errorMessages'
+import { useLocationCandidates } from '@/lib/hooks/useLocationCandidates'
+import type { LocationCandidate } from '@/lib/types/locationCandidate'
+import LocationCandidatesList from '@/components/LocationCandidatesList'
 
 type LunchEvent = Database['public']['Tables']['lunch_events']['Row']
 type EventParticipant = Database['public']['Tables']['event_participants']['Row'] & {
@@ -184,9 +139,17 @@ export default function EventDetailClient({
   const [updatingDate, setUpdatingDate] = useState(false)
   const [isEditingEvent, setIsEditingEvent] = useState(false)
   const [updatingEvent, setUpdatingEvent] = useState(false)
-  const [locationCandidates, setLocationCandidates] = useState<LocationCandidate[]>([])
   const [newCandidateText, setNewCandidateText] = useState('')
-  const [addedRestaurantIds, setAddedRestaurantIds] = useState<Set<string>>(new Set())
+  
+  const {
+    locationCandidates,
+    addedRestaurantIds,
+    removeCandidate,
+    toggleRestaurantCandidate,
+    addTextCandidate,
+    resetCandidates,
+    setLocationCandidates,
+  } = useLocationCandidates()
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null)
   const [ownerEmail, setOwnerEmail] = useState<string>('')
   const [ownerPassword, setOwnerPassword] = useState<string>('')
@@ -260,16 +223,7 @@ export default function EventDetailClient({
         restaurantName: lc.restaurant_name || null,
         restaurantAddress: lc.restaurant_address || null,
       }))
-      setLocationCandidates(candidates)
-      
-      // 追加済みレストランIDをセット
-      const restaurantIds = new Set<string>()
-      candidates.forEach((c) => {
-        if (c.restaurantId) {
-          restaurantIds.add(c.restaurantId)
-        }
-      })
-      setAddedRestaurantIds(restaurantIds)
+      resetCandidates(candidates)
     }
   }, [event.location_candidates])
 
@@ -446,14 +400,7 @@ export default function EventDetailClient({
           restaurantName: lc.restaurant_name || null,
           restaurantAddress: lc.restaurant_address || null,
         }))
-        setLocationCandidates(candidates)
-        const restaurantIds = new Set<string>()
-        candidates.forEach((c) => {
-          if (c.restaurantId) {
-            restaurantIds.add(c.restaurantId)
-          }
-        })
-        setAddedRestaurantIds(restaurantIds)
+        resetCandidates(candidates)
       }
       setIsEditingEvent(true)
       setIsEditingDate(false)
@@ -705,56 +652,21 @@ export default function EventDetailClient({
     }
   }
 
-  const addTextCandidate = () => {
+  const handleAddTextCandidate = () => {
     const sanitizedName = validateAndSanitizeName(newCandidateText, 100)
     if (sanitizedName) {
-      const candidate: LocationCandidate = {
-        id: `temp-${Date.now()}`,
-        name: sanitizedName,
-        type: 'text',
-      }
-      setLocationCandidates([...locationCandidates, candidate])
+      addTextCandidate(sanitizedName)
       setNewCandidateText('')
     }
   }
 
-  const addRestaurantCandidate = (restaurant: {
+  const handleAddRestaurantCandidate = (restaurant: {
     id: string
     name: string
     address: string
     place_id?: string | null
   }) => {
-    const restaurantId = restaurant.place_id || restaurant.id
-    const existing = locationCandidates.find(
-      (c) => 
-        c.restaurantName === restaurant.name || 
-        c.restaurantId === restaurant.id ||
-        (restaurant.place_id && c.restaurantId === restaurant.place_id)
-    )
-    if (existing) {
-      return
-    }
-
-    const candidate: LocationCandidate = {
-      id: `temp-restaurant-${Date.now()}`,
-      name: restaurant.name,
-      type: 'restaurant',
-      restaurantId: restaurant.place_id || restaurant.id,
-      restaurantName: restaurant.name,
-      restaurantAddress: restaurant.address,
-    }
-    setLocationCandidates([...locationCandidates, candidate])
-    setAddedRestaurantIds(new Set([...addedRestaurantIds, restaurantId]))
-  }
-
-  const removeCandidate = (id: string) => {
-    const candidate = locationCandidates.find((c) => c.id === id)
-    if (candidate && candidate.restaurantId) {
-      const newSet = new Set(addedRestaurantIds)
-      newSet.delete(candidate.restaurantId)
-      setAddedRestaurantIds(newSet)
-    }
-    setLocationCandidates(locationCandidates.filter((c) => c.id !== id))
+    toggleRestaurantCandidate(restaurant)
   }
 
 
@@ -931,7 +843,7 @@ export default function EventDetailClient({
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                               e.preventDefault()
-                              addTextCandidate()
+                              handleAddTextCandidate()
                             }
                           }}
                           placeholder="例: 社員食堂、会議室Aなど"
@@ -940,7 +852,7 @@ export default function EventDetailClient({
                       </div>
                       <button
                         type="button"
-                        onClick={addTextCandidate}
+                        onClick={handleAddTextCandidate}
                         className="px-5 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-md hover:shadow-lg h-[48px] min-w-[90px] touch-manipulation transition-all flex items-center justify-center gap-2 text-sm"
                       >
                         <i className="ri-add-line text-base"></i>
@@ -965,7 +877,7 @@ export default function EventDetailClient({
                       )}
                       <RestaurantSearch
                         userLocation={userLocation}
-                        onSelect={addRestaurantCandidate}
+                        onSelect={handleAddRestaurantCandidate}
                         selectedRestaurant={null}
                         startTime={editStartTime}
                         endTime={editEndTime}
@@ -976,44 +888,10 @@ export default function EventDetailClient({
                   )}
 
                   {/* 追加された候補の一覧 */}
-                  {locationCandidates.length > 0 && (
-                    <div className="space-y-4 mt-6">
-                      <div className="flex items-center gap-3 mb-1">
-                        <i className="ri-checkbox-circle-line text-green-600 text-xl"></i>
-                        <p className="text-base font-bold text-gray-800">追加された候補 ({locationCandidates.length}件)</p>
-                      </div>
-                      {locationCandidates.map((candidate, index) => (
-                        <div
-                          key={candidate.id}
-                          className="flex items-center justify-between p-5 bg-gradient-to-br from-green-50 to-emerald-50/50 rounded-xl border-2 border-green-200 shadow-sm hover:shadow-md transition-all animate-fade-in"
-                          style={{ animationDelay: `${index * 50}ms` }}
-                        >
-                          <div className="flex items-start gap-4 flex-1 min-w-0">
-                            <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center shadow-md flex-shrink-0">
-                              <i className="ri-check-line text-white text-base"></i>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-base font-bold text-gray-900 mb-2">{candidate.name}</p>
-                              {candidate.restaurantAddress && (
-                                <div className="flex items-start gap-2">
-                                  <i className="ri-map-pin-line text-gray-400 text-sm mt-0.5 flex-shrink-0"></i>
-                                  <p className="text-sm text-gray-600 leading-loose">{candidate.restaurantAddress}</p>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => removeCandidate(candidate.id)}
-                            className="ml-4 p-2.5 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
-                            title="削除"
-                          >
-                            <i className="ri-close-line text-xl"></i>
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  <LocationCandidatesList
+                    candidates={locationCandidates}
+                    onRemove={removeCandidate}
+                  />
                 </div>
 
                 {/* 説明 */}
@@ -1336,14 +1214,7 @@ export default function EventDetailClient({
                       restaurantName: lc.restaurant_name || null,
                       restaurantAddress: lc.restaurant_address || null,
                     }))
-                    setLocationCandidates(candidates)
-                    const restaurantIds = new Set<string>()
-                    candidates.forEach((c) => {
-                      if (c.restaurantId) {
-                        restaurantIds.add(c.restaurantId)
-                      }
-                    })
-                    setAddedRestaurantIds(restaurantIds)
+                    resetCandidates(candidates)
                   }
                   setNewCandidateText('')
                 }}
