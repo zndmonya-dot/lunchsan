@@ -49,7 +49,7 @@ export default function LocationCandidatesList({
                 )}
               </div>
             </div>
-            <div className="flex flex-col items-end gap-2 flex-shrink-0">
+            <div className="flex items-center gap-2 flex-shrink-0">
               {candidate.restaurantAddress && (
                 <button
                   type="button"
@@ -70,9 +70,10 @@ export default function LocationCandidatesList({
               <button
                 type="button"
                 onClick={() => onRemove(candidate.id)}
-                className="px-3 py-1.5 text-xs font-semibold text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors whitespace-nowrap"
+                className="px-3 py-1.5 text-xs font-semibold text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors whitespace-nowrap flex items-center gap-1"
                 aria-label={`${candidate.name}を候補から削除`}
               >
+                <i className="ri-close-line text-sm" aria-hidden="true"></i>
                 解除
               </button>
             </div>
