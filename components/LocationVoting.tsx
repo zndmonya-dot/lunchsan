@@ -355,26 +355,28 @@ export default function LocationVoting({
                         className="group text-left w-full"
                         aria-label={`${candidate.name}をGoogleマップで開く`}
                       >
-                        <div className="flex items-center gap-2 mb-1">
+                        <div className="flex items-center gap-2 mb-2">
                           <h3 className="font-bold text-base text-gray-900 leading-tight group-hover:text-orange-600">
                             {candidate.name}
                           </h3>
                           <i className="ri-external-link-line text-orange-600 text-base flex-shrink-0"></i>
                         </div>
                         {candidate.restaurant_address && (
-                          <p className="text-sm text-gray-600 leading-relaxed break-words">
-                            {candidate.restaurant_address}
+                          <p className="text-sm text-gray-600 flex items-start gap-1.5 leading-relaxed">
+                            <i className="ri-map-pin-line text-orange-500 text-base flex-shrink-0 mt-0.5"></i>
+                            <span className="break-words">{candidate.restaurant_address}</span>
                           </p>
                         )}
                       </button>
                     ) : (
                       <div>
-                        <div className="flex items-center gap-2 mb-1">
+                        <div className="flex items-center gap-2 mb-2">
                           <h3 className="font-bold text-base text-gray-900 leading-tight">{candidate.name}</h3>
                         </div>
                         {candidate.restaurant_address && (
-                          <p className="text-sm text-gray-600 leading-relaxed break-words">
-                            {candidate.restaurant_address}
+                          <p className="text-sm text-gray-600 flex items-start gap-1.5 leading-relaxed">
+                            <i className="ri-map-pin-line text-orange-500 text-base flex-shrink-0 mt-0.5"></i>
+                            <span className="break-words">{candidate.restaurant_address}</span>
                           </p>
                         )}
                       </div>
