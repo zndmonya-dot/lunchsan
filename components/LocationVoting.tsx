@@ -385,7 +385,7 @@ export default function LocationVoting({
                   </div>
 
                   {/* 投票数と投票ボタンエリア（右側） */}
-                  <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                  <div className="flex items-center gap-2 flex-shrink-0">
                     <div className="text-center bg-white rounded-lg px-3 py-1.5 border border-gray-200 min-w-[60px]">
                       <div className="text-xs text-gray-500 mb-0.5 font-medium">投票数</div>
                       <div className="text-lg font-bold text-gray-900 tabular-nums">
