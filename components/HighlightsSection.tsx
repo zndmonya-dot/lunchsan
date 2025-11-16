@@ -31,11 +31,10 @@ export default function HighlightsSection() {
         <div className="mb-10 sm:mb-14 text-center">
           <p className="text-xs sm:text-sm font-semibold text-orange-600 mb-2 sm:mb-3">Lunchsan Highlights</p>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-5 px-2">
-            「今日どこ行く？」のお悩みをまるっと解決
+            ランチ調整に必要な機能がすべて揃っています
           </h2>
           <p className="text-sm sm:text-base text-gray-600 leading-relaxed max-w-3xl mx-auto px-2">
-            チャットでみんなの予定を追いかけたり、スプレッドシートに人数をまとめたり――そんなバラバラの作業をひとつにまとめたくて昼食さんを作りました。
-            URLをひとつ共有すれば、その日の参加メンバーも行きたいお店も投票結果も、一画面で楽しく見られます。
+            出欠確認からお店選びまで、ランチ調整に必要な機能をひとつにまとめました。毎日の定例ランチから、たまの集まりまで、どんなシーンでもスムーズに使えます。
           </p>
         </div>
 
