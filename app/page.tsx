@@ -23,19 +23,19 @@ export default async function HomePage() {
         {/* Hero Section */}
         <HeroSection />
 
-        {/* Highlights */}
+        {/* Highlights - 機能の紹介 */}
         <HighlightsSection />
 
-        {/* Create Event Form - トップ画面で直接作成 */}
-        <section id="create-form" className="scroll-mt-24" aria-labelledby="create-form-heading">
-          <CreateEventForm />
-        </section>
-
-        {/* Usage Guide */}
+        {/* Usage Guide - 使い方 */}
         <section id="usage-guide" className="bg-gradient-to-b from-white to-gray-50 py-12 sm:py-16 md:py-20 scroll-mt-24" aria-labelledby="usage-guide-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <UsageGuide />
           </div>
+        </section>
+
+        {/* Create Event Form - 実際に使ってみる */}
+        <section id="create-form" className="scroll-mt-24" aria-labelledby="create-form-heading">
+          <CreateEventForm />
         </section>
 
         {/* FAQ Section */}
