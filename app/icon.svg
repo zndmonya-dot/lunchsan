@@ -2,13 +2,7 @@
   <!-- 背景（オレンジの円） -->
   <circle cx="256" cy="256" r="240" fill="#f97316"/>
   
-  <!-- お椀の本体 -->
-  <path d="M120 320C120 280 150 250 190 250H322C362 250 392 280 392 320V360C392 380 372 400 352 400H160C140 400 120 380 120 360V320Z" fill="white"/>
-  
-  <!-- お椀の内側の楕円（深みを表現） -->
-  <ellipse cx="256" cy="320" rx="120" ry="20" fill="white" opacity="0.5"/>
-  
-  <!-- お椀の縁（上部の曲線） -->
-  <path d="M120 320C120 280 150 250 190 250H322C362 250 392 280 392 320" stroke="white" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <!-- 「昼」の文字 -->
+  <text x="256" y="340" font-family="Arial, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Meiryo', sans-serif" font-size="280" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="central">昼</text>
 </svg>
 
