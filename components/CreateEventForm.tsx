@@ -478,7 +478,7 @@ export default function CreateEventForm() {
             <p className="text-base sm:text-lg text-gray-700 font-medium">
               {isTemplateMode
                 ? '既存のイベント設定を元に、新しい日付で予定を作成できます（日付は変更してください）'
-                : '1分で出欠確認が始められます'}
+                : '簡単な入力で、すぐに予定調整を始められます'}
             </p>
             {loadingTemplate && (
               <div className="mt-4 p-4 bg-blue-50 border-2 border-blue-200 rounded-xl text-blue-700 text-sm font-medium shadow-sm">
