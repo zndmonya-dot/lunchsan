@@ -8,15 +8,24 @@ import { NextResponse } from 'next/server'
  * セキュリティ: 環境変数CRON_SECRETで保護
  */
 export async function GET(request: Request) {
-  // セキュリティチェック: CRON_SECRETが設定されている場合は検証
+  // セキュリティチェック: Vercel Cronからのリクエストか、CRON_SECRETで認証されたリクエストのみ許可
+  const vercelSignature = request.headers.get('x-vercel-signature')
   const authHeader = request.headers.get('authorization')
   const cronSecret = process.env.CRON_SECRET
   
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+  // Vercel Cronからのリクエスト（x-vercel-signatureヘッダーがある）を許可
+  const isVercelCron = !!vercelSignature
+  
+  // CRON_SECRETが設定されている場合は、Bearer認証も許可
+  const isAuthorized = !cronSecret || (authHeader === `Bearer ${cronSecret}`)
+  
+  // Vercel Cronからのリクエストでない場合、かつ認証されていない場合は拒否
+  if (!isVercelCron && !isAuthorized) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
+    console.log('[Cron] Daily update started at', new Date().toISOString())
     const supabase = await createClient()
     
     // 自動更新が有効なイベントを取得
@@ -26,9 +35,11 @@ export async function GET(request: Request) {
       .eq('auto_daily_update', true)
 
     if (fetchError) {
-      console.error('Error fetching events:', fetchError)
+      console.error('[Cron] Error fetching events:', fetchError)
       return NextResponse.json({ error: 'Failed to fetch events' }, { status: 500 })
     }
+
+    console.log('[Cron] Found events to update:', events?.length || 0)
 
     if (!events || events.length === 0) {
       return NextResponse.json({ 
@@ -39,6 +50,8 @@ export async function GET(request: Request) {
 
     const eventIds = events.map(e => e.id)
     const today = new Date().toISOString().split('T')[0] // YYYY-MM-DD形式
+
+    console.log('[Cron] Updating events:', eventIds.length, 'events to date:', today)
 
     // 1. 日付を今日に更新
     const { error: updateDateError } = await supabase
@@ -51,9 +64,11 @@ export async function GET(request: Request) {
       .eq('auto_daily_update', true)
 
     if (updateDateError) {
-      console.error('Error updating dates:', updateDateError)
+      console.error('[Cron] Error updating dates:', updateDateError)
       return NextResponse.json({ error: 'Failed to update dates' }, { status: 500 })
     }
+
+    console.log('[Cron] Dates updated successfully')
 
     // 2. 参加者を削除
     const { error: deleteParticipantsError } = await supabase
@@ -62,8 +77,10 @@ export async function GET(request: Request) {
       .in('event_id', eventIds)
 
     if (deleteParticipantsError) {
-      console.error('Error deleting participants:', deleteParticipantsError)
+      console.error('[Cron] Error deleting participants:', deleteParticipantsError)
       // エラーが発生しても続行
+    } else {
+      console.log('[Cron] Participants deleted successfully')
     }
 
     // 3. 投票結果を削除
@@ -73,8 +90,10 @@ export async function GET(request: Request) {
       .in('event_id', eventIds)
 
     if (deleteVotesError) {
-      console.error('Error deleting location votes:', deleteVotesError)
+      console.error('[Cron] Error deleting location votes:', deleteVotesError)
       // エラーが発生しても続行
+    } else {
+      console.log('[Cron] Location votes deleted successfully')
     }
 
     const { error: deleteRestaurantVotesError } = await supabase
@@ -83,17 +102,20 @@ export async function GET(request: Request) {
       .in('event_id', eventIds)
 
     if (deleteRestaurantVotesError) {
-      console.error('Error deleting restaurant votes:', deleteRestaurantVotesError)
+      console.error('[Cron] Error deleting restaurant votes:', deleteRestaurantVotesError)
       // エラーが発生しても続行
+    } else {
+      console.log('[Cron] Restaurant votes deleted successfully')
     }
 
+    console.log('[Cron] Daily update completed successfully')
     return NextResponse.json({ 
       message: 'Daily update completed',
       updated: events.length,
       date: today
     })
   } catch (error: any) {
-    console.error('Error in daily update:', error)
+    console.error('[Cron] Error in daily update:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
