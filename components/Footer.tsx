@@ -83,7 +83,7 @@ export default function Footer() {
               <ul className="space-y-2">
                 <li>
                   <a
-                    href="https://twitter.com/minna_de_ohiru"
+                    href="https://twitter.com/Rasenooon"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover-link text-gray-700 text-sm flex items-center gap-2 font-medium transition-colors hover:text-orange-600"

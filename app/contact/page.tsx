@@ -82,6 +82,8 @@ export default function ContactPage() {
               ご質問、ご意見、ご要望などがございましたら、お気軽にお問い合わせください。
               <br />
               お問い合わせ内容を確認させていただきます。
+              <br />
+              <span className="font-medium text-gray-700">メールでのお問い合わせ: <a href="mailto:zndmonya@gmail.com" className="text-orange-600 hover:text-orange-700 underline">zndmonya@gmail.com</a></span>
             </p>
           </div>
 
