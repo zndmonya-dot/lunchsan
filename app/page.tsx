@@ -34,12 +34,12 @@ export default async function HomePage() {
         </section>
 
         {/* Create Event Form - 実際に使ってみる */}
-        <section id="create-form" className="scroll-mt-24" aria-labelledby="create-form-heading">
+        <section id="create-form" className="bg-gradient-to-b from-gray-50 to-white py-12 sm:py-16 md:py-20 scroll-mt-24" aria-labelledby="create-form-heading">
           <CreateEventForm />
         </section>
 
         {/* FAQ Section */}
-        <section id="faq" className="bg-white py-12 sm:py-16 md:py-20 scroll-mt-24" aria-labelledby="faq-heading">
+        <section id="faq" className="bg-gray-50 py-12 sm:py-16 md:py-20 scroll-mt-24" aria-labelledby="faq-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <FAQ />
           </div>

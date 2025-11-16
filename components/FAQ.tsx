@@ -219,7 +219,7 @@ export default function FAQ() {
   }
 
   return (
-    <section className="bg-gray-50 py-16 md:py-20">
+    <div>
       {/* コピー成功メッセージ */}
       {copiedUrl && (
         <div className="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2 animate-fade-in">
@@ -416,7 +416,7 @@ export default function FAQ() {
           </div>
         )}
       </div>
-    </section>
+    </div>
   )
 }
 

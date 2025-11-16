@@ -462,7 +462,7 @@ export default function CreateEventForm() {
   }
 
   return (
-    <section id="create-form" className="bg-white py-12 sm:py-16 md:py-20 border-t border-gray-200 scroll-mt-24">
+    <div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="max-w-4xl mx-auto">
           {/* 左上から始まるZパターン: タイトルと説明 */}
@@ -907,6 +907,6 @@ export default function CreateEventForm() {
           </div>
         </div>
       )}
-    </section>
+    </div>
   )
 }
