@@ -13,13 +13,13 @@ if (!SUPABASE_ANON_KEY) {
 
 const FORWARDED_METHODS = ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS', 'HEAD']
 
-type Params = {
-  params: {
+type RouteContext = {
+  params: Promise<{
     path?: string[]
-  }
+  }>
 }
 
-async function proxyRequest(request: NextRequest, params: Params['params']) {
+async function proxyRequest(request: NextRequest, pathSegments: string[] = []) {
   if (!FORWARDED_METHODS.includes(request.method)) {
     return NextResponse.json(
       { error: `Method ${request.method} is not allowed` },
@@ -27,8 +27,10 @@ async function proxyRequest(request: NextRequest, params: Params['params']) {
     )
   }
 
-  const pathSegments = params.path ?? []
-  const targetUrl = new URL(`${SUPABASE_REST_URL.replace(/\/$/, '')}/${pathSegments.join('/')}`)
+  const cleanedPath = pathSegments.filter(Boolean)
+  const targetUrl = new URL(
+    `${SUPABASE_REST_URL.replace(/\/$/, '')}/${cleanedPath.join('/')}`
+  )
   // 既存のクエリ（select=など）をそのまま引き継ぐ
   targetUrl.search = request.nextUrl.search
 
@@ -74,32 +76,37 @@ async function proxyRequest(request: NextRequest, params: Params['params']) {
   })
 }
 
-export async function GET(request: NextRequest, params: Params) {
-  return proxyRequest(request, params.params)
+async function handleRequest(request: NextRequest, context: RouteContext) {
+  const { path } = await context.params
+  return proxyRequest(request, path)
 }
 
-export async function POST(request: NextRequest, params: Params) {
-  return proxyRequest(request, params.params)
+export async function GET(request: NextRequest, context: RouteContext) {
+  return handleRequest(request, context)
 }
 
-export async function PATCH(request: NextRequest, params: Params) {
-  return proxyRequest(request, params.params)
+export async function POST(request: NextRequest, context: RouteContext) {
+  return handleRequest(request, context)
 }
 
-export async function PUT(request: NextRequest, params: Params) {
-  return proxyRequest(request, params.params)
+export async function PATCH(request: NextRequest, context: RouteContext) {
+  return handleRequest(request, context)
 }
 
-export async function DELETE(request: NextRequest, params: Params) {
-  return proxyRequest(request, params.params)
+export async function PUT(request: NextRequest, context: RouteContext) {
+  return handleRequest(request, context)
 }
 
-export async function OPTIONS(request: NextRequest, params: Params) {
-  return proxyRequest(request, params.params)
+export async function DELETE(request: NextRequest, context: RouteContext) {
+  return handleRequest(request, context)
 }
 
-export async function HEAD(request: NextRequest, params: Params) {
-  return proxyRequest(request, params.params)
+export async function OPTIONS(request: NextRequest, context: RouteContext) {
+  return handleRequest(request, context)
+}
+
+export async function HEAD(request: NextRequest, context: RouteContext) {
+  return handleRequest(request, context)
 }
 
 
