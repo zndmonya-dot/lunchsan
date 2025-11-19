@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import CookieNotice from "@/components/CookieNotice";
 import HashScrollHandler from "./hash-scroll-handler";
 import "./globals.css";
 import "remixicon/fonts/remixicon.css";
@@ -109,6 +110,7 @@ export default function RootLayout({
           />
         )}
         {children}
+        <CookieNotice />
       </body>
     </html>
   );

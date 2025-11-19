@@ -6,6 +6,11 @@ export const metadata = {
   description: '昼食さんの利用規約',
 }
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-white">
@@ -23,6 +28,20 @@ export default function TermsPage() {
           </div>
 
           <div className="prose prose-sm max-w-none space-y-6 text-gray-700">
+            <section>
+              <h2 className="text-xl font-semibold text-gray-900 mb-3">第0条（運営者情報）</h2>
+              <p className="leading-relaxed mb-2">
+                本サービスは「昼食さん開発チーム」（個人開発プロジェクト）が運営しています。広告掲載や取材等に関するお問い合わせは、
+                <a href="/contact" className="text-orange-600 hover:text-orange-700 underline mx-1">
+                  お問い合わせフォーム
+                </a>
+                からご連絡ください。
+              </p>
+              <p className="leading-relaxed text-sm text-gray-600">
+                連絡先（代表メールアドレス）: lunchsan.app@gmail.com
+              </p>
+            </section>
+
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">第1条（適用）</h2>
               <p className="leading-relaxed">
@@ -112,27 +131,48 @@ export default function TermsPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">第10条（通知または連絡）</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-3">第10条（広告と第三者サービス）</h2>
+              <p className="leading-relaxed mb-2">
+                本サービスでは、運営費用を賄うために Google AdSense などの第三者配信広告サービスを利用する場合があります。これらのサービスは、ユーザーの興味に応じた広告を表示するため Cookie を使用することがあります。
+              </p>
+              <ul className="list-disc list-inside space-y-2 ml-4">
+                <li>広告に関連するトラブルは広告主とユーザーとの間で解決いただくものとし、当社は一切の責任を負いません。</li>
+                <li>ユーザーは Google 広告設定ページ（<a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:text-orange-700 underline">https://adssettings.google.com</a>）からパーソナライズ広告を無効化できます。</li>
+                <li>広告のクリック誘導や不正なインプレッション操作は禁止します。</li>
+              </ul>
+            </section>
+
+            <section>
+              <h2 className="text-xl font-semibold text-gray-900 mb-3">第11条（通知または連絡）</h2>
               <p className="leading-relaxed">
                 ユーザーと当社との間の通知または連絡は、当社の定める方法によって行うものとします。当社は、ユーザーから、当社が別途定める方式に従った変更届け出がない限り、現在登録されている連絡先が有効なものとみなして当該連絡先へ通知または連絡を行い、これらは、発信時にユーザーへ到達したものとみなします。
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">第11条（権利義務の譲渡の禁止）</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-3">第12条（権利義務の譲渡の禁止）</h2>
               <p className="leading-relaxed">
                 ユーザーは、当社の書面による事前の承諾なく、利用契約上の地位または本規約に基づく権利もしくは義務を第三者に譲渡し、または担保に供することはできません。
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">第12条（準拠法・裁判管轄）</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-3">第13条（準拠法・裁判管轄）</h2>
               <p className="leading-relaxed mb-2">
                 本規約の解釈にあたっては、日本法を準拠法とします。
               </p>
               <p className="leading-relaxed">
                 本サービスに関して紛争が生じた場合には、当社の本店所在地を管轄する裁判所を専属的合意管轄とします。
               </p>
+            </section>
+
+            <section>
+              <h2 className="text-xl font-semibold text-gray-900 mb-3">付則（施行日および改定履歴）</h2>
+              <p className="leading-relaxed mb-1">制定日: 2024年10月1日</p>
+              <ul className="list-disc list-inside space-y-1 ml-4 text-sm text-gray-600">
+                <li>2025年11月15日: 広告ポリシーと運営者情報を追記</li>
+                <li>2025年11月19日: Google AdSense など第三者配信に関する条項を新設</li>
+              </ul>
             </section>
           </div>
 

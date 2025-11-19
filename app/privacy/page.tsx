@@ -6,6 +6,11 @@ export const metadata = {
   description: '昼食さんのプライバシーポリシー',
 }
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-white">
@@ -23,6 +28,17 @@ export default function PrivacyPage() {
           </div>
 
           <div className="prose prose-sm max-w-none space-y-6 text-gray-700">
+            <section>
+              <h2 className="text-xl font-semibold text-gray-900 mb-3">0. 運営者と連絡先</h2>
+              <p className="leading-relaxed">
+                本サービスは「昼食さん開発チーム」が運営しています。プライバシーに関するお問い合わせは、
+                <a href="/contact" className="text-orange-600 hover:text-orange-700 underline mx-1">
+                  お問い合わせフォーム
+                </a>
+                または lunchsan.app@gmail.com までご連絡ください。
+              </p>
+            </section>
+
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">1. はじめに</h2>
               <p className="leading-relaxed">
@@ -125,6 +141,25 @@ export default function PrivacyPage() {
             </section>
 
             <section>
+              <h2 className="text-xl font-semibold text-gray-900 mb-3">10. 広告配信について</h2>
+              <p className="leading-relaxed mb-2">
+                本サービスでは、Google AdSense などの第三者配信事業者による広告を掲載する場合があります。これらの第三者配信事業者は、ユーザーの興味に応じた広告を表示するために Cookie（DoubleClick Cookie を含む）を使用することがあります。
+              </p>
+              <ul className="list-disc list-inside space-y-2 ml-4">
+                <li>Google およびパートナーは、収集した情報をもとにパーソナライズ広告を配信します。</li>
+                <li>ユーザーは Google 広告設定ページでパーソナライズ広告を無効化できます。</li>
+                <li>パーソナライズ広告を無効化しても、広告そのものが表示されなくなるわけではありません。</li>
+              </ul>
+            </section>
+
+            <section>
+              <h2 className="text-xl font-semibold text-gray-900 mb-3">11. ユーザーによる制御</h2>
+              <p className="leading-relaxed">
+                ブラウザの設定で Cookie を拒否、または削除することができます。また、<a href="https://www.networkadvertising.org/choices/" target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:text-orange-700 underline">NAI オプトアウトページ</a>などの第三者提供ツールを利用することで、行動ターゲティング広告を無効化できます。
+              </p>
+            </section>
+
+            <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">10. プライバシーポリシーの変更</h2>
               <p className="leading-relaxed">
                 当社は、必要に応じて、本プライバシーポリシーの内容を変更することがあります。変更後のプライバシーポリシーは、本ページに掲載した時点で効力を生じるものとします。
@@ -132,9 +167,12 @@ export default function PrivacyPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">11. お問い合わせ</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-3">12. お問い合わせ</h2>
               <p className="leading-relaxed">
                 本プライバシーポリシーに関するお問い合わせは、<a href="/contact" className="text-orange-600 hover:text-orange-700 underline">お問い合わせ</a>ページからご連絡ください。
+              </p>
+              <p className="leading-relaxed text-sm text-gray-600 mt-2">
+                改定履歴: 2025年11月15日（広告配信に関する条項を追記）
               </p>
             </section>
           </div>

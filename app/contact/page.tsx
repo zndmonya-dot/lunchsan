@@ -81,9 +81,14 @@ export default function ContactPage() {
             <p className="text-sm text-gray-600 leading-relaxed">
               ご質問、ご意見、ご要望などがございましたら、お気軽にお問い合わせください。
               <br />
-              お問い合わせ内容を確認させていただきます。
+              平日 10:00-18:00 に順次回答します（平均 24 時間以内）。
               <br />
-              <span className="font-medium text-gray-700">メールでのお問い合わせ: <a href="mailto:zndmonya@gmail.com" className="text-orange-600 hover:text-orange-700 underline">zndmonya@gmail.com</a></span>
+              <span className="font-medium text-gray-700">
+                メールでのお問い合わせ:{' '}
+                <a href="mailto:lunchsan.app@gmail.com" className="text-orange-600 hover:text-orange-700 underline">
+                  lunchsan.app@gmail.com
+                </a>
+              </span>
             </p>
           </div>
 
@@ -217,6 +222,16 @@ export default function ContactPage() {
               <p className="text-sm text-gray-700 leading-relaxed">
                 技術的な問題や不具合については、可能な限り詳細な情報（発生した操作、エラーメッセージ、使用環境など）を含めてお問い合わせいただくと、より迅速に対応できます。
               </p>
+              <div className="mt-4 grid gap-3 text-sm text-gray-700">
+                <div className="flex items-center gap-2">
+                  <i className="ri-time-line text-orange-600"></i>
+                  目安回答時間: 1 営業日以内
+                </div>
+                <div className="flex items-center gap-2">
+                  <i className="ri-shield-keyhole-line text-orange-600"></i>
+                  個人情報は暗号化され、安全な Supabase に保存されます
+                </div>
+              </div>
             </div>
           </div>
         </div>

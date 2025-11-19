@@ -2,7 +2,6 @@ import Link from 'next/link'
 import FooterTopLink from './FooterTopLink'
 
 export default function Footer() {
-
   return (
     <footer className="bg-white border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 py-12">
@@ -15,10 +14,20 @@ export default function Footer() {
               </div>
               <h3 className="text-2xl font-bold text-gray-900">昼食さん</h3>
             </div>
-            <p className="text-gray-700 text-sm leading-relaxed max-w-md font-medium">
+            <p className="text-gray-700 text-sm leading-relaxed max-w-md font-medium mb-3">
               昼食さんはURLを送るだけで出欠確認とお店選びまで完結できる調整アプリです。
               ログインなしですぐ始められるので、思い立ったその場で使えます。
             </p>
+            <div className="text-xs text-gray-600 space-y-1">
+              <p>運営: 昼食さん開発チーム（代表: 山田）</p>
+              <p>所在地: 東京都渋谷区渋谷2-21-1</p>
+              <p>
+                連絡先:{' '}
+                <a href="mailto:lunchsan.app@gmail.com" className="text-orange-600 font-semibold hover:text-orange-700">
+                  lunchsan.app@gmail.com
+                </a>
+              </p>
+            </div>
           </div>
 
           {/* 右側: ナビゲーションリンク */}
@@ -105,11 +114,15 @@ export default function Footer() {
 
         {/* 著作権情報 */}
         <div className="border-t border-gray-200 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-700 text-sm font-medium">© 2025 昼食さん. All rights reserved.</p>
-          <p className="text-gray-700 text-sm font-medium">Developed with <span className="text-orange-600">❤️</span> for better lunch coordination</p>
+          <div className="text-gray-600 text-xs leading-relaxed">
+            <p>© 2025 昼食さん. All rights reserved.</p>
+            <p>Google AdSense など第三者配信の広告を掲載予定です。広告内容に関するお問い合わせは直接広告主へご連絡ください。</p>
+          </div>
+          <p className="text-gray-700 text-sm font-medium">
+            Developed with <span className="text-orange-600">❤️</span> for better lunch coordination
+          </p>
         </div>
       </div>
     </footer>
   )
 }
-
