@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import CookieNotice from "@/components/CookieNotice";
@@ -54,23 +54,24 @@ export const metadata: Metadata = {
     images: [`${siteUrl}/icon-192.png`],
   },
   manifest: "/manifest.json",
-  themeColor: "#f97316",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "昼食さん",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-    userScalable: true,
-    viewportFit: "cover",
-  },
   icons: {
     icon: "/icon-192.png",
     apple: "/icon-192.png",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: "cover",
+  themeColor: "#f97316",
 };
 
 export default function RootLayout({
