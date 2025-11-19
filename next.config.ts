@@ -56,7 +56,7 @@ const nextConfig: NextConfig = {
               "font-src 'self' https://fonts.gstatic.com data:",
               "img-src 'self' data: https: blob:",
               "connect-src 'self' https://*.supabase.co https://maps.googleapis.com https://maps.gstatic.com https://api.open-meteo.com https://api.bigdatacloud.net https://api.openweathermap.org https://*.google.com https://*.googlesyndication.com https://*.googleadservices.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google",
-              "frame-src 'self' https://maps.googleapis.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com",
+              "frame-src 'self' https://maps.googleapis.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://ep2.adtrafficquality.google https://www.google.com",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",

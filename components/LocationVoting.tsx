@@ -176,20 +176,32 @@ export default function LocationVoting({
           if (deleteError) {
             throw deleteError
           }
-        setSelectedCandidateId(null)
+
+          setSelectedCandidateId(null)
+          setVotes((prev) => prev.filter((vote) => vote.id !== dbVote.id))
         } else {
           // 別の候補に変更
-          const { error: updateError } = await supabase
+          const { data: updatedVote, error: updateError } = await supabase
             .from('location_votes')
             .update({
               candidate_id: candidateId,
             })
             .eq('id', dbVote.id)
+            .select()
+            .single()
 
           if (updateError) {
             throw updateError
           }
+
+          if (!updatedVote) {
+            throw new Error('投票の更新に失敗しました')
+          }
+
           setSelectedCandidateId(candidateId)
+          setVotes((prev) =>
+            prev.map((vote) => (vote.id === dbVote.id ? (updatedVote as LocationVote) : vote))
+          )
         }
       } else {
         // 既存の投票が存在しない場合、新規作成（名前とパスワードハッシュ）
@@ -197,7 +209,7 @@ export default function LocationVoting({
           .from('location_votes')
           .insert({
             event_id: eventId,
-            candidate_id: candidateId,
+          candidate_id: candidateId,
             name: sanitizedName,
             password_hash: passwordHash,
           })
@@ -211,20 +223,7 @@ export default function LocationVoting({
           throw new Error('投票の作成に失敗しました')
         }
         setSelectedCandidateId(candidateId)
-      }
-      
-      // 投票後に最新の投票データを取得して状態を更新
-      const { data: updatedVotes, error: votesError } = await supabase
-        .from('location_votes')
-        .select('*')
-        .eq('event_id', eventId)
-      
-      if (votesError) {
-        throw votesError
-      }
-      
-      if (updatedVotes) {
-        setVotes(updatedVotes as LocationVote[])
+        setVotes((prev) => [...prev, newVote as LocationVote])
       }
       
     } catch (error: any) {
