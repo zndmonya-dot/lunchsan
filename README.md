@@ -42,7 +42,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
 NEXT_PUBLIC_OPENWEATHER_API_KEY=your_openweather_api_key
 ```
-> **補足:** `NEXT_PUBLIC_SUPABASE_PROXY_URL` を指定すると、ブラウザからのリクエストは Next.js 経由で Supabase に転送され、CORS を回避できます。本番環境では `https://your-domain.com/api/supabase` を設定してください。未設定の場合は従来どおり Supabase の `Project URL` に直接接続します。
+> **補足:** `NEXT_PUBLIC_SUPABASE_PROXY_URL` を指定すると、ブラウザからのリクエストは Next.js 経由で Supabase に転送され、CORS を回避できます。Vercel のプレビュー URL でも動作させるため、`/api/supabase` のような **相対パス** で設定することを推奨します（ローカルでは `http://localhost:3000/api/supabase` でも可）。未設定の場合は従来どおり Supabase の `Project URL` に直接接続します。
 
 ### 3. Supabaseのセットアップ
 
@@ -75,7 +75,7 @@ NEXT_PUBLIC_OPENWEATHER_API_KEY=your_openweather_api_key
    - Supabaseダッシュボードの「Settings」→「API」に移動
    - 「Project URL」をコピーして `NEXT_PUBLIC_SUPABASE_URL` に設定（形式: `https://<project-ref>.supabase.co`）
    - 「anon public」キーをコピーして `NEXT_PUBLIC_SUPABASE_ANON_KEY` に設定
-   - ブラウザアクセスを常に許可したい場合は、アプリのドメインを使って `NEXT_PUBLIC_SUPABASE_PROXY_URL` に `https://<your-domain>/api/supabase`（ローカル開発なら `http://localhost:3000/api/supabase`）を設定
+   - ブラウザアクセスを常に許可したい場合は、`NEXT_PUBLIC_SUPABASE_PROXY_URL` に `/api/supabase`（ローカル開発なら `http://localhost:3000/api/supabase`）を設定し、常に同一オリジン経由で Supabase REST を呼び出すようにします
 
 ### 4. Google Maps APIのセットアップ
 

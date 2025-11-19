@@ -1,22 +1,37 @@
 import { createBrowserClient } from '@supabase/ssr'
 
-export function createClient() {
-  const browserSupabaseUrl =
-    process.env.NEXT_PUBLIC_SUPABASE_PROXY_URL ??
-    process.env.NEXT_PUBLIC_SUPABASE_URL
-
-  if (!browserSupabaseUrl) {
-    throw new Error('NEXT_PUBLIC_SUPABASE_URL (or proxy) is not set')
+function resolveProxyUrl(rawUrl?: string | null) {
+  if (!rawUrl || !rawUrl.trim()) {
+    return '/api/supabase'
   }
 
-  if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  const trimmed = rawUrl.trim()
+
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    try {
+      const parsed = new URL(trimmed)
+      const pathname = parsed.pathname === '/' ? '' : parsed.pathname
+      const resolved =
+        `${pathname}${parsed.search}${parsed.hash}` || '/api/supabase'
+      return resolved.startsWith('/') ? resolved : `/${resolved}`
+    } catch {
+      return '/api/supabase'
+    }
+  }
+
+  return trimmed.startsWith('/') ? trimmed : `/${trimmed}`
+}
+
+export function createClient() {
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseAnonKey) {
     throw new Error('NEXT_PUBLIC_SUPABASE_ANON_KEY is not set')
   }
 
-  return createBrowserClient(
-    browserSupabaseUrl,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  )
+  const proxyUrl = resolveProxyUrl(process.env.NEXT_PUBLIC_SUPABASE_PROXY_URL)
+
+  return createBrowserClient(proxyUrl, supabaseAnonKey)
 }
 
 
