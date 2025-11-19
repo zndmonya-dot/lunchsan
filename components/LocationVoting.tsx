@@ -167,7 +167,7 @@ export default function LocationVoting({
       setVotes((prev) => [
         ...prev,
         {
-          id: optimisticTempId,
+          id: optimisticTempId!,
           candidate_id: candidateId,
           name: sanitizedName,
           password_hash: currentParticipantPasswordHash || null,
