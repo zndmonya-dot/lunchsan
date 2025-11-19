@@ -53,7 +53,7 @@ export default function LocationVoting({
   const [candidates, setCandidates] = useState<LocationCandidate[]>(Array.isArray(initialCandidates) ? initialCandidates : [])
   const [votes, setVotes] = useState<LocationVote[]>(Array.isArray(initialVotes) ? initialVotes : [])
   const [selectedCandidateId, setSelectedCandidateId] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [pendingCandidateId, setPendingCandidateId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [restaurantWebsites, setRestaurantWebsites] = useState<Record<string, string>>({})
 
@@ -133,8 +133,48 @@ export default function LocationVoting({
       }
     }
 
-    setLoading(true)
+    setPendingCandidateId(candidateId)
     setError(null)
+
+    const previousVotes = votes
+    const previousSelectedId = selectedCandidateId
+
+    const normalizedName = sanitizedName.toLowerCase()
+    const normalizedHash = (currentParticipantPasswordHash || null) ?? null
+    const localVote = votes.find((vote) => {
+      if (!vote) return false
+      const voteName = vote.name ? vote.name.trim().toLowerCase() : ''
+      const voteHash = vote.password_hash || null
+      return voteName === normalizedName && voteHash === normalizedHash
+    })
+
+    let optimisticTempId: string | null = null
+
+    if (localVote) {
+      if (localVote.candidate_id === candidateId) {
+        setVotes((prev) => prev.filter((vote) => vote.id !== localVote.id))
+        setSelectedCandidateId(null)
+      } else {
+        setVotes((prev) =>
+          prev.map((vote) =>
+            vote.id === localVote.id ? { ...vote, candidate_id: candidateId } : vote
+          )
+        )
+        setSelectedCandidateId(candidateId)
+      }
+    } else {
+      optimisticTempId = `optimistic-${Date.now()}`
+      setVotes((prev) => [
+        ...prev,
+        {
+          id: optimisticTempId,
+          candidate_id: candidateId,
+          name: sanitizedName,
+          password_hash: currentParticipantPasswordHash || null,
+        },
+      ])
+      setSelectedCandidateId(candidateId)
+    }
 
     try {
       // パスワードが入力されている場合はハッシュ化
@@ -223,14 +263,20 @@ export default function LocationVoting({
           throw new Error('投票の作成に失敗しました')
         }
         setSelectedCandidateId(candidateId)
-        setVotes((prev) => [...prev, newVote as LocationVote])
+        setVotes((prev) =>
+          optimisticTempId
+            ? prev.map((vote) => (vote.id === optimisticTempId ? (newVote as LocationVote) : vote))
+            : [...prev, newVote as LocationVote]
+        )
       }
       
     } catch (error: any) {
       console.error('投票エラー:', error)
+      setVotes(previousVotes)
+      setSelectedCandidateId(previousSelectedId)
       setError(getJapaneseErrorMessage(error))
     } finally {
-      setLoading(false)
+      setPendingCandidateId(null)
     }
   }
 
@@ -392,7 +438,11 @@ export default function LocationVoting({
                     </div>
                     <button
                       onClick={() => handleVote(candidate.id)}
-                      disabled={loading || !currentParticipantName.trim() || !isParticipant}
+                      disabled={
+                        pendingCandidateId === candidate.id ||
+                        !currentParticipantName.trim() ||
+                        !isParticipant
+                      }
                       className={`px-4 py-2 rounded-lg font-semibold text-base shadow-sm border-2 transition-all duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-gray-700 disabled:hover:border-gray-300 ${
                         isSelected
                           ? 'bg-orange-600 text-white border-orange-600 hover:bg-orange-700 hover:shadow-md active:bg-orange-800 active:scale-95 disabled:hover:bg-orange-600 disabled:hover:text-white disabled:hover:border-orange-600'
@@ -402,8 +452,12 @@ export default function LocationVoting({
                       title={!isParticipant ? '投票するには、まず「参加する」ボタンで参加してください' : ''}
                     >
                       <span className="flex items-center gap-1.5 justify-center whitespace-nowrap">
-                        <i className="ri-thumb-up-line text-base"></i>
-                        <span>投票する</span>
+                        {pendingCandidateId === candidate.id ? (
+                          <i className="ri-loader-4-line animate-spin text-base"></i>
+                        ) : (
+                          <i className="ri-thumb-up-line text-base"></i>
+                        )}
+                        <span>{isSelected ? '投票解除' : '投票する'}</span>
                       </span>
                     </button>
                   </div>
