@@ -19,8 +19,7 @@ export default function Footer() {
               ログインなしですぐ始められるので、思い立ったその場で使えます。
             </p>
             <div className="text-xs text-gray-600 space-y-1">
-              <p>運営: 昼食さん開発チーム（代表: 山田）</p>
-              <p>所在地: 東京都渋谷区渋谷2-21-1</p>
+              <p>運営: 昼食さん開発チーム（個人プロジェクト）</p>
               <p>
                 連絡先:{' '}
                 <a href="mailto:lunchsan.app@gmail.com" className="text-orange-600 font-semibold hover:text-orange-700">
