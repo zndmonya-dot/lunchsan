@@ -71,6 +71,8 @@ async function proxyRequest(request: NextRequest, pathSegments: string[] = []) {
   })
 
   const responseHeaders = new Headers(fetchResponse.headers)
+  responseHeaders.delete('content-encoding')
+  responseHeaders.delete('content-length')
   responseHeaders.set('Access-Control-Allow-Origin', '*')
   responseHeaders.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, apikey, Prefer, Range')
   responseHeaders.set('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS, HEAD')
