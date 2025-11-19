@@ -1,15 +1,21 @@
 import { type NextRequest, NextResponse } from 'next/server'
 
-const SUPABASE_REST_URL = process.env.SUPABASE_REST_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-if (!SUPABASE_REST_URL) {
-  throw new Error('SUPABASE_REST_URL or NEXT_PUBLIC_SUPABASE_URL is not set')
+function getRequiredEnv(name: string, value: string | undefined) {
+  if (!value) {
+    throw new Error(`${name} is not set`)
+  }
+  return value
 }
 
-if (!SUPABASE_ANON_KEY) {
-  throw new Error('NEXT_PUBLIC_SUPABASE_ANON_KEY is not set')
-}
+const SUPABASE_REST_URL = getRequiredEnv(
+  'SUPABASE_REST_URL or NEXT_PUBLIC_SUPABASE_URL',
+  process.env.SUPABASE_REST_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL
+)
+
+const SUPABASE_ANON_KEY = getRequiredEnv(
+  'NEXT_PUBLIC_SUPABASE_ANON_KEY',
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+)
 
 const FORWARDED_METHODS = ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS', 'HEAD']
 
